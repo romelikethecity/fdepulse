@@ -13,6 +13,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://fdepulse.com/career/forward-deployed-engineer-interview-questions/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/career/how-to-become-a-forward-deployed-engineer/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://fdepulse.com/companies/</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
@@ -23,6 +35,24 @@
     <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/insights/forward-deployed-engineer-vs-consultant/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/insights/forward-deployed-engineer-vs-software-engineer/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/insights/forward-deployed-engineer-vs-solutions-engineer/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://fdepulse.com/jobs/</loc>
