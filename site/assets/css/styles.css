@@ -255,6 +255,14 @@ h1, h2, h3, h4, h5, h6 {
 .scroll-cta .signup-trust { font-size: 0.75rem; }
 @media (max-width: 480px) { .scroll-cta { right: 12px; left: 12px; width: auto; max-width: none; padding: 1.25rem; } }
 
+.logo-bar { padding: var(--space-lg) var(--space-lg) var(--space-xl); max-width: 1200px; margin: 0 auto; }
+.logo-bar__label { text-align: center; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-md); }
+.logo-bar__row { display: flex; justify-content: center; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+.logo-bar__item { width: 48px; height: 48px; border-radius: var(--radius-lg); background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: background var(--transition-fast), border-color var(--transition-fast); text-decoration: none; }
+.logo-bar__item:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.12); }
+.logo-bar__item svg { width: 28px; height: 28px; }
+@media (max-width: 640px) { .logo-bar__item { width: 40px; height: 40px; } .logo-bar__item svg { width: 22px; height: 22px; } .logo-bar__row { gap: 6px; } }
+
 .footer { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: var(--space-3xl) var(--space-lg) var(--space-xl); }
 .footer__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-2xl); }
 .footer__brand { max-width: 280px; }
