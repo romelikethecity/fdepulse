@@ -31,6 +31,54 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://fdepulse.com/companies/anthropic/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/databricks/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/openai/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/palantir/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/ramp/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/rippling/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/salesforce/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/companies/scale-ai/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://fdepulse.com/insights/</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
