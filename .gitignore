@@ -1,0 +1,23 @@
+# Build scripts and internal docs — NEVER commit to GitHub Pages repo
+scripts/
+build.sh
+CLAUDE.md
+.agents/
+.planning/
+brand/
+*.pyc
+__pycache__/
+.DS_Store
+
+# Data files
+data/*.csv
+data/*.db
+data/*.json
+
+# Local dev
+.env
+*.log
+node_modules/
+
+# Worker secrets
+worker/wrangler.toml

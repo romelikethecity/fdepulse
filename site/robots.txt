@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Sitemap: https://fdepulse.com/sitemap.xml
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
