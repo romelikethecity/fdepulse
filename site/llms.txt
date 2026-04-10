@@ -1,0 +1,73 @@
+# FDE Pulse
+
+> Jobs, salaries, and market intelligence for Forward Deployed Engineers.
+
+FDE Pulse is the first dedicated job board and market intelligence platform for Forward Deployed Engineers (FDEs). We track every FDE job posting across major boards, aggregate salary data from 50+ companies, and publish weekly market intelligence. The FDE role grew 800% in 2025, with companies like OpenAI, Salesforce, Palantir, Ramp, Databricks, and others hiring engineers who deploy products directly at customer sites.
+
+## Pages
+
+- [Home](https://fdepulse.com/): Forward Deployed Engineer jobs, salary data, and market overview
+- [Jobs](https://fdepulse.com/jobs/): FDE job board with postings from 50+ companies
+- [Salaries](https://fdepulse.com/salaries/): FDE salary data by company, location, and seniority
+- [Companies](https://fdepulse.com/companies/): Companies hiring FDEs with team sizes and culture details
+- [Career Guides](https://fdepulse.com/career/): FDE career resources, interview prep, and resume tips
+- [Insights](https://fdepulse.com/insights/): Market intelligence and role comparisons
+- [About](https://fdepulse.com/about/): About FDE Pulse, data methodology, and FAQ
+
+## Company Profiles
+
+- [Palantir FDE](https://fdepulse.com/companies/palantir/): 200+ FDEs, $135K-$250K, pioneered the role
+- [OpenAI FDE](https://fdepulse.com/companies/openai/): 50+ FDEs, $185K-$285K, AI deployment
+- [Anthropic FDE](https://fdepulse.com/companies/anthropic/): 20-30 FDEs, $180K-$280K, AI safety focus
+- [Salesforce FDE](https://fdepulse.com/companies/salesforce/): 1,000 FDE target, $170K-$240K, Agentforce
+- [Databricks FDE](https://fdepulse.com/companies/databricks/): 30+ FDEs, $175K-$260K, data/ML platform
+- [Scale AI FDE](https://fdepulse.com/companies/scale-ai/): 20+ FDEs, $165K-$245K, data labeling
+- [Ramp FDE](https://fdepulse.com/companies/ramp/): 15-25 FDEs, $160K-$220K, fintech
+- [Rippling FDE](https://fdepulse.com/companies/rippling/): 10-20 FDEs, $155K-$230K, HR/IT platform
+- [Google/DeepMind FDE](https://fdepulse.com/companies/google-deepmind/): 30+ FDEs, $170K-$280K
+- [ElevenLabs FDE](https://fdepulse.com/companies/elevenlabs/): 5-10 FDEs, $160K-$240K, voice AI
+- [Anduril FDE](https://fdepulse.com/companies/anduril/): 15-25 FDEs, $155K-$250K, defense tech
+- [ServiceNow FDE](https://fdepulse.com/companies/servicenow/): 20+ FDEs, $160K-$240K, IT automation
+- [Cohere FDE](https://fdepulse.com/companies/cohere/): 10-15 FDEs, $160K-$235K, on-premise LLM
+- [PostHog FDE](https://fdepulse.com/companies/posthog/): 5-10 FDEs, $150K-$220K, product analytics
+- [Atlassian FDE](https://fdepulse.com/companies/atlassian/): 10-20 FDEs, $160K-$245K
+
+## Career Guides
+
+- [What Is an FDE?](https://fdepulse.com/career/what-is-a-forward-deployed-engineer/): Complete role overview
+- [How to Become an FDE](https://fdepulse.com/career/how-to-become-a-forward-deployed-engineer/): Step-by-step guide
+- [FDE Interview Questions](https://fdepulse.com/career/forward-deployed-engineer-interview-questions/): 50+ real questions
+- [FDE Resume Guide](https://fdepulse.com/career/forward-deployed-engineer-resume/): Resume writing tips
+- [FDE for New Grads](https://fdepulse.com/career/forward-deployed-engineer-new-grad/): Entry-level FDE guide
+- [AI FDE Guide](https://fdepulse.com/career/forward-deployed-ai-engineer/): AI specialization
+- [FDE Strategist](https://fdepulse.com/career/forward-deployed-strategist/): Business-focused FDE role
+- [FDE Levels](https://fdepulse.com/career/forward-deployed-engineer-levels/): Career ladder and progression
+- [FDE Work-Life Balance](https://fdepulse.com/career/forward-deployed-engineer-work-life-balance/): Travel and lifestyle
+
+## Role Comparisons
+
+- [FDE vs Solutions Engineer](https://fdepulse.com/insights/forward-deployed-engineer-vs-solutions-engineer/)
+- [FDE vs Software Engineer](https://fdepulse.com/insights/forward-deployed-engineer-vs-software-engineer/)
+- [FDE vs Consultant](https://fdepulse.com/insights/forward-deployed-engineer-vs-consultant/)
+- [FDE vs Sales Engineer](https://fdepulse.com/insights/forward-deployed-engineer-vs-sales-engineer/)
+- [FDE vs Solutions Architect](https://fdepulse.com/insights/forward-deployed-engineer-vs-solutions-architect/)
+- [FDE vs Customer Engineer](https://fdepulse.com/insights/forward-deployed-engineer-vs-customer-engineer/)
+- [FDE vs Implementation Engineer](https://fdepulse.com/insights/forward-deployed-engineer-vs-implementation-engineer/)
+- [FDE vs Product Manager](https://fdepulse.com/insights/forward-deployed-engineer-vs-product-manager/)
+
+## Location Pages
+
+- [Remote FDE Jobs](https://fdepulse.com/jobs/remote/): Remote positions, salary adjustments, companies
+- [San Francisco FDE Jobs](https://fdepulse.com/jobs/san-francisco/): Highest salaries, AI company hub
+- [New York FDE Jobs](https://fdepulse.com/jobs/new-york/): Fintech focus, enterprise SaaS
+- [London FDE Jobs](https://fdepulse.com/jobs/london/): European market, EU AI Act
+- [Toronto FDE Jobs](https://fdepulse.com/jobs/toronto/): AI hub, Cohere HQ
+- [Seattle FDE Jobs](https://fdepulse.com/jobs/seattle/): Cloud providers, no state tax
+- [Austin FDE Jobs](https://fdepulse.com/jobs/austin/): Growing market, Oracle HQ
+- [Europe FDE Jobs](https://fdepulse.com/jobs/europe/): Continental market overview
+- [India FDE Jobs](https://fdepulse.com/jobs/india/): Emerging market
+
+## Topical Insights
+
+- [FDE Tech Stack 2026](https://fdepulse.com/insights/forward-deployed-engineer-tech-stack/): Most in-demand tools
+- [How to Hire FDEs](https://fdepulse.com/insights/how-to-hire-forward-deployed-engineers/): Hiring manager guide

@@ -414,7 +414,7 @@ h1, h2, h3, h4, h5, h6 {
       "name": "Is the FDE tech stack different from SWE tech stack?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The languages overlap (Python, TypeScript, SQL) but the tools diverge. FDEs use more integration tools (API clients, webhook handlers, data migration tools) and less product development tools (React, mobile frameworks, CI/CD pipelines). FDEs also use more AI/ML tools than typical SWEs. The biggest FDE-specific skill is API integration design \u2014 connecting systems that don't natively talk to each other."
+        "text": "The languages overlap (Python, TypeScript, SQL) but the tools diverge. FDEs use more integration tools (API clients, webhook handlers, data migration tools) and less product development tools (React, mobile frameworks, CI/CD pipelines). FDEs also use more AI/ML tools than typical SWEs. The biggest FDE-specific skill is API integration design. connecting systems that don't natively talk to each other."
       }
     },
     {
@@ -467,6 +467,7 @@ h1, h2, h3, h4, h5, h6 {
                 <a href="/jobs/" class="nav__link">Jobs</a>
                 <a href="/salaries/" class="nav__link">Salaries</a>
                 <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
                 <a href="/insights/" class="nav__link">Insights</a>
                 <a href="/about/" class="nav__link">About</a>
             </nav>
@@ -484,6 +485,7 @@ h1, h2, h3, h4, h5, h6 {
                     <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
                     <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
                     <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
                     <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
                     <li><a href="/about/" class="mobile-nav__link">About</a></li>
         </ul>
@@ -498,75 +500,88 @@ h1, h2, h3, h4, h5, h6 {
 
 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Programming Languages</h2>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Python (78% of postings)</strong> — The dominant FDE language. Used for data pipelines, API integrations, ML/AI deployment, scripting, and backend services. Python's ecosystem (pandas, FastAPI, SQLAlchemy, LangChain) maps directly to FDE work. If you learn one language for FDE, learn Python deeply.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Python (78% of postings)</strong>. The dominant FDE language. Used for data pipelines, API integrations, ML/AI deployment, scripting, and backend services. Python's ecosystem (pandas, FastAPI, SQLAlchemy, LangChain) maps directly to FDE work. If you learn one language for FDE, learn Python deeply.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">SQL (65%)</strong> — Essential for every FDE role. Customer data lives in databases. FDEs write queries, design schemas, optimize performance, and build data pipelines. Strong SQL skills (window functions, CTEs, query optimization, schema design) separate effective FDEs from those who struggle with customer data.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">SQL (65%)</strong>. Essential for every FDE role. Customer data lives in databases. FDEs write queries, design schemas, optimize performance, and build data pipelines. Strong SQL skills (window functions, CTEs, query optimization, schema design) separate effective FDEs from those who struggle with customer data.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">TypeScript/JavaScript (52%)</strong> — Required for full-stack FDE work: building customer-facing dashboards, API endpoints, integration services. TypeScript is preferred over JavaScript for production FDE code because type safety catches integration errors earlier.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">TypeScript/JavaScript (52%)</strong>. Required for full-stack FDE work: building customer-facing dashboards, API endpoints, integration services. TypeScript is preferred over JavaScript for production FDE code because type safety catches integration errors earlier.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Go (15%)</strong> — Growing in FDE postings, particularly at infrastructure-heavy companies (Databricks, cloud providers). Go's concurrency model and performance make it valuable for data pipeline and system integration work.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Go (15%)</strong>. Growing in FDE postings, particularly at infrastructure-heavy companies (Databricks, cloud providers). Go's concurrency model and performance make it valuable for data pipeline and system integration work.</p>
 
 <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-muted);">Other languages (5-10% each):</strong> Java (ServiceNow, enterprise), Rust (Anduril, performance-critical), C++ (Anduril, embedded systems), Ruby (legacy integrations).</p>
 
 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">AI/ML Tools (Growing Fastest)</h2>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">LLM APIs (45% of AI-company postings)</strong> — OpenAI API, Anthropic Claude SDK, Cohere SDK, Google Vertex AI. The ability to integrate, configure, and optimize LLM API calls is the fastest-growing FDE skill.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">LLM APIs (45% of AI-company postings)</strong>. OpenAI API, Anthropic Claude SDK, Cohere SDK, Google Vertex AI. The ability to integrate, configure, and optimize LLM API calls is the fastest-growing FDE skill.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">RAG Frameworks (35%)</strong> — LangChain, LlamaIndex, Haystack. Building retrieval-augmented generation systems is the most common AI FDE task. These frameworks provide the scaffolding for connecting LLMs to customer-specific data sources.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">RAG Frameworks (35%)</strong>. LangChain, LlamaIndex, Haystack. Building retrieval-augmented generation systems is the most common AI FDE task. These frameworks provide the scaffolding for connecting LLMs to customer-specific data sources.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Vector Databases (30%)</strong> — Pinecone, Weaviate, Qdrant, Chroma, pgvector. Essential infrastructure for RAG systems. FDEs need to understand embedding models, similarity search, and vector index optimization.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Vector Databases (30%)</strong>. Pinecone, Weaviate, Qdrant, Chroma, pgvector. Essential infrastructure for RAG systems. FDEs need to understand embedding models, similarity search, and vector index optimization.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">ML Platforms (25%)</strong> — MLflow, Weights & Biases, Databricks ML, SageMaker. For FDEs deploying ML models beyond LLMs: model training, experiment tracking, model serving, and monitoring.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">ML Platforms (25%)</strong>. MLflow, Weights & Biases, Databricks ML, SageMaker. For FDEs deploying ML models beyond LLMs: model training, experiment tracking, model serving, and monitoring.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Model Serving (20%)</strong> — vLLM, TensorRT, NVIDIA Triton, BentoML. For on-premise and performance-critical AI deployments. Cohere and Databricks FDE roles particularly value model serving expertise.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Model Serving (20%)</strong>. vLLM, TensorRT, NVIDIA Triton, BentoML. For on-premise and performance-critical AI deployments. Cohere and Databricks FDE roles particularly value model serving expertise.</p>
 
 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Data Engineering Tools</h2>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Apache Spark (38%)</strong> — The standard for distributed data processing. Required for Databricks FDE roles. Valuable for any FDE working with large-scale customer data.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Apache Spark (38%)</strong>. The standard for distributed data processing. Required for Databricks FDE roles. Valuable for any FDE working with large-scale customer data.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">dbt (25%)</strong> — Data transformation and modeling. Growing in FDE postings as companies adopt modern data stack approaches. Valuable for FDEs building analytical data pipelines.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">dbt (25%)</strong>. Data transformation and modeling. Growing in FDE postings as companies adopt modern data stack approaches. Valuable for FDEs building analytical data pipelines.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Apache Airflow (22%)</strong> — Workflow orchestration. FDEs build data pipelines that run on schedules or triggers. Airflow is the most common orchestration tool in FDE job descriptions.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Apache Airflow (22%)</strong>. Workflow orchestration. FDEs build data pipelines that run on schedules or triggers. Airflow is the most common orchestration tool in FDE job descriptions.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Kafka (18%)</strong> — Stream processing and event-driven architectures. Valuable for FDEs deploying real-time data pipelines at customer sites.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Kafka (18%)</strong>. Stream processing and event-driven architectures. Valuable for FDEs deploying real-time data pipelines at customer sites.</p>
 
 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Cloud & Infrastructure</h2>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">AWS (42%)</strong> — The most common cloud platform in FDE job descriptions. Key services: Lambda, ECS, S3, RDS, SageMaker, Bedrock.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">AWS (42%)</strong>. The most common cloud platform in FDE job descriptions. Key services: Lambda, ECS, S3, RDS, SageMaker, Bedrock.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">GCP (28%)</strong> — Google Cloud Platform. Key services: Vertex AI, BigQuery, Cloud Run, GKE. Preferred by AI-focused companies.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">GCP (28%)</strong>. Google Cloud Platform. Key services: Vertex AI, BigQuery, Cloud Run, GKE. Preferred by AI-focused companies.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Azure (20%)</strong> — Growing in FDE postings as enterprise customers on Microsoft stacks adopt AI. Key services: Azure OpenAI, Cognitive Services, AKS.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Azure (20%)</strong>. Growing in FDE postings as enterprise customers on Microsoft stacks adopt AI. Key services: Azure OpenAI, Cognitive Services, AKS.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Docker/Kubernetes (32%)</strong> — Container orchestration is essential for deploying services at customer sites. FDEs need to package applications, manage deployments, and troubleshoot container issues in customer environments.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Docker/Kubernetes (32%)</strong>. Container orchestration is essential for deploying services at customer sites. FDEs need to package applications, manage deployments, and troubleshoot container issues in customer environments.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Terraform (18%)</strong> — Infrastructure as code. Valuable for FDEs who provision customer infrastructure as part of deployments. Increasingly important as FDE work involves cloud infrastructure setup alongside application deployment.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Terraform (18%)</strong>. Infrastructure as code. Valuable for FDEs who provision customer infrastructure as part of deployments. Increasingly important as FDE work involves cloud infrastructure setup alongside application deployment.</p>
 
 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Integration & API Tools</h2>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">REST APIs (48%)</strong> — The universal integration standard. Every FDE builds and consumes REST APIs. Deep understanding of authentication (OAuth, API keys), pagination, rate limiting, and error handling is essential.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">REST APIs (48%)</strong>. The universal integration standard. Every FDE builds and consumes REST APIs. Deep understanding of authentication (OAuth, API keys), pagination, rate limiting, and error handling is essential.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">GraphQL (15%)</strong> — Growing in FDE postings, especially at companies with complex data models. Provides more efficient data fetching for customer-facing applications.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">GraphQL (15%)</strong>. Growing in FDE postings, especially at companies with complex data models. Provides more efficient data fetching for customer-facing applications.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">FastAPI (20%)</strong> — The preferred Python web framework for FDE work. Lightweight, fast, and type-safe. FDEs build custom API endpoints, webhook handlers, and microservices with FastAPI.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">FastAPI (20%)</strong>. The preferred Python web framework for FDE work. Lightweight, fast, and type-safe. FDEs build custom API endpoints, webhook handlers, and microservices with FastAPI.</p>
 
-<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Webhooks/Event-Driven (22%)</strong> — Many customer integrations are event-driven: receiving webhooks from customer systems, processing events, and triggering downstream actions. FDEs need to design reliable webhook handlers with retry logic and error recovery.</p>
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--amber-light);">Webhooks/Event-Driven (22%)</strong>. Many customer integrations are event-driven: receiving webhooks from customer systems, processing events, and triggering downstream actions. FDEs need to design reliable webhook handlers with retry logic and error recovery.</p>
 
 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What to Learn First</h2>
 
 <p style="margin-bottom: 1.25rem;">If you're preparing for FDE roles, prioritize in this order:</p>
 
 <ol style="margin-bottom: 1.25rem; padding-left: 1.5rem;">
-<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">Python + SQL</strong> — non-negotiable foundation for all FDE roles</li>
-<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">REST API design + integration patterns</strong> — the core FDE skill</li>
-<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">Docker + one cloud platform (AWS or GCP)</strong> — deployment fundamentals</li>
-<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">LLM APIs + RAG architecture</strong> — if targeting AI companies</li>
-<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">TypeScript</strong> — for full-stack FDE work</li>
-<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">Data pipeline tools (Airflow, Spark, dbt)</strong> — for data-heavy FDE roles</li>
+<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">Python + SQL</strong>. non-negotiable foundation for all FDE roles</li>
+<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">REST API design + integration patterns</strong>. the core FDE skill</li>
+<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">Docker + one cloud platform (AWS or GCP)</strong>. deployment fundamentals</li>
+<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">LLM APIs + RAG architecture</strong>. if targeting AI companies</li>
+<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">TypeScript</strong>. for full-stack FDE work</li>
+<li style="margin-bottom: 0.5rem;"><strong style="color: var(--text-primary);">Data pipeline tools (Airflow, Spark, dbt)</strong>. for data-heavy FDE roles</li>
 </ol>
                 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
-                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the most important technology for FDE roles?</h3><p style="color: var(--text-secondary); line-height: 1.7;">Python. It appears in 78% of FDE job descriptions and is used for the widest range of FDE tasks: data pipelines, API integrations, ML deployment, scripting, and backend services. If you're strong in Python, you're qualified for most FDE roles. SQL is a close second at 65%.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do FDEs need to know Kubernetes?</h3><p style="color: var(--text-secondary); line-height: 1.7;">It depends on the company. 32% of FDE postings mention Docker/Kubernetes. If you're targeting infrastructure-heavy roles (Databricks, cloud providers, Anduril), Kubernetes is important. For application-focused FDE roles (OpenAI, Ramp, Rippling), Docker knowledge is sufficient. Kubernetes is a 'nice to have' not a 'must have' for most FDE positions.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Should I learn LangChain for FDE interviews?</h3><p style="color: var(--text-secondary); line-height: 1.7;">If you're targeting AI companies, yes. LangChain (or LlamaIndex) is the most common RAG framework in FDE job descriptions. Building a project with LangChain demonstrates practical AI deployment skills. However, the underlying concepts (embedding models, vector search, retrieval strategies) matter more than framework-specific knowledge. Frameworks change; concepts persist.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is the FDE tech stack different from SWE tech stack?</h3><p style="color: var(--text-secondary); line-height: 1.7;">The languages overlap (Python, TypeScript, SQL) but the tools diverge. FDEs use more integration tools (API clients, webhook handlers, data migration tools) and less product development tools (React, mobile frameworks, CI/CD pipelines). FDEs also use more AI/ML tools than typical SWEs. The biggest FDE-specific skill is API integration design — connecting systems that don't natively talk to each other.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How quickly does the FDE tech stack change?</h3><p style="color: var(--text-secondary); line-height: 1.7;">The core stack (Python, SQL, REST APIs, Docker) is stable and has been for years. The AI layer changes fast: LLM frameworks, vector databases, and model serving tools evolve monthly. The strategic approach: invest deeply in stable fundamentals (Python, SQL, API design) and stay current on AI tools without over-investing in any single framework. The ability to learn new tools quickly matters more than knowing today's specific tools.</p></div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the most important technology for FDE roles?</h3><p style="color: var(--text-secondary); line-height: 1.7;">Python. It appears in 78% of FDE job descriptions and is used for the widest range of FDE tasks: data pipelines, API integrations, ML deployment, scripting, and backend services. If you're strong in Python, you're qualified for most FDE roles. SQL is a close second at 65%.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do FDEs need to know Kubernetes?</h3><p style="color: var(--text-secondary); line-height: 1.7;">It depends on the company. 32% of FDE postings mention Docker/Kubernetes. If you're targeting infrastructure-heavy roles (Databricks, cloud providers, Anduril), Kubernetes is important. For application-focused FDE roles (OpenAI, Ramp, Rippling), Docker knowledge is sufficient. Kubernetes is a 'nice to have' not a 'must have' for most FDE positions.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Should I learn LangChain for FDE interviews?</h3><p style="color: var(--text-secondary); line-height: 1.7;">If you're targeting AI companies, yes. LangChain (or LlamaIndex) is the most common RAG framework in FDE job descriptions. Building a project with LangChain demonstrates practical AI deployment skills. However, the underlying concepts (embedding models, vector search, retrieval strategies) matter more than framework-specific knowledge. Frameworks change; concepts persist.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is the FDE tech stack different from SWE tech stack?</h3><p style="color: var(--text-secondary); line-height: 1.7;">The languages overlap (Python, TypeScript, SQL) but the tools diverge. FDEs use more integration tools (API clients, webhook handlers, data migration tools) and less product development tools (React, mobile frameworks, CI/CD pipelines). FDEs also use more AI/ML tools than typical SWEs. The biggest FDE-specific skill is API integration design. connecting systems that don't natively talk to each other.</p></div><div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);"><h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How quickly does the FDE tech stack change?</h3><p style="color: var(--text-secondary); line-height: 1.7;">The core stack (Python, SQL, REST APIs, Docker) is stable and has been for years. The AI layer changes fast: LLM frameworks, vector databases, and model serving tools evolve monthly. The strategic approach: invest deeply in stable fundamentals (Python, SQL, API design) and stay current on AI tools without over-investing in any single framework. The ability to learn new tools quickly matters more than knowing today's specific tools.</p></div>
             </div>
+            
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/salaries/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/how-to-become-a-forward-deployed-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">How to Become an FDE</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+
             
     <div class="cta-box" id="subscribe">
         <h3>Get the FDE Pulse Brief</h3>
@@ -597,9 +612,9 @@ h1, h2, h3, h4, h5, h6 {
                 <h4 class="footer__col-title">Jobs</h4>
                 <ul class="footer__links">
                     <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
-                    <li><a href="/jobs/?remote=true" class="footer__link">Remote FDE Jobs</a></li>
-                    <li><a href="/jobs/?level=senior" class="footer__link">Senior FDE Jobs</a></li>
-                    <li><a href="/jobs/?industry=ai" class="footer__link">AI Companies</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
                 </ul>
             </div>
             <div class="footer__col">
