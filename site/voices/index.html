@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 25 FDE Voices of 2026 | FDE Pulse</title>
+    <meta name="description" content="Rankings of the 25 most influential Forward Deployed Engineers, customer engineers, and field engineers shaping the profession.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/voices/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/voices/">
+    <meta property="og:title" content="Top 25 FDE Voices of 2026 | FDE Pulse">
+    <meta property="og:description" content="Rankings of the 25 most influential Forward Deployed Engineers, customer engineers, and field engineers shaping the profession.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Top 25 FDE Voices of 2026 | FDE Pulse">
+    <meta name="twitter:description" content="Rankings of the 25 most influential Forward Deployed Engineers, customer engineers, and field engineers shaping the profession.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.voices-hero { text-align: center; padding: 6rem var(--space-lg) 2rem; max-width: 800px; margin: 0 auto; }
+.voices-hero .eyebrow { color: var(--amber); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+.voices-hero h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -0.5px; margin-bottom: 0.75rem; color: var(--text-primary); }
+.voices-subtitle { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.voices-meta { font-size: 0.85rem; color: var(--text-muted); }
+.voices-content { max-width: 800px; margin: 0 auto; padding: 0 var(--space-lg) var(--space-3xl); }
+.voice-methodology { margin-bottom: var(--space-xl); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-card); }
+.voice-methodology summary { padding: var(--space-md) var(--space-lg); cursor: pointer; font-size: 0.95rem; color: var(--text-primary); font-weight: 600; }
+.voice-methodology summary:hover { color: var(--amber); }
+.methodology-content { padding: 0 var(--space-lg) var(--space-lg); font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+.methodology-content ul { padding-left: var(--space-lg); margin: 0.75rem 0; }
+.methodology-content li { margin-bottom: 0.5rem; }
+.voices-jump-nav { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: var(--space-xl); padding: 0.75rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.voice-jump-link { font-size: 0.75rem; font-family: var(--font-mono); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none; transition: background 0.15s, color 0.15s; }
+.voice-jump-link:hover { background: var(--amber); color: #0F1923; }
+.voices-section-heading { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--amber); color: var(--text-primary); }
+.voices-grid { display: flex; flex-direction: column; gap: var(--space-md); margin-bottom: var(--space-2xl); }
+.voice-card { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-card); padding: var(--space-lg); transition: border-color 0.25s, box-shadow 0.25s; }
+.voice-card:hover { border-color: var(--amber); box-shadow: 0 0 20px var(--amber-glow); }
+.voice-card-header { display: flex; align-items: flex-start; gap: 0.75rem; }
+.voice-rank, .voice-rank-top { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; min-width: 2.5rem; text-align: center; flex-shrink: 0; padding-top: 0.15rem; color: var(--text-muted); }
+.voice-rank-top { color: var(--amber-light); font-size: 1.25rem; }
+.voice-card-info { flex: 1; min-width: 0; }
+.voice-name { font-size: 1.1rem; font-weight: 600; margin: 0 0 0.25rem; line-height: 1.3; }
+.voice-name a { color: var(--text-primary); text-decoration: none; }
+.voice-name a:hover { color: var(--amber-light); }
+.voice-title { font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 0.5rem; }
+.voice-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.voice-tag { font-size: 0.7rem; font-family: var(--font-mono); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); background: var(--amber-ghost); color: var(--amber); font-weight: 500; }
+.voice-linkedin-btn { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none; transition: color 0.15s, background 0.15s; }
+.voice-linkedin-btn:hover { color: #0077B5; background: rgba(0, 119, 181, 0.15); }
+.voice-bio { margin: 0.75rem 0 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; padding-left: calc(2.5rem + 0.75rem); }
+.voices-share-cta { text-align: center; padding: var(--space-xl) var(--space-lg); max-width: 600px; margin: 0 auto; }
+.voices-share-cta h2 { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--text-primary); }
+.voices-share-cta p { color: var(--text-secondary); margin-bottom: 0.5rem; }
+@media (max-width: 640px) { .voice-bio { padding-left: 0; } .voice-card-header { flex-wrap: wrap; } .voice-card { position: relative; } .voice-linkedin-btn { position: absolute; top: var(--space-md); right: var(--space-md); } .voices-jump-nav { display: none; } }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Top 25 Forward Deployed Engineer Voices of 2026","numberOfItems":25,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Person","name":"Gergely Orosz","jobTitle":"Author & Newsletter Writer","url":"https://www.linkedin.com/in/gergelyorosz/"}},{"@type":"ListItem","position":2,"item":{"@type":"Person","name":"Marty Cagan","jobTitle":"Author & Partner","url":"https://www.linkedin.com/in/caborealto/"}},{"@type":"ListItem","position":3,"item":{"@type":"Person","name":"Shyam Sankar","jobTitle":"CTO","url":"https://www.linkedin.com/in/shyamsankar/"}},{"@type":"ListItem","position":4,"item":{"@type":"Person","name":"Alexandr Wang","jobTitle":"CEO & Founder","url":"https://www.linkedin.com/in/alexandrwang/"}},{"@type":"ListItem","position":5,"item":{"@type":"Person","name":"Kevin Hartz","jobTitle":"Partner","url":"https://www.linkedin.com/in/kevinhartz/"}},{"@type":"ListItem","position":6,"item":{"@type":"Person","name":"Ali Ghodsi","jobTitle":"CEO & Co-Founder","url":"https://www.linkedin.com/in/alighodsi/"}},{"@type":"ListItem","position":7,"item":{"@type":"Person","name":"Clément Delangue","jobTitle":"CEO & Co-Founder","url":"https://www.linkedin.com/in/clementdelangue/"}},{"@type":"ListItem","position":8,"item":{"@type":"Person","name":"Will Larson","jobTitle":"CTO & Author","url":"https://www.linkedin.com/in/will-larson/"}},{"@type":"ListItem","position":9,"item":{"@type":"Person","name":"Chip Huyen","jobTitle":"Author & ML Engineer","url":"https://www.linkedin.com/in/chiphuyen/"}},{"@type":"ListItem","position":10,"item":{"@type":"Person","name":"Hamel Husain","jobTitle":"ML Engineer & Educator","url":"https://www.linkedin.com/in/hamelhusain/"}},{"@type":"ListItem","position":11,"item":{"@type":"Person","name":"Swyx (Shawn Wang)","jobTitle":"Founder & AI Engineer","url":"https://www.linkedin.com/in/shawnwang/"}},{"@type":"ListItem","position":12,"item":{"@type":"Person","name":"Eugene Yan","jobTitle":"Senior Applied Scientist","url":"https://www.linkedin.com/in/eugeneyan/"}},{"@type":"ListItem","position":13,"item":{"@type":"Person","name":"Lenny Rachitsky","jobTitle":"Newsletter Author","url":"https://www.linkedin.com/in/lennyrachitsky/"}},{"@type":"ListItem","position":14,"item":{"@type":"Person","name":"Jason Warner","jobTitle":"Managing Director","url":"https://www.linkedin.com/in/jasonwarner/"}},{"@type":"ListItem","position":15,"item":{"@type":"Person","name":"Shreya Shankar","jobTitle":"ML Engineer & PhD Researcher","url":"https://www.linkedin.com/in/shreyashankar/"}},{"@type":"ListItem","position":16,"item":{"@type":"Person","name":"Tao An","jobTitle":"Forward Deployed Engineer","url":"https://www.linkedin.com/in/taoan/"}},{"@type":"ListItem","position":17,"item":{"@type":"Person","name":"Vicki Boykis","jobTitle":"Senior ML Engineer","url":"https://www.linkedin.com/in/vaborovik/"}},{"@type":"ListItem","position":18,"item":{"@type":"Person","name":"Zach Mueller","jobTitle":"ML Engineer","url":"https://www.linkedin.com/in/zachmueller/"}},{"@type":"ListItem","position":19,"item":{"@type":"Person","name":"Nikhil Krishnan","jobTitle":"Founder","url":"https://www.linkedin.com/in/nikhilkrishnan1/"}},{"@type":"ListItem","position":20,"item":{"@type":"Person","name":"Itamar Friedman","jobTitle":"CEO & Co-Founder","url":"https://www.linkedin.com/in/itamarfried/"}},{"@type":"ListItem","position":21,"item":{"@type":"Person","name":"Andrew Trask","jobTitle":"Research Scientist & Founder","url":"https://www.linkedin.com/in/andrew-trask/"}},{"@type":"ListItem","position":22,"item":{"@type":"Person","name":"Daniel Firu","jobTitle":"Head of Forward Deployed Engineering","url":"https://www.linkedin.com/in/danielfiru/"}},{"@type":"ListItem","position":23,"item":{"@type":"Person","name":"Sarah Catanzaro","jobTitle":"Partner","url":"https://www.linkedin.com/in/sarah-catanzaro/"}},{"@type":"ListItem","position":24,"item":{"@type":"Person","name":"Peter Welinder","jobTitle":"VP of Product & Partnerships","url":"https://www.linkedin.com/in/peterwelinder/"}},{"@type":"ListItem","position":25,"item":{"@type":"Person","name":"Tim Chen","jobTitle":"VP of Engineering","url":"https://www.linkedin.com/in/timchenramp/"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Top 25 Forward Deployed Engineer Voices of 2026","author":{"@type":"Person","name":"Rome Thorndike"},"publisher":{"@type":"Organization","name":"FDE Pulse"},"datePublished":"2026-04-14","dateModified":"2026-04-14","url":"https://fdepulse.com/voices/"}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="voices-hero">
+        <div class="eyebrow">2026 RANKINGS</div>
+        <h1>Top 25 Forward Deployed Engineer Voices of 2026</h1>
+        <p class="voices-subtitle">The most influential FDEs, customer engineers, and field engineers shaping the profession</p>
+        <p class="voices-meta">Last updated: 2026-04-14 &middot; 25 voices ranked</p>
+    </section>
+    <div class="voices-content">
+        <details class="voice-methodology">
+    <summary>How We Ranked These Voices</summary>
+    <div class="methodology-content">
+        <p>Ranked by cross-list appearances, public writing, community impact, and relevance to Forward Deployed Engineering. Sources include Pragmatic Engineer, SVPG, company engineering blogs (Palantir, OpenAI, Anthropic, Scale AI), and independent analysis. We evaluated 40+ candidates and filtered for people who actively shape how FDE teams operate.</p>
+        <ul>
+            <li><strong>FDE relevance</strong> (required): Must contribute to the FDE/customer-embedded engineering profession.</li>
+            <li><strong>Published work</strong> (30%): Books, newsletters, blog posts, talks that advance the discipline.</li>
+            <li><strong>Industry impact</strong> (25%): Building FDE teams, investing in FDE companies, defining the role.</li>
+            <li><strong>Content reach</strong> (25%): Newsletter subscribers, LinkedIn following, conference appearances.</li>
+            <li><strong>Originality</strong> (20%): Original thinking about customer-embedded engineering.</li>
+        </ul>
+    </div>
+</details>
+        <div class="voices-jump-nav"><a href="#voice-1" class="voice-jump-link">#1 Gergely</a><a href="#voice-2" class="voice-jump-link">#2 Marty</a><a href="#voice-3" class="voice-jump-link">#3 Shyam</a><a href="#voice-4" class="voice-jump-link">#4 Alexandr</a><a href="#voice-5" class="voice-jump-link">#5 Kevin</a><a href="#voice-6" class="voice-jump-link">#6 Ali</a><a href="#voice-7" class="voice-jump-link">#7 Clément</a><a href="#voice-8" class="voice-jump-link">#8 Will</a><a href="#voice-9" class="voice-jump-link">#9 Chip</a><a href="#voice-10" class="voice-jump-link">#10 Hamel</a><a href="#voice-11" class="voice-jump-link">#11 Swyx</a><a href="#voice-12" class="voice-jump-link">#12 Eugene</a><a href="#voice-13" class="voice-jump-link">#13 Lenny</a><a href="#voice-14" class="voice-jump-link">#14 Jason</a><a href="#voice-15" class="voice-jump-link">#15 Shreya</a><a href="#voice-16" class="voice-jump-link">#16 Tao</a><a href="#voice-17" class="voice-jump-link">#17 Vicki</a><a href="#voice-18" class="voice-jump-link">#18 Zach</a><a href="#voice-19" class="voice-jump-link">#19 Nikhil</a><a href="#voice-20" class="voice-jump-link">#20 Itamar</a><a href="#voice-21" class="voice-jump-link">#21 Andrew</a><a href="#voice-22" class="voice-jump-link">#22 Daniel</a><a href="#voice-23" class="voice-jump-link">#23 Sarah</a><a href="#voice-24" class="voice-jump-link">#24 Peter</a><a href="#voice-25" class="voice-jump-link">#25 Tim</a></div>
+        <h2 class="voices-section-heading">Top 10 Leaders</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">The most recognized voices shaping Forward Deployed Engineering.</p>
+        <div class="voices-grid"><div class="voice-card" id="voice-1">
+    <div class="voice-card-header">
+        <div class="voice-rank-top">#1</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/gergelyorosz/" target="_blank" rel="noopener">Gergely Orosz</a></h3>
+            <p class="voice-title">Author & Newsletter Writer at The Pragmatic Engineer</p>
+            <div class="voice-tags"><span class="voice-tag">Newsletter</span><span class="voice-tag">700K Subscribers</span><span class="voice-tag">FDE Coverage</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/gergelyorosz/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Gergely Orosz on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Runs The Pragmatic Engineer newsletter (700K+ subscribers) and wrote the definitive coverage of the FDE role. His analysis of how companies like Palantir, OpenAI, and Scale AI deploy engineers directly to customers shaped how the industry understands and values the role.</p>
+</div><div class="voice-card" id="voice-2">
+    <div class="voice-card-header">
+        <div class="voice-rank-top">#2</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/caborealto/" target="_blank" rel="noopener">Marty Cagan</a></h3>
+            <p class="voice-title">Author & Partner at SVPG (Silicon Valley Product Group)</p>
+            <div class="voice-tags"><span class="voice-tag">Author</span><span class="voice-tag">SVPG</span><span class="voice-tag">Product Delivery</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/caborealto/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Marty Cagan on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Author of 'Inspired,' 'Empowered,' and 'Transformed.' SVPG's coverage of the FDE model as a product delivery pattern helped legitimize the role beyond Palantir. His frameworks for embedded engineering teams influence how companies think about customer-facing technical roles.</p>
+</div><div class="voice-card" id="voice-3">
+    <div class="voice-card-header">
+        <div class="voice-rank-top">#3</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/shyamsankar/" target="_blank" rel="noopener">Shyam Sankar</a></h3>
+            <p class="voice-title">CTO at Palantir</p>
+            <div class="voice-tags"><span class="voice-tag">Palantir CTO</span><span class="voice-tag">FDE Origin</span><span class="voice-tag">Enterprise AI</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/shyamsankar/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Shyam Sankar on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Palantir's CTO and the architect of the original Forward Deployed Engineering model. Palantir invented the FDE role, and Sankar's vision of engineers embedded with customers solving their hardest problems became the template that every AI company now copies.</p>
+</div><div class="voice-card" id="voice-4">
+    <div class="voice-card-header">
+        <div class="voice-rank">#4</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/alexandrwang/" target="_blank" rel="noopener">Alexandr Wang</a></h3>
+            <p class="voice-title">CEO & Founder at Scale AI</p>
+            <div class="voice-tags"><span class="voice-tag">Scale AI</span><span class="voice-tag">CEO</span><span class="voice-tag">FDE Employer</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/alexandrwang/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Alexandr Wang on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Built Scale AI into one of the largest employers of Forward Deployed Engineers outside of Palantir. Scale's FDE program, which deploys engineers to help enterprise customers implement AI at production scale, became the blueprint for the AI-era FDE role.</p>
+</div><div class="voice-card" id="voice-5">
+    <div class="voice-card-header">
+        <div class="voice-rank">#5</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/kevinhartz/" target="_blank" rel="noopener">Kevin Hartz</a></h3>
+            <p class="voice-title">Partner at A16z / Eventbrite Founder</p>
+            <div class="voice-tags"><span class="voice-tag">VC</span><span class="voice-tag">A16z</span><span class="voice-tag">FDE Thesis</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/kevinhartz/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Kevin Hartz on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">A16z partner who has written and spoken about the FDE model as a competitive advantage for AI companies. His investment thesis on why FDEs create defensible moats influenced how startups think about customer-embedded engineering.</p>
+</div><div class="voice-card" id="voice-6">
+    <div class="voice-card-header">
+        <div class="voice-rank">#6</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/alighodsi/" target="_blank" rel="noopener">Ali Ghodsi</a></h3>
+            <p class="voice-title">CEO & Co-Founder at Databricks</p>
+            <div class="voice-tags"><span class="voice-tag">Databricks</span><span class="voice-tag">CEO</span><span class="voice-tag">Field Engineering</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/alighodsi/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Ali Ghodsi on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Built Databricks' field engineering organization into one of the strongest customer-embedded technical teams in enterprise software. Databricks' approach to deploying engineers alongside customers during implementation became a model for the data/AI infrastructure space.</p>
+</div><div class="voice-card" id="voice-7">
+    <div class="voice-card-header">
+        <div class="voice-rank">#7</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/clementdelangue/" target="_blank" rel="noopener">Clément Delangue</a></h3>
+            <p class="voice-title">CEO & Co-Founder at Hugging Face</p>
+            <div class="voice-tags"><span class="voice-tag">Hugging Face</span><span class="voice-tag">Open Source</span><span class="voice-tag">Community</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/clementdelangue/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Clément Delangue on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Hugging Face's CEO who built a model where community engineers serve as de facto FDEs, helping enterprise customers deploy open-source AI models. His approach to customer-embedded support through open source is a new flavor of forward deployment.</p>
+</div><div class="voice-card" id="voice-8">
+    <div class="voice-card-header">
+        <div class="voice-rank">#8</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/will-larson/" target="_blank" rel="noopener">Will Larson</a></h3>
+            <p class="voice-title">CTO & Author at Carta / Author of Staff Engineer</p>
+            <div class="voice-tags"><span class="voice-tag">Author</span><span class="voice-tag">Career Ladders</span><span class="voice-tag">Engineering Org</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/will-larson/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Will Larson on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Author of 'Staff Engineer' and 'An Elegant Puzzle.' His writing on engineering career ladders, staff+ roles, and organizational design shapes how FDEs think about their career trajectory. The concept of 'staff engineer as force multiplier' maps directly to the FDE value proposition.</p>
+</div><div class="voice-card" id="voice-9">
+    <div class="voice-card-header">
+        <div class="voice-rank">#9</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/chiphuyen/" target="_blank" rel="noopener">Chip Huyen</a></h3>
+            <p class="voice-title">Author & ML Engineer at Independent</p>
+            <div class="voice-tags"><span class="voice-tag">ML Systems</span><span class="voice-tag">Author</span><span class="voice-tag">Production AI</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/chiphuyen/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Chip Huyen on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Author of 'Designing Machine Learning Systems.' Her work on ML deployment, real-world ML challenges, and the gap between ML research and production systems speaks directly to the FDE mission of making AI work in the field, not just in the lab.</p>
+</div><div class="voice-card" id="voice-10">
+    <div class="voice-card-header">
+        <div class="voice-rank">#10</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/hamelhusain/" target="_blank" rel="noopener">Hamel Husain</a></h3>
+            <p class="voice-title">ML Engineer & Educator at Independent (Ex-GitHub, Ex-Airbnb)</p>
+            <div class="voice-tags"><span class="voice-tag">ML Engineering</span><span class="voice-tag">LLM</span><span class="voice-tag">Production AI</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/hamelhusain/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Hamel Husain on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Former ML engineer at GitHub and Airbnb. His blog and teaching on practical ML engineering, LLM fine-tuning, and customer-facing AI implementation make him one of the most followed voices for engineers who deploy AI in production environments.</p>
+</div></div>
+        <h2 class="voices-section-heading">Rising Voices (11-25)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">Engineers, investors, and educators gaining momentum in the FDE community.</p>
+        <div class="voices-grid"><div class="voice-card" id="voice-11">
+    <div class="voice-card-header">
+        <div class="voice-rank">#11</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/shawnwang/" target="_blank" rel="noopener">Swyx (Shawn Wang)</a></h3>
+            <p class="voice-title">Founder & AI Engineer at Latent Space / smol.ai</p>
+            <div class="voice-tags"><span class="voice-tag">AI Engineering</span><span class="voice-tag">Latent Space</span><span class="voice-tag">Podcasting</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/shawnwang/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Swyx (Shawn Wang) on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Runs the Latent Space podcast and newsletter covering AI engineering. His concept of 'AI Engineer' as a new role category overlaps heavily with the FDE role. His content on building AI applications for real users, not just demos, resonates with FDEs.</p>
+</div><div class="voice-card" id="voice-12">
+    <div class="voice-card-header">
+        <div class="voice-rank">#12</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/eugeneyan/" target="_blank" rel="noopener">Eugene Yan</a></h3>
+            <p class="voice-title">Senior Applied Scientist at Amazon</p>
+            <div class="voice-tags"><span class="voice-tag">Applied ML</span><span class="voice-tag">Amazon</span><span class="voice-tag">Production Systems</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/eugeneyan/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Eugene Yan on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Applied scientist at Amazon who writes extensively about deploying ML systems in production. His blog on recommendation systems, LLM applications, and the gap between research and deployment is a masterclass in what FDEs deal with daily.</p>
+</div><div class="voice-card" id="voice-13">
+    <div class="voice-card-header">
+        <div class="voice-rank">#13</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/lennyrachitsky/" target="_blank" rel="noopener">Lenny Rachitsky</a></h3>
+            <p class="voice-title">Newsletter Author at Lenny's Newsletter</p>
+            <div class="voice-tags"><span class="voice-tag">Product</span><span class="voice-tag">Newsletter</span><span class="voice-tag">500K Subscribers</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/lennyrachitsky/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Lenny Rachitsky on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">500K+ subscribers. His coverage of how product teams work with customer-facing engineers, and his analysis of companies that deploy engineers directly to customers, helps FDEs understand how their role fits into the broader product organization.</p>
+</div><div class="voice-card" id="voice-14">
+    <div class="voice-card-header">
+        <div class="voice-rank">#14</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/jasonwarner/" target="_blank" rel="noopener">Jason Warner</a></h3>
+            <p class="voice-title">Managing Director at Redpoint Ventures (Ex-GitHub CTO)</p>
+            <div class="voice-tags"><span class="voice-tag">VC</span><span class="voice-tag">Ex-GitHub CTO</span><span class="voice-tag">Dev Tools</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/jasonwarner/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Jason Warner on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Former CTO of GitHub. Now at Redpoint where he invests in infrastructure and developer tools companies that rely on FDE-style deployment models. His perspective on when companies need FDEs vs. traditional support/implementation teams is unique and valuable.</p>
+</div><div class="voice-card" id="voice-15">
+    <div class="voice-card-header">
+        <div class="voice-rank">#15</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/shreyashankar/" target="_blank" rel="noopener">Shreya Shankar</a></h3>
+            <p class="voice-title">ML Engineer & PhD Researcher at UC Berkeley</p>
+            <div class="voice-tags"><span class="voice-tag">ML Research</span><span class="voice-tag">Berkeley</span><span class="voice-tag">Data Quality</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/shreyashankar/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Shreya Shankar on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">PhD researcher at Berkeley working on ML deployment and data quality. Her papers on real-world ML challenges and her open-source tools for production ML systems address the exact problems FDEs solve when they're embedded with customers.</p>
+</div><div class="voice-card" id="voice-16">
+    <div class="voice-card-header">
+        <div class="voice-rank">#16</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/taoan/" target="_blank" rel="noopener">Tao An</a></h3>
+            <p class="voice-title">Forward Deployed Engineer at Palantir Alumni</p>
+            <div class="voice-tags"><span class="voice-tag">Palantir FDE</span><span class="voice-tag">Writer</span><span class="voice-tag">Role Definition</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/taoan/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Tao An on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Palantir FDE alumni who wrote one of the most-read Medium posts on what the FDE role actually looks like day to day. His candid description of embedded engineering work, on-site rotations, and customer problem-solving gave the industry its clearest picture of the role.</p>
+</div><div class="voice-card" id="voice-17">
+    <div class="voice-card-header">
+        <div class="voice-rank">#17</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/vaborovik/" target="_blank" rel="noopener">Vicki Boykis</a></h3>
+            <p class="voice-title">Senior ML Engineer at Mozilla AI</p>
+            <div class="voice-tags"><span class="voice-tag">ML Engineering</span><span class="voice-tag">Mozilla AI</span><span class="voice-tag">Normcore Tech</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/vaborovik/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Vicki Boykis on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Senior ML engineer at Mozilla AI. Her newsletter 'Normcore Tech' and blog cover the messy reality of deploying ML systems. Her writing on data engineering, recommendation systems, and production ML challenges speaks to the FDE experience.</p>
+</div><div class="voice-card" id="voice-18">
+    <div class="voice-card-header">
+        <div class="voice-rank">#18</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/zachmueller/" target="_blank" rel="noopener">Zach Mueller</a></h3>
+            <p class="voice-title">ML Engineer at Hugging Face</p>
+            <div class="voice-tags"><span class="voice-tag">Hugging Face</span><span class="voice-tag">ML Deployment</span><span class="voice-tag">Open Source</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/zachmueller/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Zach Mueller on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">ML engineer at Hugging Face who works directly with enterprise customers deploying open-source models. His practical content on fine-tuning, model deployment, and making AI work in real environments is what the FDE role looks like in the open-source ecosystem.</p>
+</div><div class="voice-card" id="voice-19">
+    <div class="voice-card-header">
+        <div class="voice-rank">#19</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/nikhilkrishnan1/" target="_blank" rel="noopener">Nikhil Krishnan</a></h3>
+            <p class="voice-title">Founder at Out of Pocket</p>
+            <div class="voice-tags"><span class="voice-tag">Healthcare AI</span><span class="voice-tag">Newsletter</span><span class="voice-tag">Vertical FDE</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/nikhilkrishnan1/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Nikhil Krishnan on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Runs the Out of Pocket newsletter covering healthcare tech. His analysis of how healthcare AI companies deploy FDEs to work with hospitals and health systems shows where the FDE model is expanding beyond traditional tech sectors.</p>
+</div><div class="voice-card" id="voice-20">
+    <div class="voice-card-header">
+        <div class="voice-rank">#20</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/itamarfried/" target="_blank" rel="noopener">Itamar Friedman</a></h3>
+            <p class="voice-title">CEO & Co-Founder at Codium AI (Qodo)</p>
+            <div class="voice-tags"><span class="voice-tag">AI Dev Tools</span><span class="voice-tag">FDE GTM</span><span class="voice-tag">Founder</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/itamarfried/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Itamar Friedman on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Built Codium AI with an FDE-first go-to-market approach, deploying engineers directly to enterprise customers during onboarding. His model of using FDEs as the primary sales motion for developer tools is being adopted across the AI developer tools space.</p>
+</div><div class="voice-card" id="voice-21">
+    <div class="voice-card-header">
+        <div class="voice-rank">#21</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/andrew-trask/" target="_blank" rel="noopener">Andrew Trask</a></h3>
+            <p class="voice-title">Research Scientist & Founder at OpenMined / DeepMind</p>
+            <div class="voice-tags"><span class="voice-tag">Privacy AI</span><span class="voice-tag">DeepMind</span><span class="voice-tag">Federated Learning</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/andrew-trask/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Andrew Trask on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Research scientist at DeepMind and founder of OpenMined. His work on privacy-preserving AI and federated learning requires deep customer-embedded deployment, making him a voice on how FDEs operate in highly regulated, data-sensitive environments.</p>
+</div><div class="voice-card" id="voice-22">
+    <div class="voice-card-header">
+        <div class="voice-rank">#22</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/danielfiru/" target="_blank" rel="noopener">Daniel Firu</a></h3>
+            <p class="voice-title">Head of Forward Deployed Engineering at Palantir</p>
+            <div class="voice-tags"><span class="voice-tag">Palantir</span><span class="voice-tag">FDE Leadership</span><span class="voice-tag">Original FDE Org</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/danielfiru/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Daniel Firu on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Leads FDE teams at Palantir, the company that invented the role. His perspective on what makes FDEs succeed, how to build FDE organizations, and how the role has evolved from Palantir's early days to the current AI era comes from the source.</p>
+</div><div class="voice-card" id="voice-23">
+    <div class="voice-card-header">
+        <div class="voice-rank">#23</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/sarah-catanzaro/" target="_blank" rel="noopener">Sarah Catanzaro</a></h3>
+            <p class="voice-title">Partner at Amplify Partners</p>
+            <div class="voice-tags"><span class="voice-tag">VC</span><span class="voice-tag">Data/AI Investing</span><span class="voice-tag">FDE GTM</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/sarah-catanzaro/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Sarah Catanzaro on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">VC at Amplify Partners who invests in data and AI infrastructure. Her analysis of the FDE model as a go-to-market strategy and her writing on customer-embedded engineering teams influence how startups decide whether to build FDE organizations.</p>
+</div><div class="voice-card" id="voice-24">
+    <div class="voice-card-header">
+        <div class="voice-rank">#24</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/peterwelinder/" target="_blank" rel="noopener">Peter Welinder</a></h3>
+            <p class="voice-title">VP of Product & Partnerships at OpenAI</p>
+            <div class="voice-tags"><span class="voice-tag">OpenAI</span><span class="voice-tag">Enterprise AI</span><span class="voice-tag">Partnerships</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/peterwelinder/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Peter Welinder on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Leads product and partnerships at OpenAI, overseeing how OpenAI deploys engineers to work with enterprise customers integrating GPT-4 and other models. OpenAI's FDE program is the most sought-after in the industry right now.</p>
+</div><div class="voice-card" id="voice-25">
+    <div class="voice-card-header">
+        <div class="voice-rank">#25</div>
+        <div class="voice-card-info">
+            <h3 class="voice-name"><a href="https://www.linkedin.com/in/timchenramp/" target="_blank" rel="noopener">Tim Chen</a></h3>
+            <p class="voice-title">VP of Engineering at Ramp</p>
+            <div class="voice-tags"><span class="voice-tag">Ramp</span><span class="voice-tag">Fintech</span><span class="voice-tag">Engineering Leadership</span></div>
+        </div>
+        <a href="https://www.linkedin.com/in/timchenramp/" target="_blank" rel="noopener" class="voice-linkedin-btn" aria-label="View Tim Chen on LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+    </div>
+    <p class="voice-bio">Leads engineering at Ramp, where customer-embedded engineers help enterprise customers integrate financial automation. Ramp's rapid growth and technical complexity make their engineering org a case study in how FDE-style roles work outside pure AI companies.</p>
+</div></div>
+    </div>
+    <section class="voices-share-cta">
+        <h2>Made the List?</h2>
+        <p>Share it. Tag us on LinkedIn. We will amplify your post.</p>
+        <p>Know someone who should be on next year's list? <a href="mailto:rome@getprovyx.com">Let us know</a>.</p>
+    </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
