@@ -58,10 +58,12 @@ FOOTER_COLUMNS = [
     {
         "title": "Related Sites",
         "links": [
+            {"label": "The GTM Index", "href": "https://thegtmindex.com", "external": True},
             {"label": "Fractional Pulse", "href": "https://fractionalpulse.com", "external": True},
             {"label": "CRO Report", "href": "https://thecroreport.com", "external": True},
             {"label": "RevOps Report", "href": "https://therevopsreport.com", "external": True},
             {"label": "AI Market Pulse", "href": "https://theaimarketpulse.com", "external": True},
+            {"label": "GTME Pulse", "href": "https://gtmepulse.com", "external": True},
         ]
     },
 ]
