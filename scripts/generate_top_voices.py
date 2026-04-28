@@ -102,6 +102,7 @@ def generate_voices_page():
     <section class="voices-hero">
         <div class="eyebrow">2026 RANKINGS</div>
         <h1>{data["title"]}</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
         <p class="voices-subtitle">{data.get("subtitle", "")}</p>
         <p class="voices-meta">Last updated: {last_updated} &middot; {len(voices)} voices ranked</p>
     </section>
