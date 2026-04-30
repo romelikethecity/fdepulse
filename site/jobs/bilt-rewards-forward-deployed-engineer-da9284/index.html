@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer at Bilt Rewards | FDE Pulse</title>
+    <meta name="description" content="Forward Deployed Engineer at Bilt Rewards. $200K - $240K. New York, NY, US. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/bilt-rewards-forward-deployed-engineer-da9284/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/bilt-rewards-forward-deployed-engineer-da9284/">
+    <meta property="og:title" content="Forward Deployed Engineer at Bilt Rewards | FDE Pulse">
+    <meta property="og:description" content="Forward Deployed Engineer at Bilt Rewards. $200K - $240K. New York, NY, US. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer at Bilt Rewards | FDE Pulse">
+    <meta name="twitter:description" content="Forward Deployed Engineer at Bilt Rewards. $200K - $240K. New York, NY, US. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Forward Deployed Engineer", "description": "New York\nEngineering\nIn office\nFull\\-timeWhat is Bilt?\nBilt is the membership for where you live.  \n\nWhat started as a way to reward people on their largest expense has turned into an ecosystem connecting our members, property managers and local merchants.\nTravel, dining, fitness, everyday spend. We are building systems across payments, credit, loyalty, and commerce all at once.  \n\nWe run lean and move quickly. Every person here has a real impact on what gets built and how fast it happens.  ", "datePosted": "2026-04-22", "hiringOrganization": {"@type": "Organization", "name": "Bilt Rewards"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "New York", "addressRegion": "NY", "addressCountry": "US"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/bilt-rewards-forward-deployed-engineer-da9284/", "baseSalary": {"@type": "MonetaryAmount", "currency": "USD", "value": {"@type": "QuantitativeValue", "minValue": 200000, "maxValue": 240000, "unitText": "YEAR"}}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Forward Deployed Engineer at Bilt Rewards", "item": "https://fdepulse.com/jobs/bilt-rewards-forward-deployed-engineer-da9284/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Bilt Rewards?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Bilt Rewards are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Forward Deployed Engineer role?", "acceptedAnswer": {"@type": "Answer", "text": "The Forward Deployed Engineer role at Bilt Rewards typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Bilt Rewards remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Bilt Rewards FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Bilt Rewards</span>
+                </nav>
+                    
+                    <div class="job-header__company">Bilt Rewards</div>
+                    <h1 class="job-header__title">Forward Deployed Engineer</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag job-header__tag--salary">$200K - $240K</span>
+                        <span class="job-header__tag">New York, NY, US</span>
+                        <span class="job-header__tag">Posted April 22, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://www.indeed.com/viewjob?jk=eb40f3e808c5444b" target="_blank" rel="noopener" class="btn btn--primary">Apply on Indeed</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <p>New York Engineering In office Full-time<strong>What is Bilt?</strong> Bilt is the membership for where you live.</p>
+<p>What started as a way to reward people on their largest expense has turned into an ecosystem connecting our members, property managers and local merchants. Travel, dining, fitness, everyday spend. We are building systems across payments, credit, loyalty, and commerce all at once.</p>
+<p>We run lean and move quickly. Every person here has a real impact on what gets built and how fast it happens.</p>
+<p>This role comes with real ownership and high expectations. If you prefer clearly defined lanes and structure, this will feel uncomfortable. If you want to build quickly, have a real say in what gets built, and work on products used by millions, you will likely do your best work here.<strong>What’s the role?</strong> As a Forward-Deployed Engineer at Bilt, you are the technical face of our platform to our partners. You’ll work directly alongside partner engineering teams—at property management companies, loyalty programs, payment processors, and subscription platforms—to design, build, and ship integrations that power the Bilt ecosystem. This is a deeply hands-on, partner-facing engineering role: you’ll write production code, debug complex API issues in real time, and serve as the bridge between Bilt’s internal engineering organization and the outside world.</p>
+<p>You should be someone who is equally comfortable whiteboarding an architecture with a partner’s CTO and writing a Java code snippet to unblock their integration. You’ll leverage modern AI tools like Claude, Cursor, GitHub Copilot, and others in hopes to move fast, prototype quickly, and multiply your output. We’re looking for an engineer who thrives at the intersection of code and communication. <strong>In this role, you will:</strong>* Embed directly with partner engineering teams to design and implement API integrations against Bilt’s platform, acting as a trusted technical counterpart * Write clean, production-quality code—primarily in Java—including reference implementations, SDKs, code samples, and integration accelerators that partners can adopt * Own the full integration lifecycle: from technical discovery and architecture design through implementation support, testing, and go-live * Debug and troubleshoot complex, cross-system issues spanning Bilt’s APIs, partner systems, webhooks, and data flows—often in real time on calls with partner engineers * Translate business requirements into clear API contracts, sequence diagrams, and technical specifications that both internal and external engineering teams can execute against * Build and maintain developer-facing resources: API documentation, integration guides, Postman collections, and sample applications * Leverage AI-powered development tools (Claude, Cursor, GitHub Copilot, etc.) as a core part of your workflow to accelerate prototyping, code generation, documentation, and problem-solving * Serve as the technical voice of the partner internally—advocating for API improvements, surfacing integration pain points to product and engineering, and influencing the platform roadmap * Collaborate closely with product, engineering, sales, and partnerships teams to ensure technical alignment and successful partner launches</p>
+<p><strong>Additional responsibilities may include:</strong>* Leading live technical demos and architecture walkthroughs for prospective and existing partners * Building proof-of-concept integrations and prototypes to validate new partnership opportunities * Serving as an escalation point for complex technical issues from customer success and support teams * Identifying opportunities to improve platform performance, developer experience, and API ergonomics based on field observations</p>
+<p><strong>In terms of qualifications, we’re seeking:</strong>* 4–5+ years of experience as a software engineer, forward-deployed engineer, solutions engineer, or similar hands-on technical role where you shipped code and worked directly with external partners or customers * <strong>Strong Java proficiency:</strong> you can write, review, and debug Java code confidently. Experience with Spring Boot, REST frameworks, and modern Java tooling is a plus * <strong>Deep API fluency:</strong> you live and breathe RESTful APIs, webhooks, OAuth, and third-party integrations. You can read an API spec and immediately reason about edge cases, error handling, and data flows * <strong>Fluency with AI-powered developer tools:</strong> you actively use tools like Claude, Cursor, GitHub Copilot, or similar to write code, generate documentation, debug issues, and accelerate your work. You see AI as a multiplier, not a novelty * <strong>Excellent technical communication:</strong> you can explain a complex distributed system to a partner’s engineer, write crystal-clear documentation, and tailor your message for audiences ranging from CTOs to junior developers * Experience with cloud platforms, preferably Google Cloud Platform (GCP). Familiarity with CI/CD pipelines, containerization, and infrastructure-as-code * Database knowledge including SQL, data modeling, and experience working with both relational and NoSQL datastores * <strong>Bonus:</strong> fintech or payments experience and prior work with payment processors, card networks, PCI compliance, or financial platforms is a strong plus * <strong>Bonus:</strong> loyalty, subscription, or adtech platform experience—familiarity with the partner types in Bilt’s ecosystem accelerates ramp-up</p>
+<p><strong>Benefits:</strong>* <strong>Compensation</strong> - We offer a competitive salary with a meaningful stake in the company via equity and our performance bonus program * <strong>Health insurance for you (& your loved ones) from day one -</strong> Enjoy a One Medical Membership, wellness stipends, family programs and more, on us. We’ve got you and your family covered from day one. * <strong>401k plan with a match -</strong> Retirement may feel more like a pipe dream than a reality but we’re here to help you get there. * <strong>Commuter FSAs -</strong> We believe the best ideas come from being together in one place. We just don’t think getting there should be so expensive. * <strong>UNLIMITED PTO -</strong> Because we believe that working hard shouldn’t mean always working. Take time for yourself as often as you need it. * <strong>Exclusive Employee only Bilt Points -</strong> We give our employees unique opportunities to earn points throughout their time at Bilt. * <strong>Team Events -</strong> We believe in human connection so we hold events to help our employees break from the monotony of the typical work week.</p>
+<p>At Bilt Rewards, we believe in transparency and we do our best to make sure the company and our candidates are on the same page as it relates to compensation. In addition to posting salary ranges for our open roles, candidates should expect to be asked about compensation expectations and requirements early on in their interview process. Our goal is to highlight when expectations and Bilt’s salary range may be out of sync, and work with the candidate to determine whether it makes sense to continue conversations. We are considering candidates with differing levels of expertise for this position. Leveling will be based upon your experience and performance in the interview process.</p>
+<p>Where a new hire falls within a range will be based on their skills and experience, and how these competencies compare across other employees in the same role. Bilt's bands are designed to allow for individual compensation growth within the role. As such, new hires typically start at the lower end of the range. Bilt Rewards performance and outcomes - should you join the company, you will have the opportunity to grow your salary over time.</p>
+<p>The salary range for a <strong>Forward Deployed Engineer</strong> is <strong>$200,000 - $240,000</strong> *(based on YOE/level)<strong>*,</strong> and you will be eligible for equity and an annual performance-based bonus.</p>
+<p>Req ID: R284</p>
+                        </div>
+                    </div>
+                    
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/google-forward-deployed-engineering-manager-generative-ai-google-cloud-ff6a41/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Forward Deployed Engineering Manager, Generative AI, Google Cloud</div>
+                    <div class="similar-job__salary">$183K - $265K</div>
+                </a>
+                <a href="/jobs/google-customer-engineer-i-platform-saisv-google-cloud-17fd3f/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Customer Engineer I, Platform, SAISV, Google Cloud</div>
+                    <div class="similar-job__salary">$105K - $151K</div>
+                </a>
+                <a href="/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/" class="similar-job">
+                    <div class="similar-job__company">Unit8 SA</div>
+                    <div class="similar-job__title">Senior Forward Deployed Engineer (Hybrid, USA)</div>
+                    <div class="similar-job__salary">$120K - $150K</div>
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Bilt Rewards</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">New York, NY, US</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Salary</span>
+                        <span class="sidebar-card__value"><span class="sidebar-card__value--salary">$200K - $240K</span></span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">April 22, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Indeed</span>
+                    </div>
+                    </div>
+                    <a href="https://www.indeed.com/viewjob?jk=eb40f3e808c5444b" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Indeed
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

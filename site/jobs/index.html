@@ -75,22 +75,22 @@
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forward Deployed Engineer Jobs | FDE Pulse</title>
-    <meta name="description" content="Browse Forward Deployed Engineer jobs at OpenAI, Salesforce, Palantir, Ramp, and 50+ companies. Salary data, remote options, and weekly updates.">
+    <title>Forward Deployed Engineer Jobs (134 Roles) | FDE Pulse</title>
+    <meta name="description" content="Browse 134 Forward Deployed Engineer jobs at OpenAI, Salesforce, Palantir, Ramp, and 50+ companies. Salary data, remote options, updated weekly.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://fdepulse.com/jobs/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fdepulse.com/jobs/">
-    <meta property="og:title" content="Forward Deployed Engineer Jobs | FDE Pulse">
-    <meta property="og:description" content="Browse Forward Deployed Engineer jobs at OpenAI, Salesforce, Palantir, Ramp, and 50+ companies. Salary data, remote options, and weekly updates.">
+    <meta property="og:title" content="Forward Deployed Engineer Jobs (134 Roles) | FDE Pulse">
+    <meta property="og:description" content="Browse 134 Forward Deployed Engineer jobs at OpenAI, Salesforce, Palantir, Ramp, and 50+ companies. Salary data, remote options, updated weekly.">
     <meta property="og:site_name" content="FDE Pulse">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Forward Deployed Engineer Jobs | FDE Pulse">
-    <meta name="twitter:description" content="Browse Forward Deployed Engineer jobs at OpenAI, Salesforce, Palantir, Ramp, and 50+ companies. Salary data, remote options, and weekly updates.">
+    <meta name="twitter:title" content="Forward Deployed Engineer Jobs (134 Roles) | FDE Pulse">
+    <meta name="twitter:description" content="Browse 134 Forward Deployed Engineer jobs at OpenAI, Salesforce, Palantir, Ramp, and 50+ companies. Salary data, remote options, updated weekly.">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -107,6 +107,186 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Board Specific Styles */
+.page-header {
+    padding: 8rem 0 3rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+}
+.page-header__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.page-header__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+}
+.page-header__subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Stats bar */
+.job-stats-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem var(--space-lg);
+}
+.job-stats-bar__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.job-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-stat-item strong {
+    color: var(--amber-light);
+    font-weight: 600;
+}
+
+/* Job list layout */
+.jobs-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg);
+}
+.jobs-list__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+.jobs-list__count {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Job card (list row style) */
+.job-item {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.job-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
+.job-item__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+    gap: var(--space-md);
+}
+.job-item__left { flex: 1; min-width: 0; }
+.job-item__company {
+    font-size: 0.875rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+.job-item__title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+.job-item__salary {
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4ade80;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.job-item__meta {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    align-items: center;
+}
+.job-item__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.job-item__tag--remote {
+    background: rgba(74, 222, 128, 0.12);
+    color: var(--success);
+    font-weight: 500;
+}
+.job-item__tag--seniority {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--amber-light);
+}
+.job-item__cta {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    white-space: nowrap;
+}
+.job-item__date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Prose content below listings */
+.jobs-prose {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg) var(--space-3xl);
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+.jobs-prose h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 2.5rem 0 1rem;
+}
+.jobs-prose p { margin-bottom: 1.25rem; }
+.jobs-prose ul { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+.jobs-prose li { margin-bottom: 0.5rem; }
+.jobs-prose strong { color: var(--text-primary); }
+
+@media (max-width: 768px) {
+    .page-header { padding: 6rem 0 2rem; }
+    .page-header__title { font-size: 2rem; }
+    .job-item__header { flex-direction: column; }
+    .job-item__salary { align-self: flex-start; }
+    .job-stats-bar__inner { gap: 1rem; }
+}
+</style>
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -216,60 +396,1979 @@
 
     <main>
 
-        <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Forward Deployed Engineer Jobs</h1>
-            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">Every Forward Deployed Engineer job posting tracked across major boards. Updated weekly from 500,000+ postings.</p>
 
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 3rem;">
-                <p style="color: var(--amber-light); font-weight: 600; margin-bottom: 0.5rem;">Job board launching soon</p>
-                <p style="color: var(--text-secondary); line-height: 1.7;">We're collecting FDE job data now. Subscribe to the FDE Pulse Brief to get notified when the job board goes live, plus weekly market intelligence in the meantime.</p>
+    <div class="job-stats-bar">
+        <div class="job-stats-bar__inner">
+            <span class="job-stat-item"><strong>134</strong> FDE roles tracked</span>
+            <span class="job-stat-item"><strong>29%</strong> remote-eligible</span>
+            <span class="job-stat-item"><strong>$50K&ndash;$365K</strong> salary range</span>
+            <span class="job-stat-item"><strong>111</strong> with salary disclosed</span>
+        </div>
+    </div>
+
+        <div class="page-header">
+            <div class="page-header__inner">
+                <h1 class="page-header__title">Forward Deployed Engineer Jobs</h1>
+                <p class="page-header__subtitle">134 FDE roles tracked across major job boards. Updated weekly.</p>
             </div>
+        </div>
 
-            <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+        <div class="jobs-list">
+            <div class="jobs-list__header">
+                <span class="jobs-list__count">134 jobs found</span>
+            </div>
+            <div class="jobs-list__items">
                 
-        <figure class="content-figure">
-            <img src="/assets/images/content/jobs.svg" alt="Forward Deployed Engineer Jobs - jobs visualization" width="1200" height="630" loading="eager">
-            <figcaption>Forward Deployed Engineer Jobs</figcaption>
-        </figure>
-
-        <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">The FDE Job Market in 2026</h2>
-
-                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineer hiring grew 800% in 2025. That growth hasn't slowed. Salesforce alone committed to hiring 1,000 FDEs. OpenAI runs a 50-person FDE team. Ramp, Rippling, Databricks, and dozens of startups are building FDE organizations from scratch.</p>
-
-                <p style="margin-bottom: 1.25rem;">The role didn't exist at most companies three years ago. Palantir pioneered it in the 2010s as a way to deploy their analytics platform inside government agencies and Fortune 500 companies. The model worked: customers got custom solutions, product teams got direct feedback loops, and Palantir built one of the stickiest enterprise software businesses in history.</p>
-
-                <p style="margin-bottom: 1.25rem;">Now every enterprise AI company is copying the playbook. AI products require more customization than traditional SaaS. You can't ship a one-size-fits-all AI agent to a hospital system and a logistics company and expect the same results. Someone has to sit with the customer, understand their data, build the integrations, and make the product work in their specific environment. That's the FDE.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Types of FDE Roles</h2>
-
-                <p style="margin-bottom: 1.25rem;">Not all Forward Deployed Engineer positions are identical. The title spans several distinct flavors depending on the company and their customer base:</p>
-
-                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer-Embedded FDEs</strong> work on-site or virtually embedded with a single customer for weeks or months at a time. This is the original Palantir model. You become an extension of the customer's engineering team, building solutions on top of the company's platform that solve that customer's specific problems.</p>
-
-                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Integration FDEs</strong> focus on technical implementation and data pipeline work. They connect the product to the customer's existing infrastructure: EHR systems at hospitals, ERP platforms at manufacturers, trading systems at financial firms. These roles lean more data engineering than full-stack.</p>
-
-                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Product-Adjacent FDEs</strong> split time between customer work and product development. They build customer-specific solutions but also contribute features and improvements back to the core product. Companies like PostHog and Ramp use this model, where FDEs are effectively product engineers with a customer-facing mandate.</p>
-
-                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pre-Sales FDEs</strong> focus on technical proof-of-concepts and pilot deployments. They work with prospects rather than existing customers, building custom demos and integrations that close deals. Compensation for these roles often includes commission or deal-based bonuses.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDE Pulse Tracks</h2>
-
-                <p style="margin-bottom: 1.25rem;">FDE Pulse monitors job postings across Indeed, LinkedIn, Greenhouse, Lever, and company career pages. We track:</p>
-
-                <ul style="margin-bottom: 1.25rem; padding-left: 1.5rem;">
-                    <li style="margin-bottom: 0.5rem;">Job title, company, location, and remote status</li>
-                    <li style="margin-bottom: 0.5rem;">Salary ranges (when disclosed) normalized to annual compensation</li>
-                    <li style="margin-bottom: 0.5rem;">Seniority level and required experience</li>
-                    <li style="margin-bottom: 0.5rem;">Technical skills mentioned in job descriptions</li>
-                    <li style="margin-bottom: 0.5rem;">Company stage, size, and industry vertical</li>
-                    <li style="margin-bottom: 0.5rem;">Posting frequency and hiring velocity per company</li>
-                </ul>
-
-                <p style="margin-bottom: 1.25rem;">All data feeds into weekly market intelligence reports delivered through the FDE Pulse Brief newsletter. Subscribers get salary benchmarks, hiring trend analysis, and new postings before they hit the aggregators.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
-
+        <a href="/jobs/google-forward-deployed-engineering-manager-generative-ai-google-cloud-ff6a41/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineering Manager, Generative AI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$183K - $265K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Austin, TX, US</span>
+                    <span class="job-item__date">Apr 29</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-i-platform-saisv-google-cloud-17fd3f/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer I, Platform, SAISV, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$105K - $151K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 29</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Unit8 SA</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer (Hybrid, USA)</div>
+                </div>
+                <span class="job-item__salary">$120K - $150K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Charlotte, NC, US</span>
+                    <span class="job-item__date">Apr 29</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-platform-customer-engineer-financial-services-google-cloud-88f393/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Platform Customer Engineer, Financial Services, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 28</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/rippling-manager-forward-deployed-engineering-544e3d/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Rippling</div>
+                    <div class="job-item__title">Manager, Forward Deployed Engineering</div>
+                </div>
+                <span class="job-item__salary">$138K - $230K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Mid</span>
+                    <span class="job-item__date">Apr 28</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/parity-forward-deployed-engineer-building-systems-boston-e6784e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Parity</div>
+                    <div class="job-item__title">Forward Deployed Engineer, Building Systems - Boston</div>
+                </div>
                 
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Boston, MA, US</span>
+                    <span class="job-item__date">Apr 28</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-ii-outcome-gcp-tmeg-google-cloud-72b3bb/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer II, Outcome, GCP, TMEG, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$127K - $184K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 28</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/vista-equity-partners-management-senior-forward-deployed-engineer-99a4c9/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Vista Equity Partners Management</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$200K - $315K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 28</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/bny-director-forward-deployed-engineer-8394b8/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">BNY</div>
+                    <div class="job-item__title">Director, Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$147K - $260K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 28</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/amazon-web-services-customer-solutions-manager-prototyping-customer-engineering-39dfb1/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Amazon Web Services</div>
+                    <div class="job-item__title">Customer Solutions Manager, Prototyping &amp; Customer Engineering</div>
+                </div>
+                <span class="job-item__salary">$154K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/bny-senior-vice-president-forward-deployed-engineer-3f160c/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">BNY</div>
+                    <div class="job-item__title">Senior Vice President, Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$104K - $210K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">SVP</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-forward-deployed-engineer-ii-applied-ai-cloud-8f57ce/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineer II, Applied AI, Cloud</div>
+                </div>
+                <span class="job-item__salary">$127K - $183K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/floqast-senior-forward-deployed-accountant-45bf70/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">FloQast</div>
+                    <div class="job-item__title">Senior Forward Deployed Accountant</div>
+                </div>
+                <span class="job-item__salary">$132K - $198K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/floqast-forward-deployed-accountant-7ab1d0/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">FloQast</div>
+                    <div class="job-item__title">Forward Deployed Accountant</div>
+                </div>
+                <span class="job-item__salary">$90K - $134K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/ethicrithm-inc-forward-deployed-engineer-usa-33a21f/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Ethicrithm Inc.</div>
+                    <div class="job-item__title">Forward Deployed Engineer - USA</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Fractional AI</div>
+                    <div class="job-item__title">Associate Forward Deployed Product Manager</div>
+                </div>
+                <span class="job-item__salary">$160K - $180K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__tag job-item__tag--seniority">Mid</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-manager-forward-deployed-engineering-generative-ai-google-cloud-a3e5ff/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Manager, Forward Deployed Engineering, Generative AI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$234K - $325K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Austin, TX, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Mid</span>
+                    <span class="job-item__date">Apr 27</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/eliza-forward-deployed-engineer-d8eaa0/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Eliza</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 26</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/patch-my-pc-customer-engineer-6c30e4/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Patch My PC</div>
+                    <div class="job-item__title">Customer Engineer</div>
+                </div>
+                <span class="job-item__salary">$80K - $100K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 26</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/reltio-customer-engineer-954d7c/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Reltio</div>
+                    <div class="job-item__title">Customer Engineer</div>
+                </div>
+                <span class="job-item__salary">$77K - $142K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 26</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/boston-consulting-group-senior-forward-deployed-ai-engineer-united-states-bcg-x-04cdbe/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Boston Consulting Group</div>
+                    <div class="job-item__title">Senior Forward Deployed AI Engineer, United States - BCG X</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 25</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/ascertain-forward-deployed-engineer-9a5c18/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Ascertain</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$130K - $175K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 24</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/decircle-champ-ai-deployment-architect-forward-deployed-engineer-f2383e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">deCircle</div>
+                    <div class="job-item__title">Champ AI - Deployment Architect / Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Francisco, CA, US</span>
+                    <span class="job-item__date">Apr 24</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/accenture-forward-deployed-engineer-fde-sr-analyst-9a8b57/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Accenture</div>
+                    <div class="job-item__title">Forward Deployed Engineer (FDE) Sr Analyst</div>
+                </div>
+                <span class="job-item__salary">$50K - $168K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Morristown, NJ, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Entry</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/forward-deployed-engineer-21661e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company"></div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$150K - $275K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/qualcomm-staff-customer-engineering-ce-server-processor-platforms-a137c1/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Qualcomm</div>
+                    <div class="job-item__title">Staff, Customer Engineering (CE) – Server Processor Platforms</div>
+                </div>
+                <span class="job-item__salary">$143K - $215K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Santa Clara, CA, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/revenuebase-customer-engineer-c2b6eb/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">RevenueBase</div>
+                    <div class="job-item__title">Customer Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/logic-inc-palantir-forward-deployed-engineer-528974/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Logic, Inc.</div>
+                    <div class="job-item__title">Palantir Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$64K - $235K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Chicago, IL, US</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-ii-platform-oracle-google-cloud-f6eeef/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer II, Platform, Oracle, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$127K - $184K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Chicago, IL, US</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineering-manager-platform-sled-b0193b/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineering Manager, Platform, SLED</div>
+                </div>
+                <span class="job-item__salary">$192K - $267K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Sunnyvale, CA, US</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/accenture-palantir-forward-deployed-senior-engineer-227d45/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Accenture</div>
+                    <div class="job-item__title">Palantir Forward Deployed Senior Engineer</div>
+                </div>
+                <span class="job-item__salary">$87K - $305K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Morristown, NJ, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-i-platform-google-workspace-google-cloud-58afbd/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer I, Platform, Google Workspace, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$105K - $151K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Atlanta, GA, US</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/logic-inc-palantir-forward-deployed-senior-engineer-3f62ad/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Logic, Inc.</div>
+                    <div class="job-item__title">Palantir Forward Deployed Senior Engineer</div>
+                </div>
+                <span class="job-item__salary">$87K - $305K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Chicago, IL, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/west-monroe-forward-deployed-ai-engineer-techex-software-us-d994ab/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">West Monroe</div>
+                    <div class="job-item__title">Forward Deployed AI Engineer, TechEx, Software -US</div>
+                </div>
+                <span class="job-item__salary">$171K - $221K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Seattle, WA, US</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/accenture-palantir-forward-deployed-engineer-5e1cba/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Accenture</div>
+                    <div class="job-item__title">Palantir Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$64K - $235K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/langchain-customer-engineer-west-coast-be61b6/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">LangChain</div>
+                    <div class="job-item__title">Customer Engineer (West Coast)</div>
+                </div>
+                <span class="job-item__salary">$116K - $195K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/sas-senior-forward-deployed-industry-consultant-pharma-new-jersey-be270d/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">SAS</div>
+                    <div class="job-item__title">Senior Forward Deployed Industry Consultant, Pharma - New Jersey</div>
+                </div>
+                <span class="job-item__salary">$137K - $167K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 23</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-deloitte-cyber-forward-deployed-engineer-senior-consultant-9c08c7/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Deloitte Cyber Forward Deployed Engineer/Senior Consultant</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Princeton, NJ, US</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/humach-llc-forward-deployed-engineer-e29e1f/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Humach, LLC</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-deloitte-cyber-forward-deployed-engineer-manager-8a596e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Deloitte Cyber Forward Deployed Engineer/Manager</div>
+                </div>
+                <span class="job-item__salary">$131K - $241K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/akka-forward-deployed-engineer-technical-evangelist-north-america-fba94d/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">AKKA</div>
+                    <div class="job-item__title">Forward Deployed Engineer/Technical Evangelist (North America)</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/revin-forward-deployed-engineer-ai-platform-b6186e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Revin</div>
+                    <div class="job-item__title">Forward Deployed Engineer – AI Platform</div>
+                </div>
+                <span class="job-item__salary">$120K - $200K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-forward-deployed-engineer-applied-ai-google-cloud-116c5e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineer, Applied AI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$127K - $183K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Los Angeles, CA, US</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/logic-inc-forward-deployed-engineer-fde-sr-analyst-cd7392/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Logic, Inc.</div>
+                    <div class="job-item__title">Forward Deployed Engineer (FDE) Sr Analyst</div>
+                </div>
+                <span class="job-item__salary">$50K - $168K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Chicago, IL, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Entry</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/digitalocean-senior-forward-deployed-engineer-ai-ml-7f65e0/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">DigitalOcean</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer (AI/ML)</div>
+                </div>
+                <span class="job-item__salary">$140K - $174K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Seattle, WA, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-forward-deployed-engineer-generative-ai-genmedia-google-cloud-e3e9cd/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineer, Generative AI (GenMedia), Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/bilt-rewards-forward-deployed-engineer-da9284/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Bilt Rewards</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$200K - $240K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 22</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-iii-platform-google-cloud-274f43/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer III, Platform, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 21</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/cgi-forward-deployed-engineer-2f714c/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">CGI</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$90K - $218K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Arlington, VA, US</span>
+                    <span class="job-item__date">Apr 21</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/hippocratic-ai-ai-customer-engineer-a257a6/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Hippocratic AI</div>
+                    <div class="job-item__title">AI Customer Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Palo Alto, CA, US</span>
+                    <span class="job-item__date">Apr 21</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/servicenow-forward-deployed-solution-engineer-applied-ai-a8809e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">ServiceNow</div>
+                    <div class="job-item__title">Forward Deployed Solution Engineer- Applied AI</div>
+                </div>
+                <span class="job-item__salary">$201K - $352K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 21</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/syndio-forward-deployed-engineering-solutions-consultant-usa-2c8f87/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Syndio</div>
+                    <div class="job-item__title">Forward Deployed Engineering Solutions Consultant (USA)</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-devices-and-services-29ef14/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer, Devices and Services</div>
+                </div>
+                <span class="job-item__salary">$141K - $204K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Austin, TX, US</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-platform-strategic-ai-and-isv-9baa32/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer, Platform, Strategic AI and ISV</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Sunnyvale, CA, US</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/ncr-atleos-customer-engineer-ii-e5059b/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">NCR Atleos</div>
+                    <div class="job-item__title">Customer Engineer II</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">IN, US</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/boomi-ai-forward-deployed-engineer-5d9f88/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Boomi</div>
+                    <div class="job-item__title">AI Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$110K - $163K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/hyperscience-forward-deployed-solutions-engineer-public-sector-06d38a/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Hyperscience</div>
+                    <div class="job-item__title">Forward Deployed Solutions Engineer [Public Sector]</div>
+                </div>
+                <span class="job-item__salary">$94K - $160K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-data-analytics-financial-services-d42693/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer, Data Analytics, Financial Services</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/g2-gtm-systems-forward-deployed-engineer-3c9a81/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">G2</div>
+                    <div class="job-item__title">GTM Systems Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$125K - $135K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/arcade-food-theatre-forward-deployed-engineer-c003de/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Arcade Food Theatre</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Francisco, CA, US</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/ahead-ai-practitioner-forward-deployed-engineer-58bf21/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Ahead</div>
+                    <div class="job-item__title">AI Practitioner/Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$95K - $115K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 20</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/matillion-forward-deployed-engineer-13a8bf/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Matillion</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$120K - $180K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-senior-staff-forward-deployed-developer-google-cloud-4f932c/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Senior Staff Forward Deployed Developer, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$262K - $365K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Talkdesk</div>
+                    <div class="job-item__title">Forward Deployed AI Product Manager</div>
+                </div>
+                <span class="job-item__salary">$187K - $312K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__tag job-item__tag--seniority">Mid</span>
+                    <span class="job-item__date">Apr 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/tetrix-forward-deployed-engineer-77a7a3/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Tetrix</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$140K - $200K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineering-manager-data-analytics-hcls-google-cloud-8b8019/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineering Manager, Data Analytics, HCLS, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$192K - $267K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-senior-customer-engineer-national-security-google-public-sector-fbf34f/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Senior Customer Engineer, National Security, Google Public Sector</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Washington, DC, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-senior-forward-deployed-engineer-snowflake-ea5dbb/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer - Snowflake</div>
+                </div>
+                <span class="job-item__salary">$167K - $308K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Jersey City, NJ, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 17</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-snowflake-378326/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Snowflake</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 17</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-platform-google-cloud-f2b762/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer, Platform, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$127K - $184K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Sunnyvale, CA, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-ii-applied-ai-google-cloud-41377c/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer II, Applied AI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$149K - $216K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Washington, DC, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/axion-forward-deployed-engineer-8c2a80/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Axion</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$135K - $175K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/guild-forward-deployed-engineer-fde-d3859e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Guild</div>
+                    <div class="job-item__title">Forward Deployed Engineer (FDE)</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Francisco, CA, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/stevens-institute-of-technology-forward-deployed-ai-engineer-027ff7/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Stevens Institute of Technology</div>
+                    <div class="job-item__title">Forward Deployed AI Engineer</div>
+                </div>
+                <span class="job-item__salary">$73K - $94K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Hoboken, NJ, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-iii-ai-infrastructure-google-cloud-f45f98/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer III, AI Infrastructure, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Francisco, CA, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-cloud-customer-engineer-platform-8042a9/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Cloud Customer Engineer, Platform</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Sunnyvale, CA, US</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/hyperscience-forward-deployed-solutions-engineer-a84d71/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Hyperscience</div>
+                    <div class="job-item__title">Forward Deployed Solutions Engineer</div>
+                </div>
+                <span class="job-item__salary">$123K - $185K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/tread-ai-native-forward-deployed-engineer-02d7a4/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Tread</div>
+                    <div class="job-item__title">AI Native Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$120K - $160K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 16</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineering-manager-data-analytics-startups-google-cloud-409ed3/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineering Manager, Data Analytics, Startups, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$192K - $267K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-forward-deployed-engineering-manager-genai-google-cloud-cb64e6/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineering Manager, GenAI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$234K - $325K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-iii-platform-hcls-google-cloud-1a89fd/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer III, Platform, HCLS, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-i-platform-small-and-medium-businesses-google-cloud-660065/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer I, Platform, Small and Medium Businesses, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$105K - $151K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Austin, TX, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/neara-forward-deployed-engineer-usa-nyc-1dc7d0/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Neara</div>
+                    <div class="job-item__title">Forward Deployed Engineer - USA (NYC)</div>
+                </div>
+                <span class="job-item__salary">$130K - $200K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/rubie-forward-deployed-engineer-1995fe/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Rubie</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$110K - $175K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/intermedia-intelligent-communications-a-i-forward-deployed-engineer-intern-670c5f/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Intermedia Intelligent Communications</div>
+                    <div class="job-item__title">A.I. Forward Deployed Engineer Intern</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-ii-platform-google-cloud-biopharma-7e0d8a/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer II, Platform, Google Cloud, BioPharma</div>
+                </div>
+                <span class="job-item__salary">$127K - $184K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/jda-tsg-microsoft-teams-customer-engineer-eb771a/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">JDA TSG</div>
+                    <div class="job-item__title">Microsoft Teams Customer Engineer</div>
+                </div>
+                <span class="job-item__salary">$95K - $110K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/syndio-senior-forward-deployed-engineering-solutions-consultant-usa-7dfc2e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Syndio</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineering Solutions Consultant (USA)</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 15</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/brillio-llc-forward-deployed-ai-engineer-supply-chain-d4e334/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Brillio LLC</div>
+                    <div class="job-item__title">Forward Deployed AI Engineer – Supply Chain</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Chicago, IL, US</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/sphere-inc-founding-forward-deployed-engineer-4de24b/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Sphere, Inc.</div>
+                    <div class="job-item__title">Founding Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Francisco, CA, US</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/nice-forward-deployed-engineer-acb309/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">NiCE</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-ii-outcome-google-cloud-30c41e/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer II, Outcome, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$127K - $184K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/shield-forward-deployed-operations-e36742/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Shield</div>
+                    <div class="job-item__title">Forward Deployed Operations</div>
+                </div>
+                <span class="job-item__salary">$150K - $225K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/premier-cloud-customer-engineer-data-analytics-351e15/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Premier Cloud</div>
+                    <div class="job-item__title">Customer Engineer, Data &amp; Analytics</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/claryo-forward-deployed-engineer-2f9999/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Claryo</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$165K - $180K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Francisco, CA, US</span>
+                    <span class="job-item__date">Apr 14</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/kpmg-director-senior-director-technical-lead-forward-deployed-engineering-77874a/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">KPMG</div>
+                    <div class="job-item__title">Director/Senior Director, Technical Lead Forward Deployed Engineering</div>
+                </div>
+                <span class="job-item__salary">$171K - $357K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Montvale, NJ, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Director</span>
+                    <span class="job-item__date">Apr 13</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/adonis-senior-forward-deployed-engineer-9854b1/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">adonis</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$190K - $210K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 13</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-senior-customer-engineer-civilian-google-public-sector-c7ee1b/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Senior Customer Engineer, Civilian, Google Public Sector</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Reston, VA, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 13</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/qualcomm-customer-engineer-ai-ml-c68428/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Qualcomm</div>
+                    <div class="job-item__title">Customer Engineer - AI / ML</div>
+                </div>
+                <span class="job-item__salary">$108K - $162K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">San Diego, CA, US</span>
+                    <span class="job-item__date">Apr 13</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/smartsheet-senior-forward-deployed-ai-engineer-remote-eligible-7d2122/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Smartsheet</div>
+                    <div class="job-item__title">Senior Forward Deployed AI Engineer (Remote Eligible)</div>
+                </div>
+                <span class="job-item__salary">$228K - $245K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 12</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-forward-deployed-engineer-ii-genai-google-cloud-70f425/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineer II, GenAI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Atlanta, GA, US</span>
+                    <span class="job-item__date">Apr 12</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-frontier-genai-5ec8b4/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer, Frontier GenAI</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-microsoft-ai-data-724bf4/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Microsoft AI&amp;Data</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-aws-d47738/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Lead Forward Deployed Engineer - AWS</div>
+                </div>
+                <span class="job-item__salary">$167K - $308K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-databricks-35816d/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Lead Forward Deployed Engineer - Databricks</div>
+                </div>
+                <span class="job-item__salary">$167K - $308K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-palantir-e39dde/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Lead Forward Deployed Engineer - Palantir</div>
+                </div>
+                <span class="job-item__salary">$167K - $308K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-frontier-genai-423b58/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Lead Forward Deployed Engineer, Frontier GenAI</div>
+                </div>
+                <span class="job-item__salary">$167K - $308K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/just-appraised-customer-engineer-0ccbcf/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Just Appraised</div>
+                    <div class="job-item__title">Customer Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-microsoft-ai-data-0cc8f8/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Lead Forward Deployed Engineer, Microsoft AI &amp; Data</div>
+                </div>
+                <span class="job-item__salary">$167K - $308K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-senior-forward-deployed-engineer-microsoft-ai-data-c575bb/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer, Microsoft AI &amp; Data</div>
+                </div>
+                <span class="job-item__salary">$131K - $241K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-senior-forward-deployed-engineer-frontier-genai-34fc60/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Senior Forward Deployed Engineer, Frontier GenAI</div>
+                </div>
+                <span class="job-item__salary">$131K - $241K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 10</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-aws-716a3d/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - AWS</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-palantir-1ea6aa/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Palantir</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-databricks-2c94bf/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Databricks</div>
+                </div>
+                <span class="job-item__salary">$113K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-senior-databricks-e557ad/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Senior Databricks</div>
+                </div>
+                <span class="job-item__salary">$131K - $241K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Morristown, NJ, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-senior-palantir-9c8626/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Senior Palantir</div>
+                </div>
+                <span class="job-item__salary">$131K - $241K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Stamford, CT, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/deloitte-forward-deployed-engineer-senior-aws-da34c5/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Deloitte</div>
+                    <div class="job-item__title">Forward Deployed Engineer - Senior AWS</div>
+                </div>
+                <span class="job-item__salary">$131K - $241K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">Morristown, NJ, US</span>
+                    <span class="job-item__tag job-item__tag--seniority">Senior</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-iii-platform-retail-google-cloud-d854b2/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer III, Platform, Retail, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/hex-technologies-customer-engineer-b239d3/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Hex Technologies</div>
+                    <div class="job-item__title">Customer Engineer</div>
+                </div>
+                <span class="job-item__salary">$166K - $205K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/crewai-forward-deployed-engineer-4a0d9a/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">crewAI</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 09</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/polyai-forward-deployed-ai-engineer-must-be-pst-timezone-7b5bb9/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">PolyAI</div>
+                    <div class="job-item__title">Forward Deployed AI Engineer (Must be PST timezone)</div>
+                </div>
+                <span class="job-item__salary">$150K - $190K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 08</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/forward-deployed-engineer-solutions-0ec569/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company"></div>
+                    <div class="job-item__title">Forward Deployed Engineer (Solutions)</div>
+                </div>
+                <span class="job-item__salary">$130K - $165K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 08</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/stem-search-group-forward-deployed-engineer-ruby-or-python-cb791f/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">STEM Search Group</div>
+                    <div class="job-item__title">Forward Deployed Engineer (Ruby or Python)</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 07</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/vercel-forward-deployed-engineer-v0-cd2da9/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Vercel</div>
+                    <div class="job-item__title">Forward Deployed Engineer, v0</div>
+                </div>
+                <span class="job-item__salary">$196K - $294K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 07</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/mattermost-forward-deployed-engineer-07fb64/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Mattermost</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$130K - $230K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 06</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-platform-sled-new-york-google-public-sector-9f2f53/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer, Platform, SLED, New York, Google Public Sector</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 06</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-customer-engineer-iii-applied-ai-google-cloud-ed824a/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Customer Engineer III, Applied AI, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$174K - $252K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 06</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/google-forward-deployed-engineer-generative-ai-telecommunications-google-cloud-2a744b/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Google</div>
+                    <div class="job-item__title">Forward Deployed Engineer, Generative AI, Telecommunications, Google Cloud</div>
+                </div>
+                <span class="job-item__salary">$153K - $222K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Apr 06</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/pubmatic-forward-deployed-engineer-63324d/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">PubMatic</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$200K - $300K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Apr 05</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/insight-customer-engineer-google-workspace-a10399/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Insight</div>
+                    <div class="job-item__title">Customer Engineer - Google Workspace</div>
+                </div>
+                
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Mar 31</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/jda-tsg-intune-mecm-customer-engineer-c01f2b/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">JDA TSG</div>
+                    <div class="job-item__title">Intune + MECM Customer Engineer</div>
+                </div>
+                <span class="job-item__salary">$95K - $110K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag job-item__tag--remote">Remote</span>
+                    <span class="job-item__date">Mar 29</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/amazon-web-services-senior-solutions-developer-prototyping-and-customer-engineer-860522/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Amazon Web Services</div>
+                    <div class="job-item__title">Senior Solutions Developer, Prototyping and Customer Engineering (PACE)</div>
+                </div>
+                <span class="job-item__salary">$154K - $208K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Mar 18</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/amazon-web-services-principal-solutions-developer-prototyping-and-customer-engin-a880db/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Amazon Web Services</div>
+                    <div class="job-item__title">Principal Solutions Developer , Prototyping and Customer Engineering (PACE)</div>
+                </div>
+                <span class="job-item__salary">$183K - $272K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Feb 19</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+        <a href="/jobs/tagup-forward-deployed-engineer-85be70/" class="job-item">
+            <div class="job-item__header">
+                <div class="job-item__left">
+                    <div class="job-item__company">Tagup</div>
+                    <div class="job-item__title">Forward Deployed Engineer</div>
+                </div>
+                <span class="job-item__salary">$130K - $160K</span>
+            </div>
+            <div class="job-item__meta">
+                <span class="job-item__tag">New York, NY, US</span>
+                    <span class="job-item__date">Sep 08</span>
+                    <span class="job-item__cta">View role &rarr;</span>
+            </div>
+        </a>
+            </div>
+        </div>
+
+        <div class="jobs-prose">
+            <h2>The FDE Job Market in 2026</h2>
+
+            <p>Forward Deployed Engineer hiring grew 800% in 2025. That growth hasn't slowed. Salesforce alone committed to hiring 1,000 FDEs. OpenAI runs a 50-person FDE team. Ramp, Rippling, Databricks, and dozens of startups are building FDE organizations from scratch.</p>
+
+            <p>The role didn't exist at most companies three years ago. Palantir pioneered it in the 2010s as a way to deploy their analytics platform inside government agencies and Fortune 500 companies. The model worked: customers got custom solutions, product teams got direct feedback loops, and Palantir built one of the stickiest enterprise software businesses in history.</p>
+
+            <p>Now every enterprise AI company is copying the playbook. AI products require more customization than traditional SaaS. You can't ship a one-size-fits-all AI agent to a hospital system and a logistics company and expect the same results. Someone has to sit with the customer, understand their data, build the integrations, and make the product work in their specific environment. That's the FDE.</p>
+
+            <h2>Types of FDE Roles</h2>
+
+            <p>Not all Forward Deployed Engineer positions are identical. The title spans several distinct flavors depending on the company and their customer base:</p>
+
+            <p><strong>Customer-Embedded FDEs</strong> work on-site or virtually embedded with a single customer for weeks or months at a time. This is the original Palantir model. You become an extension of the customer's engineering team, building solutions on top of the company's platform that solve that customer's specific problems.</p>
+
+            <p><strong>Integration FDEs</strong> focus on technical implementation and data pipeline work. They connect the product to the customer's existing infrastructure: EHR systems at hospitals, ERP platforms at manufacturers, trading systems at financial firms. These roles lean more data engineering than full-stack.</p>
+
+            <p><strong>Product-Adjacent FDEs</strong> split time between customer work and product development. They build customer-specific solutions but also contribute features and improvements back to the core product. Companies like PostHog and Ramp use this model, where FDEs are effectively product engineers with a customer-facing mandate.</p>
+
+            <p><strong>Pre-Sales FDEs</strong> focus on technical proof-of-concepts and pilot deployments. They work with prospects rather than existing customers, building custom demos and integrations that close deals. Compensation for these roles often includes commission or deal-based bonuses.</p>
+
+            <h2>What FDE Pulse Tracks</h2>
+
+            <p>FDE Pulse monitors job postings across Indeed, LinkedIn, Greenhouse, Lever, and company career pages. We track:</p>
+
+            <ul>
+                <li>Job title, company, location, and remote status</li>
+                <li>Salary ranges (when disclosed) normalized to annual compensation</li>
+                <li>Seniority level and required experience</li>
+                <li>Technical skills mentioned in job descriptions</li>
+                <li>Company stage, size, and industry vertical</li>
+                <li>Posting frequency and hiring velocity per company</li>
+            </ul>
+
+            <p>All data feeds into weekly market intelligence reports delivered through the FDE Pulse Brief newsletter. Subscribers get salary benchmarks, hiring trend analysis, and new postings before they hit the aggregators.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
                 <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What does a Forward Deployed Engineer do?</h3>
                 <p style="color: var(--text-secondary); line-height: 1.7;">A Forward Deployed Engineer (FDE) is embedded directly with customers to build custom integrations, solve technical problems, and bridge the gap between product engineering and customer success. FDEs write production code, architect solutions specific to a customer's infrastructure, and translate customer feedback into product improvements. The role combines deep software engineering skills with strong communication and business acumen.</p>
@@ -290,7 +2389,6 @@
                 <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is Forward Deployed Engineer a good career path?</h3>
                 <p style="color: var(--text-secondary); line-height: 1.7;">Forward Deployed Engineering is one of the fastest-growing roles in enterprise software, with job postings growing 800% in 2025. FDEs develop a rare combination of technical depth and business context that opens paths to engineering management, solutions architecture, product management, customer engineering leadership, or founding a startup. The role's customer proximity gives FDEs insights that pure backend engineers rarely get.</p>
             </div>
-            </div>
 
             
     <div class="cta-box" id="subscribe">
@@ -304,7 +2402,7 @@
         <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
     </div>
 
-        </section>
+        </div>
 
     </main>
 
@@ -342,8 +2440,6 @@
                     <li><a href="/about/" class="footer__link">About</a></li>
                     <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
                     <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
-                    <li><a href="/privacy/" class="footer__link">Privacy</a></li>
-                    <li><a href="/terms/" class="footer__link">Terms</a></li>
                 </ul>
             </div>
             <div class="footer__col">

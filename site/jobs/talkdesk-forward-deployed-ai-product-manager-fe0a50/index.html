@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed AI Product Manager at Talk... | FDE Pulse</title>
+    <meta name="description" content="Forward Deployed AI Product Manager at Talkdesk. $187K - $312K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/">
+    <meta property="og:title" content="Forward Deployed AI Product Manager at Talk... | FDE Pulse">
+    <meta property="og:description" content="Forward Deployed AI Product Manager at Talkdesk. $187K - $312K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed AI Product Manager at Talk... | FDE Pulse">
+    <meta name="twitter:description" content="Forward Deployed AI Product Manager at Talkdesk. $187K - $312K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Forward Deployed AI Product Manager", "description": "About This Role:\n\n\n\nWe are hiring a Forward Deployed AI Product Manager (FDAPM) to be the connective tissue between our clients and our engineering teams. This is not a traditional PM role. You will live at the intersection of product strategy, technical delivery, and client partnership \\- spending meaningful time embedded with health system customers to deeply understand their workflows, then translating those insights into AI\\-powered solutions that ship.\n\n\n\nThink of this as: part Prod", "datePosted": "2026-04-19", "hiringOrganization": {"@type": "Organization", "name": "Talkdesk"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Seattle", "addressRegion": "WA", "addressCountry": "US"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/", "jobLocationType": "TELECOMMUTE", "baseSalary": {"@type": "MonetaryAmount", "currency": "USD", "value": {"@type": "QuantitativeValue", "minValue": 187000, "maxValue": 312000, "unitText": "YEAR"}}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Forward Deployed AI Product Manager at Talkdesk", "item": "https://fdepulse.com/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Talkdesk?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Talkdesk are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Forward Deployed AI Product Manager role?", "acceptedAnswer": {"@type": "Answer", "text": "The Forward Deployed AI Product Manager role at Talkdesk typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Talkdesk remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Talkdesk FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Talkdesk</span>
+                </nav>
+                    
+                    <div class="job-header__company">Talkdesk</div>
+                    <h1 class="job-header__title">Forward Deployed AI Product Manager</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag job-header__tag--salary">$187K - $312K</span>
+                        <span class="job-header__tag job-header__tag--remote">Remote</span>
+                        <span class="job-header__tag job-header__tag--seniority">Mid</span>
+                        <span class="job-header__tag">Posted April 19, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://www.indeed.com/viewjob?jk=4461e9b62ebbef03" target="_blank" rel="noopener" class="btn btn--primary">Apply on Indeed</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <h4><strong>About This Role:</strong></h4>
+<p>We are hiring a Forward Deployed AI Product Manager (FDAPM) to be the connective tissue between our clients and our engineering teams. This is not a traditional PM role. You will live at the intersection of product strategy, technical delivery, and client partnership - spending meaningful time embedded with health system customers to deeply understand their workflows, then translating those insights into AI-powered solutions that ship.</p>
+<p>Think of this as: part Product Manager, part Implementation Consultant, part Pre/Post-Sales Engineer. If you have spent time at Epic implementing enterprise software and have felt the pull toward product and AI, this role was built for you.</p>
+<h4><strong>What You'll Do:</strong></h4>
+<p><strong>Client Engagement & Discovery</strong></p>
+<ul><li>Serve as the primary product point of contact for a portfolio of health system clients, operating as a trusted advisor embedded in their workflows and operations.</li><li>Lead structured discovery engagements - interviews, workflow mapping, shadowing, and document analysis - to surface automation opportunities and unmet clinical or administrative needs.</li><li>Define the "art of the possible" for each client, helping them connect their operational pain points to our AI platform capabilities.</li><li>Own the relationship with clinical informatics, IT, and operations stakeholders at client sites, often working alongside C-suite sponsors.</li></ul>
+<p><strong>Solution Design & Scoping</strong></p>
+<ul><li>Translate real-world workflows - scheduling, patient outreach, referral management, prior authorizations, billing follow-up - into structured product and configuration requirements.</li><li>Design bespoke AI workflow solutions in collaboration with Forward Deployed Engineers (FDEs), Applied ML, and Solution Engineers; own the scoping and definition of each engagement.</li><li>Create and maintain living solution design documents, workflow maps, and specification artifacts that serve as the handoff to engineering.</li><li>Serve as the voice of the customer in internal roadmap and sprint planning discussions.</li></ul>
+<p><strong>Pilots, Deployment & Value Delivery</strong></p>
+<ul><li>Drive 01 deployments from pilot kickoff through go-live, owning timelines, stakeholder communication, and change management planning.</li><li>Define and track value metrics and outcome frameworks (time-to-value, call deflection rates, scheduling conversion, cost per contact) in partnership with clients and customer success.</li><li>Run structured pilots, capture learnings, and manage the iteration cycle to production-ready deployments.</li><li>Support expansion and renewal conversations by building ROI proof points and case-for-scale narratives.</li></ul>
+<p><strong>Product Feedback & Roadmap Influence</strong></p>
+<ul><li>Identify patterns across deployments and translate client-specific configurations into reusable product features that can benefit the broader customer base.</li><li>Act as the bridge between field deployments and the core product roadmap, surfacing high-priority gaps, edge cases, and workflow requirements that should be productized.</li><li>Contribute to internal knowledge bases, playbooks, and templates that systematize the FDAPM practice as we scale.</li><li>Collaborate closely with FDEs, ML engineers, and product leadership on the "design partner product" motion.</li></ul>
+<h4><strong>What We're Looking For:</strong></h4>
+<p><strong>Required Qualifications</strong></p>
+<ul><li>5+ years of experience in healthcare technology, with hands-on exposure to provider operations in one or more of the following domains: Patient Access (scheduling, referrals, prior auth), Care Management (outreach, care coordination, transitions of care), or Revenue Cycle (billing, collections, denial management, coding).</li><li>Demonstrated experience in a client-facing delivery role - implementation, technical project management, solution consulting, or customer success - where you owned outcomes, not just activities.</li><li>Ability to quickly understand and map complex clinical and administrative workflows, then distill them into structured requirements and prioritized problem statements.</li><li>Strong written and verbal communication skills; able to present to VP/C-suite health system stakeholders and translate between clinical, operational, and technical audiences.</li><li>Comfortable operating in ambiguity and whitespace; you default to action and bring structure to uncertainty.</li><li>Curiosity about AI and automation; you don't need to be an engineer, but you must be genuinely excited by what AI can do in healthcare and eager to develop deep product fluency in this space.</li><li>Willingness to travel up to 25–35% to client sites for discovery, go-live support, and executive meetings.</li></ul>
+<p><strong>Preferred Qualifications</strong></p>
+<ul><li>Experience at Epic Systems in a Project Manager, Implementation Consultant, Technical Services, or similar role - ideally in modules such as Cadence, Resolute PB/HB, HIM/ROI, MyChart, or Epic Cheers.</li><li>Prior experience in a startup or high-growth technology company in a PM, solutions engineering, or FDE-adjacent capacity.</li><li>Familiarity with contact center technology (CCaaS, IVR, conversational AI, NLP) or prior exposure to platforms such as Genesys, NICE, Five9, Nuance, or similar.</li><li>Understanding of HL7 FHIR, APIs, EHR integrations, or healthcare interoperability standards.</li><li>Experience building or contributing to product roadmaps, writing PRDs, or working in Agile/scrum delivery processes.</li><li>Background or experience in healthcare administration, clinical informatics, health IT, nursing, or a related field.</li></ul>
+<h4><strong>How Success Is Measured:</strong></h4>
+<p>This role is outcome-oriented. You will be evaluated on the impact you create — not just the activities you complete. Key success indicators include:</p>
+<ul><li>Time-to-value: Speed from discovery kickoff to production-ready AI deployment for each client engagement.</li><li>Pilot success rate: Percentage of pilots advancing to full-scale production rollout.</li><li>Expansion & renewal: Your accounts renew and grow - driven by measurable, documented ROI.</li><li>Product feedback quality: Volume and quality of field insights surfaced into the core product roadmap.</li><li>Client health: NPS, engagement, and stakeholder relationship scores across your portfolio.</li></ul>
+<p><strong>Pay Range (Base Pay)</strong>: $187,000 - $312,000</p>
+<p><strong>Other Types of Pay</strong>: Based on level and role the employee may be eligible for long term incentives in the form of equity and short term incentives of either bonus or commission.</p>
+<p><strong>Health Insurance</strong>: Medical, Dental, Vision, Life and Disability Insurance, Employee Assistance Program (EAP).</p>
+<p><strong>Retirement Benefits</strong>: 401(k) plan</p>
+<p><strong>Paid Time Off</strong>: Talkdesk offers an uncapped paid time off program, subject to manager approval and consistent with business needs.</p>
+<p><strong>Paid Holidays</strong>: Talkdesk offers 14 paid holidays each year.</p>
+<p><strong>Paid Sick Leave</strong>: Employees have uncapped paid time off, subject to manager approval and consistent with business needs.</p>
+<p><strong>Method of Application</strong>: Apply online.</p>
+<p><strong>Application Window</strong>: The application window is expected to close at least 7 days from the posting date. The application was posted on 04/20/2026.</p>
+<p>All questions or concerns about this posting should be directed to the Talent team at talent@talkdesk.com.</p>
+<p>Talkdesk is pioneering a new era of Customer Experience Automation (CXA), redefining how the world's most admired brands interact with their customers through AI. Our global team of courageous innovators is customer-obsessed, building AI-first solutions that put empathy, trust, and transparency at the center of every interaction. We foster an inclusive culture where diverse perspectives drive our success and every voice belongs. Combining the stability of a global leader with the agility of a disruptor, Talkdeskers are empowered with the autonomy to drive meaningful impact, while giving back to the communities and environment around us.</p>
+<p>Talkdesk has been recognized as a Leader in the Gartner® Magic Quadrant™ for Contact Center as a Service (CCaaS) and in the G2 Overall Grid® Reports for AI Agents and Contact Center. With seven consecutive years on the Forbes Cloud 100 and multiple AI Breakthrough awards, there has never been a more exciting time to join us as we shape the future of customer experience automation!</p>
+<p><strong>Work Environment and Physical Requirements:</strong></p>
+<p>Primarily office-environment work, extended periods of sitting or standing, computer-based work. Limited lifting, and equipment usage limited to computer-related equipment (keyboards, mouse, etc.)</p>
+<p>The Talkdesk story hinges on empathy and acceptance. It is the shared goal among all Talkdeskers to empower a new kind of customer hero through our innovative software solution, and we firmly believe that the best path to success for our mission is inclusivity, diversity, and genuine acceptance. To that end, we will hire, promote, work along, cheer for, bond with, and warmly welcome into the Talkdesk family all persons without regard to ethnic and racial identity, indigenous heritage, national origin, religion, gender, gender identity, gender expression, sexual orientation, age, disability, marital status, veteran status, genetic information, or any other legally protected status.</p>
+                        </div>
+                    </div>
+                    
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/rippling-manager-forward-deployed-engineering-544e3d/" class="similar-job">
+                    <div class="similar-job__company">Rippling</div>
+                    <div class="similar-job__title">Manager, Forward Deployed Engineering</div>
+                    <div class="similar-job__salary">$138K - $230K</div>
+                </a>
+                <a href="/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/" class="similar-job">
+                    <div class="similar-job__company">Fractional AI</div>
+                    <div class="similar-job__title">Associate Forward Deployed Product Manager</div>
+                    <div class="similar-job__salary">$160K - $180K</div>
+                </a>
+                <a href="/jobs/google-manager-forward-deployed-engineering-generative-ai-google-cloud-a3e5ff/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Manager, Forward Deployed Engineering, Generative AI, Google Cloud</div>
+                    <div class="similar-job__salary">$234K - $325K</div>
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Talkdesk</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">Remote</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Level</span>
+                        <span class="sidebar-card__value">Mid</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Salary</span>
+                        <span class="sidebar-card__value"><span class="sidebar-card__value--salary">$187K - $312K</span></span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">April 19, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Indeed</span>
+                    </div>
+                    </div>
+                    <a href="https://www.indeed.com/viewjob?jk=4461e9b62ebbef03" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Indeed
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

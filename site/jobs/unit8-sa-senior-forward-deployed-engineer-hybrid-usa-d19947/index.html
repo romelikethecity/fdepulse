@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Forward Deployed Engineer (Hybrid, U... | FDE Pulse</title>
+    <meta name="description" content="Senior Forward Deployed Engineer (Hybrid, USA) at Unit8 SA. $120K - $150K. Charlotte, NC, US. View role details, requirements, and apply. FDE jobs updated we.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/">
+    <meta property="og:title" content="Senior Forward Deployed Engineer (Hybrid, U... | FDE Pulse">
+    <meta property="og:description" content="Senior Forward Deployed Engineer (Hybrid, USA) at Unit8 SA. $120K - $150K. Charlotte, NC, US. View role details, requirements, and apply. FDE jobs updated we.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Senior Forward Deployed Engineer (Hybrid, U... | FDE Pulse">
+    <meta name="twitter:description" content="Senior Forward Deployed Engineer (Hybrid, USA) at Unit8 SA. $120K - $150K. Charlotte, NC, US. View role details, requirements, and apply. FDE jobs updated we.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Senior Forward Deployed Engineer (Hybrid, USA)", "description": "Unit8, founded in 2017, is a high\\-tech, dynamic Swiss leader in AI and data analytics consulting, renowned for solving complex challenges in traditional industries such as automotive, chemical, financial services, manufacturing, and pharma. Our esteemed partnerships with industry giants like Palantir, NVIDIA, and OpenAI underscore our commitment to excellence. With over 200 successful projects and a team of 150\\+ talented professionals across Switzerland, Poland, and Germany, we are", "datePosted": "2026-04-29", "hiringOrganization": {"@type": "Organization", "name": "Unit8 SA"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Charlotte", "addressRegion": "NC", "addressCountry": "US"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/", "baseSalary": {"@type": "MonetaryAmount", "currency": "USD", "value": {"@type": "QuantitativeValue", "minValue": 120000, "maxValue": 150000, "unitText": "YEAR"}}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Senior Forward Deployed Engineer (Hybrid, USA)...", "item": "https://fdepulse.com/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Unit8 SA?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Unit8 SA are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Senior Forward Deployed Engineer (Hybrid, USA) role?", "acceptedAnswer": {"@type": "Answer", "text": "The Senior Forward Deployed Engineer (Hybrid, USA) role at Unit8 SA typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Unit8 SA remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Unit8 SA FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Unit8 SA</span>
+                </nav>
+                    
+                    <div class="job-header__company">Unit8 SA</div>
+                    <h1 class="job-header__title">Senior Forward Deployed Engineer (Hybrid, USA)</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag job-header__tag--salary">$120K - $150K</span>
+                        <span class="job-header__tag">Charlotte, NC, US</span>
+                        <span class="job-header__tag">Posted April 29, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://www.indeed.com/viewjob?jk=1c553bc75a3500e0" target="_blank" rel="noopener" class="btn btn--primary">Apply on Indeed</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <p>Unit8, founded in 2017, is a high-tech, dynamic Swiss leader in AI and data analytics consulting, renowned for solving complex challenges in traditional industries such as automotive, chemical, financial services, manufacturing, and pharma. Our esteemed partnerships with industry giants like <strong>Palantir</strong>, <strong>NVIDIA</strong>, and <strong>OpenAI</strong> underscore our commitment to excellence. With over 200 successful projects and a team of 150+ talented professionals across Switzerland, Poland, and Germany, we are now expanding our footprint to the USA.</p>
+<p>Unit8 is dedicated to driving <strong>AI adoption in non-digital industries</strong>, accelerating their digital transformation. We invest in projects that matter, including pro-bono initiatives and "engineering for good" causes.</p>
+<p><strong>Requirements</strong></p>
+<p>About You Following our remarkable growth in Switzerland, Poland, and Germany, Unit8 is expanding into the US market. We are seeking a <strong>Senior Forward Deployed Engineer</strong> who will work directly with customers, owning delivery strategy and implementation.</p>
+<p>What You'll do As a core member of our agile project teams, you will be responsible for designing, building, and maintaining robust data solutions and infrastructure. You will work on cutting-edge data and AI topics to solve real-world business problems for our clients.</p>
+<p>Your responsibilities will include:</p>
+<ul><li>Developing, deploying, and troubleshooting complex data pipelines and processing systems using a variety of open-source and closed-source technologies, with a strong focus on Foundry.</li><li>Driving optimization, testing, and tooling to ensure exceptional data quality.</li><li>Collaborating with other software engineers, ML experts, and stakeholders in a cross-functional agile environment.</li><li>Working in multi-functional agile teams to continuously experiment, iterate and deliver on new product objectives.</li></ul>
+<p>What You Bring<strong>The Experience</strong></p>
+<ul><li><strong>Deep Domain Expertise:</strong> Minimum 5 years of experience in software/data engineering or data science. You have deep expertise in at least one key domain (Data Engineering, Data Science, Cloud Engineering, or GenAI).</li><li><strong>Commercial Fluency:</strong> proven experience in pre-sales, proposal design, or technical advisory where you influenced executive decision-making.</li><li><strong>GenAI/LLM Context:</strong> For relevant tracks, you have past experience building solutions with LLMs and a deep understanding of the overall GenAI landscape (Evaluation, Training, Problem Decomposition).</li></ul>
+<p><strong>The Mindset</strong></p>
+<ul><li>You have an engineering mindset focused on delivering working solutions. You prioritize solving real business problems over theoretical perfection or academic benchmarks.</li><li>You are comfortable working in a dynamic environment with evolving objectives. You can collaborate efficiently with both technical engineers and non-technical business stakeholders.</li><li>You feel a sense of ownership over the company’s technical reputation and are eager to train those coming up behind you.</li></ul>
+<p><strong>The Essentials</strong></p>
+<ul><li>Experience with programming/scripting, such as <strong>Python</strong> and/or <strong>SQL</strong>.</li><li>Proficiency in Palantir Foundry (nice-to-have)</li><li>Strong foundation in Computer Science, Mathematics, Physics, or related engineering fields.</li><li>Willingness to travel (min. 10%) to client sites to drive implementation success and build relationships.</li><li><strong>Strong client-facing skills:</strong> You are comfortable interacting with both business and technical clients, giving presentations, and possess a strong problem-solving mindset.</li></ul>
+<p><strong>Location:</strong> perfectly you're currently located in Denver Colorado or Charlotte, North Carolina (or willing to relocate).</p>
+<p><strong>Benefits</strong> <strong>What we offer?</strong></p>
+<ul><li><strong>High-Stakes Work:</strong> You will work on critical projects that transform how major industries operate.</li><li><strong>A "Builder" Culture:</strong> We are not a slide-deck consultancy. We build things that work. You will be surrounded by engineers and data scientists who share your passion for execution.</li><li><strong>Pioneering role and autonomy:</strong> As a key member of our US growth, you will have the freedom to shape how we deliver value in this new market.</li><li><strong>Groundbreaking Opportunity:</strong> You will play a pivotal role in establishing Unit8's footprint in the USA, driving the growth and impact of our operations in this emerging market.</li><li><strong>Rewarding Package:</strong> The estimated base salary range for this position is <strong>$120,000 – $150,000</strong>. In addition to base pay, total compensation includes an <strong>annual bonus</strong> based on individual and company performance. We also offer a <strong>401(k) retirement plan</strong> and comprehensive <strong>health insurance</strong>. Final compensation will be determined based on the candidate’s qualifications, experience, and skills.</li></ul>
+<p>*Unit8 is committed to creating a diverse and inclusive workplace where all individuals are valued and respected. We believe that diversity drives innovation and enhances our ability to serve our clients effectively. As an equal opportunity employer, we welcome applications from all qualified individuals regardless of race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability, veteran status, or any other legally protected status. We are dedicated to fostering an environment where everyone can thrive and contribute to our mission.*</p>
+<p><strong>We look forward to hearing from you!</strong></p>
+                        </div>
+                    </div>
+                    
+<div class="fde-about">
+    <h3>About Forward Deployed Engineering</h3>
+    <p>Forward Deployed Engineers are embedded directly with customers to build custom solutions, integrate products into existing infrastructure, and bridge the gap between product engineering and customer success. The role combines deep technical skills with the ability to operate in client environments and translate business requirements into working software.</p>
+    <p>Originally pioneered by Palantir, the FDE model has spread across AI, enterprise SaaS, and cloud infrastructure companies. FDEs write production code, architect integrations, train customer teams, and feed product insights back to the core engineering organization. At companies like OpenAI, Salesforce, and Databricks, FDE teams are treated as elite engineering units that can ship custom solutions in days rather than quarters.</p>
+    <p>Typical FDE stack: Python, TypeScript, SQL, REST/GraphQL APIs, cloud platforms (AWS/GCP/Azure), and increasingly LLM APIs and AI orchestration frameworks. Strong communication and the ability to context-switch between technical and business conversations are as important as coding ability.</p>
+</div>
+
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/google-forward-deployed-engineering-manager-generative-ai-google-cloud-ff6a41/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Forward Deployed Engineering Manager, Generative AI, Google Cloud</div>
+                    <div class="similar-job__salary">$183K - $265K</div>
+                </a>
+                <a href="/jobs/google-customer-engineer-i-platform-saisv-google-cloud-17fd3f/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Customer Engineer I, Platform, SAISV, Google Cloud</div>
+                    <div class="similar-job__salary">$105K - $151K</div>
+                </a>
+                <a href="/jobs/google-platform-customer-engineer-financial-services-google-cloud-88f393/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Platform Customer Engineer, Financial Services, Google Cloud</div>
+                    <div class="similar-job__salary">$153K - $222K</div>
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Unit8 SA</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">Charlotte, NC, US</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Salary</span>
+                        <span class="sidebar-card__value"><span class="sidebar-card__value--salary">$120K - $150K</span></span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">April 29, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Indeed</span>
+                    </div>
+                    </div>
+                    <a href="https://www.indeed.com/viewjob?jk=1c553bc75a3500e0" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Indeed
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

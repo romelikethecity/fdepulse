@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associate Forward Deployed Product Manager... | FDE Pulse</title>
+    <meta name="description" content="Associate Forward Deployed Product Manager at Fractional AI. $160K - $180K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FD.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/">
+    <meta property="og:title" content="Associate Forward Deployed Product Manager... | FDE Pulse">
+    <meta property="og:description" content="Associate Forward Deployed Product Manager at Fractional AI. $160K - $180K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FD.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Associate Forward Deployed Product Manager... | FDE Pulse">
+    <meta name="twitter:description" content="Associate Forward Deployed Product Manager at Fractional AI. $160K - $180K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FD.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Associate Forward Deployed Product Manager", "description": "About Fractional AI\n=======================\n\n\nHow do you turn a decades\\-old dataset into an industry\\-leading medical coding agent? Teach an AI receptionist to book appointments in Spanish? Automatically generate working data connectors from API docs? Build agents that write, test, and deploy their own software packages?\n\n\nFractional AI is a startup in the heart of Silicon Valley targeting the biggest greenfield opportunity in the economy: transforming companies with AI software at a scale ", "datePosted": "2026-04-27", "hiringOrganization": {"@type": "Organization", "name": "Fractional AI"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "San Francisco", "addressRegion": "CA", "addressCountry": "US"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/", "jobLocationType": "TELECOMMUTE", "baseSalary": {"@type": "MonetaryAmount", "currency": "USD", "value": {"@type": "QuantitativeValue", "minValue": 160000, "maxValue": 180000, "unitText": "YEAR"}}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Associate Forward Deployed Product Manager at F...", "item": "https://fdepulse.com/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Fractional AI?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Fractional AI are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Associate Forward Deployed Product Manager role?", "acceptedAnswer": {"@type": "Answer", "text": "The Associate Forward Deployed Product Manager role at Fractional AI typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Fractional AI remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Fractional AI FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Fractional AI</span>
+                </nav>
+                    
+                    <div class="job-header__company">Fractional AI</div>
+                    <h1 class="job-header__title">Associate Forward Deployed Product Manager</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag job-header__tag--salary">$160K - $180K</span>
+                        <span class="job-header__tag job-header__tag--remote">Remote</span>
+                        <span class="job-header__tag job-header__tag--seniority">Mid</span>
+                        <span class="job-header__tag">Posted April 27, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://www.indeed.com/viewjob?jk=b6009c8fdbfa06fe" target="_blank" rel="noopener" class="btn btn--primary">Apply on Indeed</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <p><strong>About Fractional AI</strong> =======================</p>
+<p>How do you turn a decades-old dataset into an industry-leading medical coding agent? Teach an AI receptionist to book appointments in Spanish? Automatically generate working data connectors from API docs? Build agents that write, test, and deploy their own software packages?</p>
+<p>Fractional AI is a startup in the heart of Silicon Valley targeting the biggest greenfield opportunity in the economy: transforming companies with AI software at a scale the market is only beginning to understand. Our clients include Zapier, Airbyte, and companies from industries ranging from data infrastructure to healthcare and life sciences.</p>
+<p>We were founded by repeat founders Chris Taylor, Eddie Siegel, and Travis May (Founder of Datavant, $7B exit), and are backed by Shaper Capital. Most of our engineers are former founders or staff engineers from top tech companies like Google and Stripe.</p>
+<p>We're headquartered in SF with additional offices in NYC, Raleigh-Durham, and Dubai.</p>
+<p><strong>About the role</strong></p>
+<p>Our customers come to us with ambitious, often fuzzy goals—*make content moderation faster*, *customer service cheaper and better*, *unlock new integrations*, *automate the workflows no one else can touch*.</p>
+<p>Your job is to turn those goals into AI-powered solutions that actually work in the real world—and to own the journey from first conversation live system real business impact. *You’ll work closely with experienced team members while ramping to own parts of projects end-to-end. Ownership scales with performance: you will take on more responsibility, including running projects, as soon as you demonstrate you’re ready.*</p>
+<p>This is a <strong>forward-deployed, full-stack customer role</strong>.</p>
+<ul><li>Part <strong>engagement manager</strong> (*you build trust quickly and own key parts of the day-to-day with client*)</li><li>Part <strong>product manager</strong> (you *help drive* what we build and why)</li><li>Part <strong>delivery/program manager</strong> (you run the execution motion)</li><li>Part <strong>“do whatever it takes” operator</strong> (you jump into the gaps to keep things moving *without waiting to be asked*)</li></ul>
+<p><strong>What you’ll do</strong></p>
+<p>*You will take ownership of execution and delivery operations while building towards full ownership of end-to-end projects.*</p>
+<p><strong>Own the customer relationship end-to-end</strong></p>
+<ul><li>*Build strong day-to-day relationships with customers and grow into a trusted partner*</li><li>Join early-stage calls, run discovery, synthesize feedback, and keep customers aligned on what we’re building and why.</li><li>Build trusted relationships across all levels of an organization, setting clear expectations and being candid about tradeoffs.</li></ul>
+<p><strong>Shape what we build and why</strong></p>
+<ul><li>*Contribute to defining product builds, refining scope, and identifying high-leverage use cases*</li><li>Translate ambiguous business problems into crisp problem statements, user journeys, and success metrics.</li><li>Work with customers to define what “success” actually means—then design experiments, KPIs, and dashboards to prove it.</li></ul>
+<p><strong>Turn messy problems into shipped solutions</strong></p>
+<ul><li>Translate ambiguous customer needs into clear requirements, PRDs, and plans for engineers.</li><li>Shape workflows, edge cases, evaluation criteria, and deployment success metrics for AI-powered systems.</li><li>Sit in the loop with engineering: prioritization, tradeoffs, testing, evals, and launches.</li></ul>
+<p><strong>Drive execution across multiple AI builds</strong></p>
+<ul><li>*Increase team leverage by owning delivery mechanics: tracking progress, coordinating stakeholders, and unblocking projects*</li><li>Run the day-to-day execution rhythm: stand-ups, planning, check-ins, risk/issue tracking, and runway management.</li><li>Coordinate between customers, engineers, designers, and other Fractional teammates to keep projects unblocked and moving.</li><li>*Own timelines, track delivery quality, and proactively flag risks with clear recommendations*</li></ul>
+<p><strong>Help create demand, not just fulfill it</strong></p>
+<ul><li>Jump on early, messy conversations where the “project” is still a vague idea.</li><li>Help founders and sales tease out real pain, sketch solution approaches live, and scope engagements that we can actually deliver.</li><li>Spot expansion opportunities and help turn successful deployments into broader, long-term partnerships.</li></ul>
+<p><strong>Drive adoption and long-term impact</strong></p>
+<ul><li>Work with client teams on rollout, enablement, and change management—so the systems you build actually get used.</li><li>Monitor performance, gather qualitative and quantitative feedback, and push for improvements where they matter most.</li><li>Bring back insights and patterns that inform Fractional’s internal playbooks, tooling, and product direction.</li></ul>
+<p><strong>Bring judgment and clarity</strong></p>
+<ul><li>When requirements are fuzzy, data is messy, or customers change course, you’ll break the problem down and *help drive* toward the highest-impact solution.</li><li>Be the person in the room who can say, “Here’s what we’re actually trying to do, here’s what we know, here’s the plan.”</li></ul>
+<p><strong>What you bring</strong></p>
+<p><strong>Customer-facing, high-stakes experience</strong></p>
+<ul><li>You’ve *taken significant ownership in* *projects where* customers were under pressure, stakeholders weren’t aligned, and the path wasn’t obvious.</li><li>You’re comfortable pushing back, reframing the problem, and holding the line on quality.</li></ul>
+<p><strong>Real product & delivery experience</strong></p>
+<ul><li>You’ve built and shipped products or services in partnership with engineers and designers—ideally across multiple cycles.</li><li>You know how to run an execution rhythm (stand-ups, planning, tracking, retros) without turning it into process theater.</li></ul>
+<p><strong>Structured problem-solving and communication</strong></p>
+<ul><li>You ask good questions, structure chaos, and turn ambiguity into a plan.</li><li>You can go from whiteboarding with execs to writing a crisp doc for engineers without losing the plot.</li><li>*You can explain ideas simply, avoid jargon, and tie your work directly to business value*</li></ul>
+<p><strong>Bias for action and ownership</strong></p>
+<ul><li>You roll up your sleeves and make things happen, whether that’s writing a scrappy SQL query, drafting a support playbook, or jumping into a last-minute exec demo.</li></ul>
+<p><strong>Experience range</strong></p>
+<ul><li>Typically <strong>*1-3</strong><strong>**years</strong>*in product, consulting, implementations, or any role where execution and customer trust mattered more than your job title. (We care more about what you’ve done than the exact label on your resume.)</li></ul>
+<p><strong>Comfort with ambiguity and intensity</strong></p>
+<ul><li>You like high-energy environments, messy problems, and “we haven’t done this before” projects.</li><li>You can juggle multiple customers, keep priorities straight, and make good calls with incomplete information.</li></ul>
+<p><strong>AI curiosity, not AI dogma</strong></p>
+<ul><li>You don’t need deep AI expertise on day one. You do need curiosity, strong reasoning, and a desire to learn fast—and to overuse AI in your own workflow.</li></ul>
+<p><strong>In your first 30 days, you might…</strong></p>
+<ul><li>Take *ownership of execution for a live customer project and become a key driver of day-to-day delivery*</li><li>Run discovery sessions and turn a fuzzy problem into a clear plan for engineers, complete with success metrics and a first milestone.</li><li>Lead regular client meetings, track progress, and keep delivery smooth—flagging risks early and offering options instead of surprises.</li><li>*Support* high-stakes moments—like demoing a prototype to a CTO or VP, handling sharp questions, and steering the conversation toward outcomes.</li><li>Kick off a second project in a totally different industry, learning new workflows on the fly.</li><li>Overuse AI: from note-taking and research to drafting docs and testing prototypes.</li><li>Plug into Fractional’s rhythm—from Project Lunch & Learns to our monthly Happy Hour—and start shaping how we deliver applied AI, not just what we deliver.</li><li>*You will be expected to grow into independently running projects within 12-24 months. But there*</li></ul>
+<p><strong>Why you should (and shouldn’t) join us</strong> ==========================================</p>
+<p>We believe in transparency and know joining a company is a big decision. We’re not the best fit for everyone and try to be clear on what we are and what we’re not so you make the choice that’s right for you.</p>
+<p>*Why join Fractional?*</p>
+<ul><li>A front-row seat to the AI revolution: In one year at Fractional AI, you will have led many 0-to-1 gen AI builds for leading companies, quickly becoming an expert in applied AI.</li><li>A huge and growing problem space: Getting gen AI into production is the challenge of our time – with legacy consulting firms already driving several billion dollars per year on genAI advising revenue. Most offerings on the market don’t meet the need – they are one size fits all product solutions or advising services without the engineering team to deliver. We offer the engineering talent to meet the need.</li><li>A team of veteran founders: The team is built from multi-time founders and co-founded by Travis May, former CEO of LiveRamp and founder + former CEO of Datavant.</li></ul>
+<p>*Why you shouldn't join?*</p>
+<ul><li>We are unapologetically building an engineering-first culture. This is how we build the team to meet the moment. We overdeliver for our clients by crafting a culture that enables the best engineers to thrive.</li><li>We are a professional services business. Building for clients and their customers is distinctly different from building for your own product’s customer or users. It’s not for everyone.</li><li>We are in-person. We’re committed to building an in-person team in our San Francisco and New York City offices. This enables us to learn faster together. For the right person, this is a pro, not a con, but it’s non-negotiable.</li></ul>
+<p><strong>Our Values</strong> ==============</p>
+<p>We overdeliver.</p>
+<p>We overuse AI.</p>
+<p>We “over engineer” the culture.</p>
+<p><strong>Location</strong> ============</p>
+<p><strong>San Francisco, CA</strong></p>
+<p>Work Arrangement: 4 days in-person, Fridays remote</p>
+<p><strong>Compensation & Benefits</strong> ============================</p>
+<p>Competitive Compensation Package: Attractive salary and meaningful equity aligned with your experience and skills.</p>
+<p>401k with Matching: Invest in your future with our company-matched retirement plan.</p>
+<p>Unlimited PTO: Take the time you need to relax and rejuvenate.</p>
+<p>Exceptional Medical, Dental, and Vision Coverage: Comprehensive health benefits to keep you and your family healthy.</p>
+<p>Health FSA: Manage out-of-pocket health expenses effectively.</p>
+<p>Commuter Benefits: Make your travel to work easier and more affordable.</p>
+<p>Life Insurance: Providing peace of mind for you and your loved ones.</p>
+<p>Team Events and Activities: Regular events to build camaraderie and a strong team spirit.</p>
+<p>Compensation Range: $160K - $180K</p>
+                        </div>
+                    </div>
+                    
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/rippling-manager-forward-deployed-engineering-544e3d/" class="similar-job">
+                    <div class="similar-job__company">Rippling</div>
+                    <div class="similar-job__title">Manager, Forward Deployed Engineering</div>
+                    <div class="similar-job__salary">$138K - $230K</div>
+                </a>
+                <a href="/jobs/google-manager-forward-deployed-engineering-generative-ai-google-cloud-a3e5ff/" class="similar-job">
+                    <div class="similar-job__company">Google</div>
+                    <div class="similar-job__title">Manager, Forward Deployed Engineering, Generative AI, Google Cloud</div>
+                    <div class="similar-job__salary">$234K - $325K</div>
+                </a>
+                <a href="/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/" class="similar-job">
+                    <div class="similar-job__company">Talkdesk</div>
+                    <div class="similar-job__title">Forward Deployed AI Product Manager</div>
+                    <div class="similar-job__salary">$187K - $312K</div>
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Fractional AI</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">Remote</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Level</span>
+                        <span class="sidebar-card__value">Mid</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Salary</span>
+                        <span class="sidebar-card__value"><span class="sidebar-card__value--salary">$160K - $180K</span></span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">April 27, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Indeed</span>
+                    </div>
+                    </div>
+                    <a href="https://www.indeed.com/viewjob?jk=b6009c8fdbfa06fe" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Indeed
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
