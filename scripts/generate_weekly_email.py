@@ -293,11 +293,9 @@ def generate_email_html(diff, date_str, issue_number):
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td width="44" valign="middle">
-          <div style="width: 40px; height: 40px;
-                      background: linear-gradient(135deg, {BRAND['amber']} 0%, {BRAND['amber_dark']} 100%);
-                      border-radius: 8px; text-align: center; line-height: 40px;
-                      font-size: 22px; font-weight: 900; color: {BRAND['white']};
-                      letter-spacing: -2px;">&#10095;&#10095;</div>
+          <img src="https://fdepulse.com/apple-touch-icon.png"
+               alt="FDE Pulse" width="40" height="40"
+               style="display: block; width: 40px; height: 40px; border-radius: 8px;">
         </td>
         <td valign="middle" style="padding-left: 12px;">
           <span style="font-size: 18px; font-weight: 700; color: {BRAND['white']};">FDE Pulse</span>
