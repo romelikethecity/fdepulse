@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDE Pulse — Brand Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #0F1923;
+    color: #fff;
+    padding: 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .section { margin-bottom: 64px; }
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ---- Logo Section ---- */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .logo-card {
+    background: #162232;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-card.light { background: #f0f0f0; }
+  .logo-card img { max-width: 100%; height: auto; }
+  .logo-card .mark { width: 64px; height: 64px; }
+  .logo-card .lockup { width: 240px; }
+  .logo-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+  .logo-card.light .logo-label { color: rgba(0,0,0,0.4); }
+
+  /* ---- Favicon Section ---- */
+  .favicon-row {
+    display: flex;
+    align-items: end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .favicon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .favicon-item img { border-radius: 8px; }
+  .favicon-item span { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  /* ---- Color Section ---- */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .swatch-color {
+    height: 80px;
+    display: flex;
+    align-items: end;
+    padding: 12px;
+  }
+  .swatch-info {
+    padding: 12px;
+    background: #162232;
+  }
+  .swatch-name { font-size: 14px; font-weight: 600; }
+  .swatch-hex { font-size: 12px; color: rgba(255,255,255,0.5); font-family: 'Source Code Pro', monospace; }
+
+  /* ---- Typography Section ---- */
+  .type-sample { margin-bottom: 24px; }
+  .type-sample .weight-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+    font-family: 'Source Code Pro', monospace;
+  }
+  .type-sample h1 { font-size: 40px; font-weight: 700; line-height: 1.25; letter-spacing: -0.5px; }
+  .type-sample h2 { font-size: 32px; font-weight: 700; line-height: 1.25; }
+  .type-sample h3 { font-size: 24px; font-weight: 600; line-height: 1.3; }
+  .type-sample .body-lg { font-size: 18px; line-height: 1.7; color: rgba(255,255,255,0.85); }
+  .type-sample .body { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.6); }
+  .type-sample .mono { font-family: 'Source Code Pro', monospace; font-size: 14px; color: #F59E0B; }
+  .accent { color: #F59E0B; }
+
+  /* ---- Component Preview ---- */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .card-preview {
+    background: #162232;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-preview:hover {
+    background: #1C2D3F;
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.08);
+  }
+  .card-preview .badge {
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.15);
+    color: #F59E0B;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    margin-bottom: 12px;
+  }
+  .card-preview h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .card-preview p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 16px; }
+  .card-preview .meta { font-size: 13px; color: rgba(255,255,255,0.4); }
+  .card-preview .meta span { margin-right: 16px; }
+  .card-preview .salary { color: #F59E0B; font-weight: 600; }
+
+  .btn-primary {
+    display: inline-block;
+    background: #F59E0B;
+    color: #0F1923;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 200ms;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: #FBBF24; }
+
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 200ms;
+    text-decoration: none;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+  .btn-row { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  /* ---- Header Preview ---- */
+  .header-preview {
+    background: rgba(15, 25, 35, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .header-preview .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-preview .logo-area img { width: 36px; height: 36px; }
+  .header-preview .logo-area .name { font-weight: 700; font-size: 18px; }
+  .header-preview .logo-area .name .pulse { color: rgba(255,255,255,0.5); font-weight: 500; }
+  .header-preview nav { display: flex; gap: 24px; }
+  .header-preview nav a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 200ms;
+  }
+  .header-preview nav a:hover { color: #fff; }
+  .header-preview nav a.active { color: #F59E0B; }
+</style>
+</head>
+<body>
+
+<!-- HEADER PREVIEW -->
+<div class="section">
+  <div class="section-title">Header Preview</div>
+  <div class="header-preview">
+    <div class="logo-area">
+      <img src="svg/logo-mark.svg" alt="FDE Pulse">
+      <div class="name">FDE <span class="pulse">Pulse</span></div>
+    </div>
+    <nav>
+      <a href="#" class="active">Jobs</a>
+      <a href="#">Salaries</a>
+      <a href="#">Companies</a>
+      <a href="#">Insights</a>
+      <a href="#">About</a>
+    </nav>
+  </div>
+</div>
+
+<!-- LOGOS -->
+<div class="section">
+  <div class="section-title">Logo System</div>
+  <div class="logo-grid">
+    <div class="logo-card">
+      <img src="svg/logo-mark.svg" class="mark" alt="Mark — amber">
+      <span class="logo-label">Mark — Amber</span>
+    </div>
+    <div class="logo-card">
+      <img src="svg/logo-mark-white.svg" class="mark" alt="Mark — white">
+      <span class="logo-label">Mark — White</span>
+    </div>
+    <div class="logo-card light">
+      <img src="svg/logo-mark-dark.svg" class="mark" alt="Mark — dark">
+      <span class="logo-label" style="color:rgba(0,0,0,0.4)">Mark — Dark</span>
+    </div>
+    <div class="logo-card">
+      <img src="svg/logo-lockup-horizontal-dark.svg" class="lockup" alt="Lockup — dark bg">
+      <span class="logo-label">Lockup — Dark BG</span>
+    </div>
+    <div class="logo-card light">
+      <img src="svg/logo-lockup-horizontal-light.svg" class="lockup" alt="Lockup — light bg">
+      <span class="logo-label" style="color:rgba(0,0,0,0.4)">Lockup — Light BG</span>
+    </div>
+  </div>
+</div>
+
+<!-- FAVICONS -->
+<div class="section">
+  <div class="section-title">Favicon Suite</div>
+  <div class="favicon-row">
+    <div class="favicon-item">
+      <img src="favicons/android-chrome-512x512.png" width="96" height="96" alt="512">
+      <span>512px</span>
+    </div>
+    <div class="favicon-item">
+      <img src="favicons/android-chrome-192x192.png" width="64" height="64" alt="192">
+      <span>192px</span>
+    </div>
+    <div class="favicon-item">
+      <img src="favicons/apple-touch-icon.png" width="48" height="48" alt="180">
+      <span>180px (Apple)</span>
+    </div>
+    <div class="favicon-item">
+      <img src="favicons/favicon-32x32.png" width="32" height="32" alt="32">
+      <span>32px</span>
+    </div>
+    <div class="favicon-item">
+      <img src="favicons/favicon-16x16.png" width="16" height="16" alt="16">
+      <span>16px</span>
+    </div>
+  </div>
+</div>
+
+<!-- COLORS -->
+<div class="section">
+  <div class="section-title">Color Palette</div>
+  <div class="color-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F59E0B"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Amber</div>
+        <div class="swatch-hex">#F59E0B</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FBBF24"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Amber Light</div>
+        <div class="swatch-hex">#FBBF24</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#D97706"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Amber Dark</div>
+        <div class="swatch-hex">#D97706</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#0F1923; border: 1px solid rgba(255,255,255,0.1)"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Dark</div>
+        <div class="swatch-hex">#0F1923</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#162232"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Surface</div>
+        <div class="swatch-hex">#162232</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1C2D3F"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Elevated</div>
+        <div class="swatch-hex">#1C2D3F</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div class="section">
+  <div class="section-title">Typography — Plus Jakarta Sans</div>
+
+  <div class="type-sample">
+    <div class="weight-label">700 — Display / 40px</div>
+    <h1>Forward Deployed Engineer <span class="accent">Jobs</span></h1>
+  </div>
+
+  <div class="type-sample">
+    <div class="weight-label">700 — Heading / 32px</div>
+    <h2>Salary benchmarks across 50+ companies</h2>
+  </div>
+
+  <div class="type-sample">
+    <div class="weight-label">600 — Subheading / 24px</div>
+    <h3>OpenAI's 50-person FDE team is hiring</h3>
+  </div>
+
+  <div class="type-sample">
+    <div class="weight-label">400 — Body Large / 18px</div>
+    <p class="body-lg">The Forward Deployed Engineer role grew 800% in 2025. Companies like Salesforce committed to hiring 1,000 FDEs. This isn't a trend — it's a structural shift in how enterprise software gets delivered.</p>
+  </div>
+
+  <div class="type-sample">
+    <div class="weight-label">400 — Body / 16px</div>
+    <p class="body">FDE Pulse tracks every Forward Deployed Engineer job posting, salary data point, and company hiring trend. Updated weekly from 500K+ job postings across major boards.</p>
+  </div>
+
+  <div class="type-sample">
+    <div class="weight-label">Source Code Pro — Mono / 14px</div>
+    <p class="mono">$165,000 — $285,000 / year &nbsp; | &nbsp; 136,000+ LinkedIn results</p>
+  </div>
+</div>
+
+<!-- BUTTONS -->
+<div class="section">
+  <div class="section-title">Buttons</div>
+  <div class="btn-row">
+    <a href="#" class="btn-primary">Browse FDE Jobs</a>
+    <a href="#" class="btn-secondary">View Salary Data</a>
+  </div>
+</div>
+
+<!-- COMPONENT: JOB CARDS -->
+<div class="section">
+  <div class="section-title">Job Card Components</div>
+  <div class="component-grid">
+    <div class="card-preview">
+      <span class="badge">Remote</span>
+      <h3>Forward Deployed Engineer</h3>
+      <p>Embed with Fortune 500 customers to build custom AI solutions. You'll own the full stack from data pipelines to production deployment.</p>
+      <div class="meta">
+        <span><strong>OpenAI</strong></span>
+        <span>San Francisco, CA</span>
+        <span class="salary">$185,000 — $285,000</span>
+      </div>
+    </div>
+    <div class="card-preview">
+      <span class="badge">Hybrid</span>
+      <h3>Senior Forward Deployed Engineer</h3>
+      <p>Lead customer engagements for our enterprise platform. Build integrations, train teams, and turn product feedback into roadmap priorities.</p>
+      <div class="meta">
+        <span><strong>Palantir</strong></span>
+        <span>New York, NY</span>
+        <span class="salary">$165,000 — $250,000</span>
+      </div>
+    </div>
+    <div class="card-preview">
+      <span class="badge">Remote</span>
+      <h3>Forward Deployed Software Engineer</h3>
+      <p>Join our growing FDE team deploying AI agents for healthcare systems. You'll work directly with hospital IT teams to integrate and customize.</p>
+      <div class="meta">
+        <span><strong>Salesforce</strong></span>
+        <span>Remote, US</span>
+        <span class="salary">$170,000 — $240,000</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

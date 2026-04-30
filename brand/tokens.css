@@ -1,0 +1,88 @@
+/* ============================================
+   FDE Pulse — Design Tokens
+   Generated 2026-04-10
+   ============================================ */
+
+:root {
+  /* ---- Brand Colors ---- */
+  --fde-amber:            #F59E0B;
+  --fde-amber-light:      #FBBF24;
+  --fde-amber-dark:       #D97706;
+  --fde-amber-muted:      rgba(245, 158, 11, 0.15);
+  --fde-amber-ghost:      rgba(245, 158, 11, 0.06);
+
+  --fde-dark:             #0F1923;
+  --fde-dark-surface:     #162232;
+  --fde-dark-elevated:    #1C2D3F;
+  --fde-dark-border:      rgba(255, 255, 255, 0.08);
+
+  --fde-white:            #FFFFFF;
+  --fde-gray-100:         rgba(255, 255, 255, 0.85);
+  --fde-gray-200:         rgba(255, 255, 255, 0.6);
+  --fde-gray-300:         rgba(255, 255, 255, 0.4);
+  --fde-gray-400:         rgba(255, 255, 255, 0.2);
+
+  /* ---- Semantic ---- */
+  --fde-bg:               var(--fde-dark);
+  --fde-bg-surface:       var(--fde-dark-surface);
+  --fde-bg-elevated:      var(--fde-dark-elevated);
+  --fde-text-primary:     var(--fde-white);
+  --fde-text-secondary:   var(--fde-gray-200);
+  --fde-text-muted:       var(--fde-gray-300);
+  --fde-accent:           var(--fde-amber);
+  --fde-accent-hover:     var(--fde-amber-light);
+  --fde-border:           var(--fde-dark-border);
+
+  /* ---- Typography ---- */
+  --fde-font-display:     'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif;
+  --fde-font-body:        'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif;
+  --fde-font-mono:        'Source Code Pro', 'Fira Code', monospace;
+
+  --fde-text-xs:          0.75rem;    /* 12px */
+  --fde-text-sm:          0.875rem;   /* 14px */
+  --fde-text-base:        1rem;       /* 16px */
+  --fde-text-lg:          1.125rem;   /* 18px */
+  --fde-text-xl:          1.25rem;    /* 20px */
+  --fde-text-2xl:         1.5rem;     /* 24px */
+  --fde-text-3xl:         2rem;       /* 32px */
+  --fde-text-4xl:         2.5rem;     /* 40px */
+
+  --fde-weight-regular:   400;
+  --fde-weight-medium:    500;
+  --fde-weight-semibold:  600;
+  --fde-weight-bold:      700;
+
+  --fde-leading-tight:    1.25;
+  --fde-leading-normal:   1.5;
+  --fde-leading-relaxed:  1.7;
+
+  /* ---- Spacing ---- */
+  --fde-space-1:          0.25rem;    /* 4px */
+  --fde-space-2:          0.5rem;     /* 8px */
+  --fde-space-3:          0.75rem;    /* 12px */
+  --fde-space-4:          1rem;       /* 16px */
+  --fde-space-6:          1.5rem;     /* 24px */
+  --fde-space-8:          2rem;       /* 32px */
+  --fde-space-12:         3rem;       /* 48px */
+  --fde-space-16:         4rem;       /* 64px */
+  --fde-space-24:         6rem;       /* 96px */
+
+  /* ---- Radii ---- */
+  --fde-radius-sm:        4px;
+  --fde-radius-md:        8px;
+  --fde-radius-lg:        12px;
+  --fde-radius-xl:        16px;
+  --fde-radius-full:      9999px;
+
+  /* ---- Shadows ---- */
+  --fde-shadow-sm:        0 1px 2px rgba(0, 0, 0, 0.3);
+  --fde-shadow-md:        0 4px 12px rgba(0, 0, 0, 0.25);
+  --fde-shadow-lg:        0 8px 24px rgba(0, 0, 0, 0.3);
+  --fde-shadow-glow:      0 0 20px rgba(245, 158, 11, 0.08);
+
+  /* ---- Transitions ---- */
+  --fde-ease:             cubic-bezier(0.4, 0, 0.2, 1);
+  --fde-duration-fast:    150ms;
+  --fde-duration-base:    200ms;
+  --fde-duration-slow:    300ms;
+}
