@@ -3,17 +3,8 @@ CLAUDE.md
 AGENTS.md
 .agents/
 .planning/
-brand/
 NEWSLETTER-SPEC.md
 NEWSLETTER-PLAN.md
-
-# Site-build scripts (gitignored — kept local + on server backup, not in public repo)
-# Newsletter scripts ARE tracked (see exception below)
-scripts/*
-!scripts/track_helper.py
-!scripts/generate_weekly_email.py
-!scripts/send_weekly_email.sh
-build.sh
 
 # Build outputs
 output/
