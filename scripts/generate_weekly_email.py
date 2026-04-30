@@ -150,7 +150,7 @@ def compute_diff(market_intel, comp_analysis, jobs, previous):
                       for t in tools[:10] if isinstance(t, dict)]
 
     # Featured jobs (top 5–8 with comp visible)
-    featured = [j for j in jobs if (j.get('annual_salary_min') or j.get('compensation', {}).get('min'))][:8]
+    featured = [j for j in jobs if (j.get('min_amount') or j.get('annual_salary_min') or j.get('compensation', {}).get('min'))][:8]
     if len(featured) < 5:
         # Fall back to first 5 jobs even without comp
         featured = jobs[:5]
@@ -252,9 +252,10 @@ def generate_email_html(diff, date_str, issue_number):
             location = 'Remote' if not location else f'{location} (Remote)'
         url = j.get('source_url') or j.get('url') or '#'
 
-        # Comp may be in nested compensation dict (Fractional pattern) or flat
-        salary_min = j.get('annual_salary_min') or j.get('compensation', {}).get('min')
-        salary_max = j.get('annual_salary_max') or j.get('compensation', {}).get('max')
+        # Comp field names vary across exporters: StandardExporter uses min_amount/max_amount,
+        # FractionalExporter nests under compensation, older exports use annual_salary_*
+        salary_min = j.get('min_amount') or j.get('annual_salary_min') or j.get('compensation', {}).get('min')
+        salary_max = j.get('max_amount') or j.get('annual_salary_max') or j.get('compensation', {}).get('max')
         salary = ''
         if salary_min and salary_max:
             salary = f'{fmt_salary(int(salary_min))} – {fmt_salary(int(salary_max))}'
@@ -295,7 +296,8 @@ def generate_email_html(diff, date_str, issue_number):
           <div style="width: 40px; height: 40px;
                       background: linear-gradient(135deg, {BRAND['amber']} 0%, {BRAND['amber_dark']} 100%);
                       border-radius: 8px; text-align: center; line-height: 40px;
-                      font-size: 20px; color: {BRAND['white']};">&#10148;</div>
+                      font-size: 22px; font-weight: 900; color: {BRAND['white']};
+                      letter-spacing: -2px;">&#10095;&#10095;</div>
         </td>
         <td valign="middle" style="padding-left: 12px;">
           <span style="font-size: 18px; font-weight: 700; color: {BRAND['white']};">FDE Pulse</span>
