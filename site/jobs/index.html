@@ -286,6 +286,125 @@
     .job-item__salary { align-self: flex-start; }
     .job-stats-bar__inner { gap: 1rem; }
 }
+
+/* ── Filter bar ─────────────────────────────────────────────── */
+.job-filter-bar {
+    background: #162232;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    position: sticky;
+    top: 72px;
+    z-index: 10;
+}
+.job-filter-bar__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.job-filter-bar__search {
+    flex: 1;
+    min-width: 180px;
+    background: #0F1923;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 150ms ease;
+}
+.job-filter-bar__search::placeholder { color: rgba(255,255,255,0.35); }
+.job-filter-bar__search:focus { border-color: #F59E0B; }
+.job-filter-bar__select {
+    background: #0F1923;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 150ms ease;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff66' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+.job-filter-bar__select:focus { border-color: #F59E0B; }
+.job-filter-bar__select option { background: #162232; color: #fff; }
+
+/* Remote pill toggle */
+.remote-toggle {
+    display: flex;
+    background: #0F1923;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.remote-toggle__pill {
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: all 150ms ease;
+    white-space: nowrap;
+}
+.remote-toggle__pill:hover { color: #fff; }
+.remote-toggle__pill.active {
+    background: #F59E0B;
+    color: #0F1923;
+    font-weight: 600;
+}
+
+/* Result counter */
+.job-filter-bar__count {
+    margin-left: auto;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+}
+.job-filter-bar__count strong { color: #FBBF24; }
+
+/* Reset button */
+.job-filter-bar__reset {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.5);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+    display: none;
+}
+.job-filter-bar__reset.visible {
+    display: inline-block;
+}
+.job-filter-bar__reset:hover {
+    border-color: #F59E0B;
+    color: #FBBF24;
+}
+
+.jobs-list__count { display: none; }
+
+@media (max-width: 768px) {
+    .job-filter-bar { top: 0; padding: 10px 12px; }
+    .job-filter-bar__inner { gap: 8px; }
+    .job-filter-bar__search { min-width: 100%; }
+    .job-filter-bar__count { margin-left: 0; }
+}
 </style>
     <script type="application/ld+json">
 {
@@ -413,13 +532,54 @@
             </div>
         </div>
 
+
+    <div class="job-filter-bar" id="jobFilterBar">
+        <div class="job-filter-bar__inner">
+            <input
+                type="search"
+                id="filterSearch"
+                class="job-filter-bar__search"
+                placeholder="Search by title or company..."
+                autocomplete="off"
+            >
+            <div class="remote-toggle" id="remoteToggle" role="group" aria-label="Remote filter">
+                <button class="remote-toggle__pill active" data-value="all">All</button>
+                <button class="remote-toggle__pill" data-value="remote">Remote only</button>
+                <button class="remote-toggle__pill" data-value="onsite">On-site only</button>
+            </div>
+            <select id="filterSeniority" class="job-filter-bar__select" aria-label="Seniority">
+                <option value="">All seniorities (134)</option><option value="senior">Senior+ (27)</option><option value="lead">Manager/Lead (18)</option><option value="mid">Mid-level (88)</option><option value="junior">Junior (1)</option>
+            </select>
+            <select id="filterSalary" class="job-filter-bar__select" aria-label="Minimum salary">
+                <option value="0">Any salary</option>
+                <option value="100000">$100K+</option>
+                <option value="150000">$150K+</option>
+                <option value="200000">$200K+</option>
+                <option value="300000">$300K+</option>
+            </select>
+            <select id="filterLocation" class="job-filter-bar__select" aria-label="Location">
+                <option value="">All locations</option><option value="remote">Remote (39)</option><option value="New York, NY">New York, NY (38)</option><option value="Stamford, CT">Stamford, CT (15)</option><option value="San Francisco, CA">San Francisco, CA (6)</option><option value="Chicago, IL">Chicago, IL (5)</option><option value="Austin, TX">Austin, TX (4)</option><option value="Morristown, NJ">Morristown, NJ (4)</option><option value="Sunnyvale, CA">Sunnyvale, CA (4)</option><option value="Atlanta, GA">Atlanta, GA (2)</option><option value="Seattle, WA">Seattle, WA (2)</option><option value="Washington, DC">Washington, DC (2)</option><option value="other">Other (13)</option>
+            </select>
+            <button class="job-filter-bar__reset" id="filterReset">Clear</button>
+            <span class="job-filter-bar__count" id="filterCount">
+                Showing <strong id="filterCountNum">134</strong> of 134 roles
+            </span>
+        </div>
+    </div>
+
         <div class="jobs-list">
             <div class="jobs-list__header">
                 <span class="jobs-list__count">134 jobs found</span>
             </div>
             <div class="jobs-list__items">
                 
-        <a href="/jobs/google-forward-deployed-engineering-manager-generative-ai-google-cloud-ff6a41/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineering-manager-generative-ai-google-cloud-ff6a41/" class="job-item"
+           data-title="forward deployed engineering manager, generative ai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Austin, TX"
+           data-min-salary="183000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -433,7 +593,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-i-platform-saisv-google-cloud-17fd3f/" class="job-item">
+        <a href="/jobs/google-customer-engineer-i-platform-saisv-google-cloud-17fd3f/" class="job-item"
+           data-title="customer engineer i, platform, saisv, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="105000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -447,7 +613,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/" class="job-item">
+        <a href="/jobs/unit8-sa-senior-forward-deployed-engineer-hybrid-usa-d19947/" class="job-item"
+           data-title="senior forward deployed engineer (hybrid, usa)"
+           data-company="unit8 sa"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="other"
+           data-min-salary="120000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Unit8 SA</div>
@@ -461,7 +633,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-platform-customer-engineer-financial-services-google-cloud-88f393/" class="job-item">
+        <a href="/jobs/google-platform-customer-engineer-financial-services-google-cloud-88f393/" class="job-item"
+           data-title="platform customer engineer, financial services, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -475,7 +653,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/rippling-manager-forward-deployed-engineering-544e3d/" class="job-item">
+        <a href="/jobs/rippling-manager-forward-deployed-engineering-544e3d/" class="job-item"
+           data-title="manager, forward deployed engineering"
+           data-company="rippling"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="New York, NY"
+           data-min-salary="138000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Rippling</div>
@@ -490,7 +674,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/parity-forward-deployed-engineer-building-systems-boston-e6784e/" class="job-item">
+        <a href="/jobs/parity-forward-deployed-engineer-building-systems-boston-e6784e/" class="job-item"
+           data-title="forward deployed engineer, building systems - boston"
+           data-company="parity"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Parity</div>
@@ -504,7 +694,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-ii-outcome-gcp-tmeg-google-cloud-72b3bb/" class="job-item">
+        <a href="/jobs/google-customer-engineer-ii-outcome-gcp-tmeg-google-cloud-72b3bb/" class="job-item"
+           data-title="customer engineer ii, outcome, gcp, tmeg, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -518,7 +714,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/vista-equity-partners-management-senior-forward-deployed-engineer-99a4c9/" class="job-item">
+        <a href="/jobs/vista-equity-partners-management-senior-forward-deployed-engineer-99a4c9/" class="job-item"
+           data-title="senior forward deployed engineer"
+           data-company="vista equity partners management"
+           data-remote="true"
+           data-seniority="senior"
+           data-location-key="remote"
+           data-min-salary="200000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Vista Equity Partners Management</div>
@@ -532,7 +734,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/bny-director-forward-deployed-engineer-8394b8/" class="job-item">
+        <a href="/jobs/bny-director-forward-deployed-engineer-8394b8/" class="job-item"
+           data-title="director, forward deployed engineer"
+           data-company="bny"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="New York, NY"
+           data-min-salary="147000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">BNY</div>
@@ -546,7 +754,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/amazon-web-services-customer-solutions-manager-prototyping-customer-engineering-39dfb1/" class="job-item">
+        <a href="/jobs/amazon-web-services-customer-solutions-manager-prototyping-customer-engineering-39dfb1/" class="job-item"
+           data-title="customer solutions manager, prototyping &amp; customer engineering"
+           data-company="amazon web services"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="New York, NY"
+           data-min-salary="153600">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Amazon Web Services</div>
@@ -560,7 +774,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/bny-senior-vice-president-forward-deployed-engineer-3f160c/" class="job-item">
+        <a href="/jobs/bny-senior-vice-president-forward-deployed-engineer-3f160c/" class="job-item"
+           data-title="senior vice president, forward deployed engineer"
+           data-company="bny"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="104000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">BNY</div>
@@ -575,7 +795,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-forward-deployed-engineer-ii-applied-ai-cloud-8f57ce/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineer-ii-applied-ai-cloud-8f57ce/" class="job-item"
+           data-title="forward deployed engineer ii, applied ai, cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -589,7 +815,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/floqast-senior-forward-deployed-accountant-45bf70/" class="job-item">
+        <a href="/jobs/floqast-senior-forward-deployed-accountant-45bf70/" class="job-item"
+           data-title="senior forward deployed accountant"
+           data-company="floqast"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="132000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">FloQast</div>
@@ -604,7 +836,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/floqast-forward-deployed-accountant-7ab1d0/" class="job-item">
+        <a href="/jobs/floqast-forward-deployed-accountant-7ab1d0/" class="job-item"
+           data-title="forward deployed accountant"
+           data-company="floqast"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="89600">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">FloQast</div>
@@ -618,7 +856,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/ethicrithm-inc-forward-deployed-engineer-usa-33a21f/" class="job-item">
+        <a href="/jobs/ethicrithm-inc-forward-deployed-engineer-usa-33a21f/" class="job-item"
+           data-title="forward deployed engineer - usa"
+           data-company="ethicrithm inc."
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Ethicrithm Inc.</div>
@@ -632,7 +876,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/" class="job-item">
+        <a href="/jobs/fractional-ai-associate-forward-deployed-product-manager-6d5f5e/" class="job-item"
+           data-title="associate forward deployed product manager"
+           data-company="fractional ai"
+           data-remote="true"
+           data-seniority="lead"
+           data-location-key="remote"
+           data-min-salary="160000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Fractional AI</div>
@@ -647,7 +897,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-manager-forward-deployed-engineering-generative-ai-google-cloud-a3e5ff/" class="job-item">
+        <a href="/jobs/google-manager-forward-deployed-engineering-generative-ai-google-cloud-a3e5ff/" class="job-item"
+           data-title="manager, forward deployed engineering, generative ai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Austin, TX"
+           data-min-salary="234000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -662,7 +918,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/eliza-forward-deployed-engineer-d8eaa0/" class="job-item">
+        <a href="/jobs/eliza-forward-deployed-engineer-d8eaa0/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="eliza"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Eliza</div>
@@ -676,7 +938,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/patch-my-pc-customer-engineer-6c30e4/" class="job-item">
+        <a href="/jobs/patch-my-pc-customer-engineer-6c30e4/" class="job-item"
+           data-title="customer engineer"
+           data-company="patch my pc"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="80000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Patch My PC</div>
@@ -690,7 +958,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/reltio-customer-engineer-954d7c/" class="job-item">
+        <a href="/jobs/reltio-customer-engineer-954d7c/" class="job-item"
+           data-title="customer engineer"
+           data-company="reltio"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="77000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Reltio</div>
@@ -704,7 +978,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/boston-consulting-group-senior-forward-deployed-ai-engineer-united-states-bcg-x-04cdbe/" class="job-item">
+        <a href="/jobs/boston-consulting-group-senior-forward-deployed-ai-engineer-united-states-bcg-x-04cdbe/" class="job-item"
+           data-title="senior forward deployed ai engineer, united states - bcg x"
+           data-company="boston consulting group"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Boston Consulting Group</div>
@@ -719,7 +999,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/ascertain-forward-deployed-engineer-9a5c18/" class="job-item">
+        <a href="/jobs/ascertain-forward-deployed-engineer-9a5c18/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="ascertain"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="130000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Ascertain</div>
@@ -733,7 +1019,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/decircle-champ-ai-deployment-architect-forward-deployed-engineer-f2383e/" class="job-item">
+        <a href="/jobs/decircle-champ-ai-deployment-architect-forward-deployed-engineer-f2383e/" class="job-item"
+           data-title="champ ai - deployment architect / forward deployed engineer"
+           data-company="decircle"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="San Francisco, CA"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">deCircle</div>
@@ -747,7 +1039,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/accenture-forward-deployed-engineer-fde-sr-analyst-9a8b57/" class="job-item">
+        <a href="/jobs/accenture-forward-deployed-engineer-fde-sr-analyst-9a8b57/" class="job-item"
+           data-title="forward deployed engineer (fde) sr analyst"
+           data-company="accenture"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Morristown, NJ"
+           data-min-salary="49920">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Accenture</div>
@@ -762,7 +1060,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/forward-deployed-engineer-21661e/" class="job-item">
+        <a href="/jobs/forward-deployed-engineer-21661e/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company=""
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="150000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company"></div>
@@ -776,7 +1080,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/qualcomm-staff-customer-engineering-ce-server-processor-platforms-a137c1/" class="job-item">
+        <a href="/jobs/qualcomm-staff-customer-engineering-ce-server-processor-platforms-a137c1/" class="job-item"
+           data-title="staff, customer engineering (ce) – server processor platforms"
+           data-company="qualcomm"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="other"
+           data-min-salary="143400">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Qualcomm</div>
@@ -791,7 +1101,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/revenuebase-customer-engineer-c2b6eb/" class="job-item">
+        <a href="/jobs/revenuebase-customer-engineer-c2b6eb/" class="job-item"
+           data-title="customer engineer"
+           data-company="revenuebase"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">RevenueBase</div>
@@ -805,7 +1121,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/logic-inc-palantir-forward-deployed-engineer-528974/" class="job-item">
+        <a href="/jobs/logic-inc-palantir-forward-deployed-engineer-528974/" class="job-item"
+           data-title="palantir forward deployed engineer"
+           data-company="logic, inc."
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Chicago, IL"
+           data-min-salary="63800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Logic, Inc.</div>
@@ -819,7 +1141,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-ii-platform-oracle-google-cloud-f6eeef/" class="job-item">
+        <a href="/jobs/google-customer-engineer-ii-platform-oracle-google-cloud-f6eeef/" class="job-item"
+           data-title="customer engineer ii, platform, oracle, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Chicago, IL"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -833,7 +1161,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineering-manager-platform-sled-b0193b/" class="job-item">
+        <a href="/jobs/google-customer-engineering-manager-platform-sled-b0193b/" class="job-item"
+           data-title="customer engineering manager, platform, sled"
+           data-company="google"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Sunnyvale, CA"
+           data-min-salary="192000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -847,7 +1181,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/accenture-palantir-forward-deployed-senior-engineer-227d45/" class="job-item">
+        <a href="/jobs/accenture-palantir-forward-deployed-senior-engineer-227d45/" class="job-item"
+           data-title="palantir forward deployed senior engineer"
+           data-company="accenture"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Morristown, NJ"
+           data-min-salary="87400">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Accenture</div>
@@ -862,7 +1202,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-i-platform-google-workspace-google-cloud-58afbd/" class="job-item">
+        <a href="/jobs/google-customer-engineer-i-platform-google-workspace-google-cloud-58afbd/" class="job-item"
+           data-title="customer engineer i, platform, google workspace, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Atlanta, GA"
+           data-min-salary="105000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -876,7 +1222,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/logic-inc-palantir-forward-deployed-senior-engineer-3f62ad/" class="job-item">
+        <a href="/jobs/logic-inc-palantir-forward-deployed-senior-engineer-3f62ad/" class="job-item"
+           data-title="palantir forward deployed senior engineer"
+           data-company="logic, inc."
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Chicago, IL"
+           data-min-salary="87400">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Logic, Inc.</div>
@@ -891,7 +1243,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/west-monroe-forward-deployed-ai-engineer-techex-software-us-d994ab/" class="job-item">
+        <a href="/jobs/west-monroe-forward-deployed-ai-engineer-techex-software-us-d994ab/" class="job-item"
+           data-title="forward deployed ai engineer, techex, software -us"
+           data-company="west monroe"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Seattle, WA"
+           data-min-salary="171300">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">West Monroe</div>
@@ -905,7 +1263,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/accenture-palantir-forward-deployed-engineer-5e1cba/" class="job-item">
+        <a href="/jobs/accenture-palantir-forward-deployed-engineer-5e1cba/" class="job-item"
+           data-title="palantir forward deployed engineer"
+           data-company="accenture"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="63800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Accenture</div>
@@ -919,7 +1283,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/langchain-customer-engineer-west-coast-be61b6/" class="job-item">
+        <a href="/jobs/langchain-customer-engineer-west-coast-be61b6/" class="job-item"
+           data-title="customer engineer (west coast)"
+           data-company="langchain"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="116000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">LangChain</div>
@@ -933,7 +1303,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/sas-senior-forward-deployed-industry-consultant-pharma-new-jersey-be270d/" class="job-item">
+        <a href="/jobs/sas-senior-forward-deployed-industry-consultant-pharma-new-jersey-be270d/" class="job-item"
+           data-title="senior forward deployed industry consultant, pharma - new jersey"
+           data-company="sas"
+           data-remote="true"
+           data-seniority="senior"
+           data-location-key="remote"
+           data-min-salary="136948">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">SAS</div>
@@ -948,7 +1324,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-deloitte-cyber-forward-deployed-engineer-senior-consultant-9c08c7/" class="job-item">
+        <a href="/jobs/deloitte-deloitte-cyber-forward-deployed-engineer-senior-consultant-9c08c7/" class="job-item"
+           data-title="deloitte cyber forward deployed engineer/senior consultant"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="other"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -962,7 +1344,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/humach-llc-forward-deployed-engineer-e29e1f/" class="job-item">
+        <a href="/jobs/humach-llc-forward-deployed-engineer-e29e1f/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="humach, llc"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Humach, LLC</div>
@@ -976,7 +1364,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-deloitte-cyber-forward-deployed-engineer-manager-8a596e/" class="job-item">
+        <a href="/jobs/deloitte-deloitte-cyber-forward-deployed-engineer-manager-8a596e/" class="job-item"
+           data-title="deloitte cyber forward deployed engineer/manager"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Stamford, CT"
+           data-min-salary="130800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -990,7 +1384,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/akka-forward-deployed-engineer-technical-evangelist-north-america-fba94d/" class="job-item">
+        <a href="/jobs/akka-forward-deployed-engineer-technical-evangelist-north-america-fba94d/" class="job-item"
+           data-title="forward deployed engineer/technical evangelist (north america)"
+           data-company="akka"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">AKKA</div>
@@ -1004,7 +1404,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/revin-forward-deployed-engineer-ai-platform-b6186e/" class="job-item">
+        <a href="/jobs/revin-forward-deployed-engineer-ai-platform-b6186e/" class="job-item"
+           data-title="forward deployed engineer – ai platform"
+           data-company="revin"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="120000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Revin</div>
@@ -1018,7 +1424,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-forward-deployed-engineer-applied-ai-google-cloud-116c5e/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineer-applied-ai-google-cloud-116c5e/" class="job-item"
+           data-title="forward deployed engineer, applied ai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1032,7 +1444,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/logic-inc-forward-deployed-engineer-fde-sr-analyst-cd7392/" class="job-item">
+        <a href="/jobs/logic-inc-forward-deployed-engineer-fde-sr-analyst-cd7392/" class="job-item"
+           data-title="forward deployed engineer (fde) sr analyst"
+           data-company="logic, inc."
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Chicago, IL"
+           data-min-salary="49920">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Logic, Inc.</div>
@@ -1047,7 +1465,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/digitalocean-senior-forward-deployed-engineer-ai-ml-7f65e0/" class="job-item">
+        <a href="/jobs/digitalocean-senior-forward-deployed-engineer-ai-ml-7f65e0/" class="job-item"
+           data-title="senior forward deployed engineer (ai/ml)"
+           data-company="digitalocean"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Seattle, WA"
+           data-min-salary="140000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">DigitalOcean</div>
@@ -1062,7 +1486,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-forward-deployed-engineer-generative-ai-genmedia-google-cloud-e3e9cd/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineer-generative-ai-genmedia-google-cloud-e3e9cd/" class="job-item"
+           data-title="forward deployed engineer, generative ai (genmedia), google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1076,7 +1506,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/bilt-rewards-forward-deployed-engineer-da9284/" class="job-item">
+        <a href="/jobs/bilt-rewards-forward-deployed-engineer-da9284/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="bilt rewards"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="200000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Bilt Rewards</div>
@@ -1090,7 +1526,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-iii-platform-google-cloud-274f43/" class="job-item">
+        <a href="/jobs/google-customer-engineer-iii-platform-google-cloud-274f43/" class="job-item"
+           data-title="customer engineer iii, platform, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1104,7 +1546,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/cgi-forward-deployed-engineer-2f714c/" class="job-item">
+        <a href="/jobs/cgi-forward-deployed-engineer-2f714c/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="cgi"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="89600">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">CGI</div>
@@ -1118,7 +1566,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/hippocratic-ai-ai-customer-engineer-a257a6/" class="job-item">
+        <a href="/jobs/hippocratic-ai-ai-customer-engineer-a257a6/" class="job-item"
+           data-title="ai customer engineer"
+           data-company="hippocratic ai"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Hippocratic AI</div>
@@ -1132,7 +1586,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/servicenow-forward-deployed-solution-engineer-applied-ai-a8809e/" class="job-item">
+        <a href="/jobs/servicenow-forward-deployed-solution-engineer-applied-ai-a8809e/" class="job-item"
+           data-title="forward deployed solution engineer- applied ai"
+           data-company="servicenow"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="201300">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">ServiceNow</div>
@@ -1146,7 +1606,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/syndio-forward-deployed-engineering-solutions-consultant-usa-2c8f87/" class="job-item">
+        <a href="/jobs/syndio-forward-deployed-engineering-solutions-consultant-usa-2c8f87/" class="job-item"
+           data-title="forward deployed engineering solutions consultant (usa)"
+           data-company="syndio"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Syndio</div>
@@ -1160,7 +1626,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-devices-and-services-29ef14/" class="job-item">
+        <a href="/jobs/google-customer-engineer-devices-and-services-29ef14/" class="job-item"
+           data-title="customer engineer, devices and services"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Austin, TX"
+           data-min-salary="141000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1174,7 +1646,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-platform-strategic-ai-and-isv-9baa32/" class="job-item">
+        <a href="/jobs/google-customer-engineer-platform-strategic-ai-and-isv-9baa32/" class="job-item"
+           data-title="customer engineer, platform, strategic ai and isv"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Sunnyvale, CA"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1188,7 +1666,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/ncr-atleos-customer-engineer-ii-e5059b/" class="job-item">
+        <a href="/jobs/ncr-atleos-customer-engineer-ii-e5059b/" class="job-item"
+           data-title="customer engineer ii"
+           data-company="ncr atleos"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">NCR Atleos</div>
@@ -1202,7 +1686,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/boomi-ai-forward-deployed-engineer-5d9f88/" class="job-item">
+        <a href="/jobs/boomi-ai-forward-deployed-engineer-5d9f88/" class="job-item"
+           data-title="ai forward deployed engineer"
+           data-company="boomi"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="110000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Boomi</div>
@@ -1216,7 +1706,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/hyperscience-forward-deployed-solutions-engineer-public-sector-06d38a/" class="job-item">
+        <a href="/jobs/hyperscience-forward-deployed-solutions-engineer-public-sector-06d38a/" class="job-item"
+           data-title="forward deployed solutions engineer [public sector]"
+           data-company="hyperscience"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="93500">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Hyperscience</div>
@@ -1230,7 +1726,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-data-analytics-financial-services-d42693/" class="job-item">
+        <a href="/jobs/google-customer-engineer-data-analytics-financial-services-d42693/" class="job-item"
+           data-title="customer engineer, data analytics, financial services"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1244,7 +1746,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/g2-gtm-systems-forward-deployed-engineer-3c9a81/" class="job-item">
+        <a href="/jobs/g2-gtm-systems-forward-deployed-engineer-3c9a81/" class="job-item"
+           data-title="gtm systems forward deployed engineer"
+           data-company="g2"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="125000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">G2</div>
@@ -1258,7 +1766,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/arcade-food-theatre-forward-deployed-engineer-c003de/" class="job-item">
+        <a href="/jobs/arcade-food-theatre-forward-deployed-engineer-c003de/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="arcade food theatre"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="San Francisco, CA"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Arcade Food Theatre</div>
@@ -1272,7 +1786,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/ahead-ai-practitioner-forward-deployed-engineer-58bf21/" class="job-item">
+        <a href="/jobs/ahead-ai-practitioner-forward-deployed-engineer-58bf21/" class="job-item"
+           data-title="ai practitioner/forward deployed engineer"
+           data-company="ahead"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="95000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Ahead</div>
@@ -1286,7 +1806,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/matillion-forward-deployed-engineer-13a8bf/" class="job-item">
+        <a href="/jobs/matillion-forward-deployed-engineer-13a8bf/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="matillion"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="120240">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Matillion</div>
@@ -1300,7 +1826,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-senior-staff-forward-deployed-developer-google-cloud-4f932c/" class="job-item">
+        <a href="/jobs/google-senior-staff-forward-deployed-developer-google-cloud-4f932c/" class="job-item"
+           data-title="senior staff forward deployed developer, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="262000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1315,7 +1847,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/" class="job-item">
+        <a href="/jobs/talkdesk-forward-deployed-ai-product-manager-fe0a50/" class="job-item"
+           data-title="forward deployed ai product manager"
+           data-company="talkdesk"
+           data-remote="true"
+           data-seniority="lead"
+           data-location-key="remote"
+           data-min-salary="187000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Talkdesk</div>
@@ -1330,7 +1868,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/tetrix-forward-deployed-engineer-77a7a3/" class="job-item">
+        <a href="/jobs/tetrix-forward-deployed-engineer-77a7a3/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="tetrix"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="140000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Tetrix</div>
@@ -1344,7 +1888,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineering-manager-data-analytics-hcls-google-cloud-8b8019/" class="job-item">
+        <a href="/jobs/google-customer-engineering-manager-data-analytics-hcls-google-cloud-8b8019/" class="job-item"
+           data-title="customer engineering manager, data analytics, hcls, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="New York, NY"
+           data-min-salary="192000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1358,7 +1908,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-senior-customer-engineer-national-security-google-public-sector-fbf34f/" class="job-item">
+        <a href="/jobs/google-senior-customer-engineer-national-security-google-public-sector-fbf34f/" class="job-item"
+           data-title="senior customer engineer, national security, google public sector"
+           data-company="google"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Washington, DC"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1373,7 +1929,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-senior-forward-deployed-engineer-snowflake-ea5dbb/" class="job-item">
+        <a href="/jobs/deloitte-senior-forward-deployed-engineer-snowflake-ea5dbb/" class="job-item"
+           data-title="senior forward deployed engineer - snowflake"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="other"
+           data-min-salary="167000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1388,7 +1950,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-snowflake-378326/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-snowflake-378326/" class="job-item"
+           data-title="forward deployed engineer - snowflake"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Stamford, CT"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1402,7 +1970,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-platform-google-cloud-f2b762/" class="job-item">
+        <a href="/jobs/google-customer-engineer-platform-google-cloud-f2b762/" class="job-item"
+           data-title="customer engineer, platform, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Sunnyvale, CA"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1416,7 +1990,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-ii-applied-ai-google-cloud-41377c/" class="job-item">
+        <a href="/jobs/google-customer-engineer-ii-applied-ai-google-cloud-41377c/" class="job-item"
+           data-title="customer engineer ii, applied ai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Washington, DC"
+           data-min-salary="149000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1430,7 +2010,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/axion-forward-deployed-engineer-8c2a80/" class="job-item">
+        <a href="/jobs/axion-forward-deployed-engineer-8c2a80/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="axion"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="135000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Axion</div>
@@ -1444,7 +2030,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/guild-forward-deployed-engineer-fde-d3859e/" class="job-item">
+        <a href="/jobs/guild-forward-deployed-engineer-fde-d3859e/" class="job-item"
+           data-title="forward deployed engineer (fde)"
+           data-company="guild"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="San Francisco, CA"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Guild</div>
@@ -1458,7 +2050,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/stevens-institute-of-technology-forward-deployed-ai-engineer-027ff7/" class="job-item">
+        <a href="/jobs/stevens-institute-of-technology-forward-deployed-ai-engineer-027ff7/" class="job-item"
+           data-title="forward deployed ai engineer"
+           data-company="stevens institute of technology"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="72800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Stevens Institute of Technology</div>
@@ -1472,7 +2070,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-iii-ai-infrastructure-google-cloud-f45f98/" class="job-item">
+        <a href="/jobs/google-customer-engineer-iii-ai-infrastructure-google-cloud-f45f98/" class="job-item"
+           data-title="customer engineer iii, ai infrastructure, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="San Francisco, CA"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1486,7 +2090,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-cloud-customer-engineer-platform-8042a9/" class="job-item">
+        <a href="/jobs/google-cloud-customer-engineer-platform-8042a9/" class="job-item"
+           data-title="cloud customer engineer, platform"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Sunnyvale, CA"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1500,7 +2110,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/hyperscience-forward-deployed-solutions-engineer-a84d71/" class="job-item">
+        <a href="/jobs/hyperscience-forward-deployed-solutions-engineer-a84d71/" class="job-item"
+           data-title="forward deployed solutions engineer"
+           data-company="hyperscience"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="123000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Hyperscience</div>
@@ -1514,7 +2130,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/tread-ai-native-forward-deployed-engineer-02d7a4/" class="job-item">
+        <a href="/jobs/tread-ai-native-forward-deployed-engineer-02d7a4/" class="job-item"
+           data-title="ai native forward deployed engineer"
+           data-company="tread"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="120000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Tread</div>
@@ -1528,7 +2150,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineering-manager-data-analytics-startups-google-cloud-409ed3/" class="job-item">
+        <a href="/jobs/google-customer-engineering-manager-data-analytics-startups-google-cloud-409ed3/" class="job-item"
+           data-title="customer engineering manager, data analytics, startups, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="New York, NY"
+           data-min-salary="192000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1542,7 +2170,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-forward-deployed-engineering-manager-genai-google-cloud-cb64e6/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineering-manager-genai-google-cloud-cb64e6/" class="job-item"
+           data-title="forward deployed engineering manager, genai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="New York, NY"
+           data-min-salary="234000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1556,7 +2190,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-iii-platform-hcls-google-cloud-1a89fd/" class="job-item">
+        <a href="/jobs/google-customer-engineer-iii-platform-hcls-google-cloud-1a89fd/" class="job-item"
+           data-title="customer engineer iii, platform, hcls, google cloud"
+           data-company="google"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1570,7 +2210,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-i-platform-small-and-medium-businesses-google-cloud-660065/" class="job-item">
+        <a href="/jobs/google-customer-engineer-i-platform-small-and-medium-businesses-google-cloud-660065/" class="job-item"
+           data-title="customer engineer i, platform, small and medium businesses, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Austin, TX"
+           data-min-salary="105000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1584,7 +2230,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/neara-forward-deployed-engineer-usa-nyc-1dc7d0/" class="job-item">
+        <a href="/jobs/neara-forward-deployed-engineer-usa-nyc-1dc7d0/" class="job-item"
+           data-title="forward deployed engineer - usa (nyc)"
+           data-company="neara"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="130000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Neara</div>
@@ -1598,7 +2250,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/rubie-forward-deployed-engineer-1995fe/" class="job-item">
+        <a href="/jobs/rubie-forward-deployed-engineer-1995fe/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="rubie"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="110000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Rubie</div>
@@ -1612,7 +2270,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/intermedia-intelligent-communications-a-i-forward-deployed-engineer-intern-670c5f/" class="job-item">
+        <a href="/jobs/intermedia-intelligent-communications-a-i-forward-deployed-engineer-intern-670c5f/" class="job-item"
+           data-title="a.i. forward deployed engineer intern"
+           data-company="intermedia intelligent communications"
+           data-remote="true"
+           data-seniority="junior"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Intermedia Intelligent Communications</div>
@@ -1626,7 +2290,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-ii-platform-google-cloud-biopharma-7e0d8a/" class="job-item">
+        <a href="/jobs/google-customer-engineer-ii-platform-google-cloud-biopharma-7e0d8a/" class="job-item"
+           data-title="customer engineer ii, platform, google cloud, biopharma"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1640,7 +2310,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/jda-tsg-microsoft-teams-customer-engineer-eb771a/" class="job-item">
+        <a href="/jobs/jda-tsg-microsoft-teams-customer-engineer-eb771a/" class="job-item"
+           data-title="microsoft teams customer engineer"
+           data-company="jda tsg"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="95000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">JDA TSG</div>
@@ -1654,7 +2330,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/syndio-senior-forward-deployed-engineering-solutions-consultant-usa-7dfc2e/" class="job-item">
+        <a href="/jobs/syndio-senior-forward-deployed-engineering-solutions-consultant-usa-7dfc2e/" class="job-item"
+           data-title="senior forward deployed engineering solutions consultant (usa)"
+           data-company="syndio"
+           data-remote="true"
+           data-seniority="senior"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Syndio</div>
@@ -1669,7 +2351,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/brillio-llc-forward-deployed-ai-engineer-supply-chain-d4e334/" class="job-item">
+        <a href="/jobs/brillio-llc-forward-deployed-ai-engineer-supply-chain-d4e334/" class="job-item"
+           data-title="forward deployed ai engineer – supply chain"
+           data-company="brillio llc"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Chicago, IL"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Brillio LLC</div>
@@ -1683,7 +2371,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/sphere-inc-founding-forward-deployed-engineer-4de24b/" class="job-item">
+        <a href="/jobs/sphere-inc-founding-forward-deployed-engineer-4de24b/" class="job-item"
+           data-title="founding forward deployed engineer"
+           data-company="sphere, inc."
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="San Francisco, CA"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Sphere, Inc.</div>
@@ -1697,7 +2391,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/nice-forward-deployed-engineer-acb309/" class="job-item">
+        <a href="/jobs/nice-forward-deployed-engineer-acb309/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="nice"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">NiCE</div>
@@ -1711,7 +2411,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-ii-outcome-google-cloud-30c41e/" class="job-item">
+        <a href="/jobs/google-customer-engineer-ii-outcome-google-cloud-30c41e/" class="job-item"
+           data-title="customer engineer ii, outcome, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="127000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1725,7 +2431,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/shield-forward-deployed-operations-e36742/" class="job-item">
+        <a href="/jobs/shield-forward-deployed-operations-e36742/" class="job-item"
+           data-title="forward deployed operations"
+           data-company="shield"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="150000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Shield</div>
@@ -1739,7 +2451,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/premier-cloud-customer-engineer-data-analytics-351e15/" class="job-item">
+        <a href="/jobs/premier-cloud-customer-engineer-data-analytics-351e15/" class="job-item"
+           data-title="customer engineer, data &amp; analytics"
+           data-company="premier cloud"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Premier Cloud</div>
@@ -1753,7 +2471,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/claryo-forward-deployed-engineer-2f9999/" class="job-item">
+        <a href="/jobs/claryo-forward-deployed-engineer-2f9999/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="claryo"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="San Francisco, CA"
+           data-min-salary="165000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Claryo</div>
@@ -1767,7 +2491,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/kpmg-director-senior-director-technical-lead-forward-deployed-engineering-77874a/" class="job-item">
+        <a href="/jobs/kpmg-director-senior-director-technical-lead-forward-deployed-engineering-77874a/" class="job-item"
+           data-title="director/senior director, technical lead forward deployed engineering"
+           data-company="kpmg"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="other"
+           data-min-salary="171000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">KPMG</div>
@@ -1782,7 +2512,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/adonis-senior-forward-deployed-engineer-9854b1/" class="job-item">
+        <a href="/jobs/adonis-senior-forward-deployed-engineer-9854b1/" class="job-item"
+           data-title="senior forward deployed engineer"
+           data-company="adonis"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="190000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">adonis</div>
@@ -1797,7 +2533,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-senior-customer-engineer-civilian-google-public-sector-c7ee1b/" class="job-item">
+        <a href="/jobs/google-senior-customer-engineer-civilian-google-public-sector-c7ee1b/" class="job-item"
+           data-title="senior customer engineer, civilian, google public sector"
+           data-company="google"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="other"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1812,7 +2554,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/qualcomm-customer-engineer-ai-ml-c68428/" class="job-item">
+        <a href="/jobs/qualcomm-customer-engineer-ai-ml-c68428/" class="job-item"
+           data-title="customer engineer - ai / ml"
+           data-company="qualcomm"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="other"
+           data-min-salary="108300">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Qualcomm</div>
@@ -1826,7 +2574,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/smartsheet-senior-forward-deployed-ai-engineer-remote-eligible-7d2122/" class="job-item">
+        <a href="/jobs/smartsheet-senior-forward-deployed-ai-engineer-remote-eligible-7d2122/" class="job-item"
+           data-title="senior forward deployed ai engineer (remote eligible)"
+           data-company="smartsheet"
+           data-remote="true"
+           data-seniority="senior"
+           data-location-key="remote"
+           data-min-salary="227500">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Smartsheet</div>
@@ -1841,7 +2595,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-forward-deployed-engineer-ii-genai-google-cloud-70f425/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineer-ii-genai-google-cloud-70f425/" class="job-item"
+           data-title="forward deployed engineer ii, genai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Atlanta, GA"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -1855,7 +2615,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-frontier-genai-5ec8b4/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-frontier-genai-5ec8b4/" class="job-item"
+           data-title="forward deployed engineer, frontier genai"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Stamford, CT"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1869,7 +2635,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-microsoft-ai-data-724bf4/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-microsoft-ai-data-724bf4/" class="job-item"
+           data-title="forward deployed engineer - microsoft ai&amp;data"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Stamford, CT"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1883,7 +2655,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-lead-forward-deployed-engineer-aws-d47738/" class="job-item">
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-aws-d47738/" class="job-item"
+           data-title="lead forward deployed engineer - aws"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Stamford, CT"
+           data-min-salary="167000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1898,7 +2676,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-lead-forward-deployed-engineer-databricks-35816d/" class="job-item">
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-databricks-35816d/" class="job-item"
+           data-title="lead forward deployed engineer - databricks"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Stamford, CT"
+           data-min-salary="167000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1913,7 +2697,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-lead-forward-deployed-engineer-palantir-e39dde/" class="job-item">
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-palantir-e39dde/" class="job-item"
+           data-title="lead forward deployed engineer - palantir"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Stamford, CT"
+           data-min-salary="167000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1928,7 +2718,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-lead-forward-deployed-engineer-frontier-genai-423b58/" class="job-item">
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-frontier-genai-423b58/" class="job-item"
+           data-title="lead forward deployed engineer, frontier genai"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Stamford, CT"
+           data-min-salary="167000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1943,7 +2739,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/just-appraised-customer-engineer-0ccbcf/" class="job-item">
+        <a href="/jobs/just-appraised-customer-engineer-0ccbcf/" class="job-item"
+           data-title="customer engineer"
+           data-company="just appraised"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Just Appraised</div>
@@ -1957,7 +2759,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-lead-forward-deployed-engineer-microsoft-ai-data-0cc8f8/" class="job-item">
+        <a href="/jobs/deloitte-lead-forward-deployed-engineer-microsoft-ai-data-0cc8f8/" class="job-item"
+           data-title="lead forward deployed engineer, microsoft ai &amp; data"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="lead"
+           data-location-key="Stamford, CT"
+           data-min-salary="167000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1972,7 +2780,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-senior-forward-deployed-engineer-microsoft-ai-data-c575bb/" class="job-item">
+        <a href="/jobs/deloitte-senior-forward-deployed-engineer-microsoft-ai-data-c575bb/" class="job-item"
+           data-title="senior forward deployed engineer, microsoft ai &amp; data"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Stamford, CT"
+           data-min-salary="130800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -1987,7 +2801,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-senior-forward-deployed-engineer-frontier-genai-34fc60/" class="job-item">
+        <a href="/jobs/deloitte-senior-forward-deployed-engineer-frontier-genai-34fc60/" class="job-item"
+           data-title="senior forward deployed engineer, frontier genai"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Stamford, CT"
+           data-min-salary="130800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2002,7 +2822,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-aws-716a3d/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-aws-716a3d/" class="job-item"
+           data-title="forward deployed engineer - aws"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Stamford, CT"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2016,7 +2842,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-palantir-1ea6aa/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-palantir-1ea6aa/" class="job-item"
+           data-title="forward deployed engineer - palantir"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Stamford, CT"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2030,7 +2862,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-databricks-2c94bf/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-databricks-2c94bf/" class="job-item"
+           data-title="forward deployed engineer - databricks"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="Stamford, CT"
+           data-min-salary="113100">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2044,7 +2882,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-senior-databricks-e557ad/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-senior-databricks-e557ad/" class="job-item"
+           data-title="forward deployed engineer - senior databricks"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Morristown, NJ"
+           data-min-salary="130800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2059,7 +2903,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-senior-palantir-9c8626/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-senior-palantir-9c8626/" class="job-item"
+           data-title="forward deployed engineer - senior palantir"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Stamford, CT"
+           data-min-salary="130800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2074,7 +2924,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/deloitte-forward-deployed-engineer-senior-aws-da34c5/" class="job-item">
+        <a href="/jobs/deloitte-forward-deployed-engineer-senior-aws-da34c5/" class="job-item"
+           data-title="forward deployed engineer - senior aws"
+           data-company="deloitte"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="Morristown, NJ"
+           data-min-salary="130800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Deloitte</div>
@@ -2089,7 +2945,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-iii-platform-retail-google-cloud-d854b2/" class="job-item">
+        <a href="/jobs/google-customer-engineer-iii-platform-retail-google-cloud-d854b2/" class="job-item"
+           data-title="customer engineer iii, platform, retail, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -2103,7 +2965,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/hex-technologies-customer-engineer-b239d3/" class="job-item">
+        <a href="/jobs/hex-technologies-customer-engineer-b239d3/" class="job-item"
+           data-title="customer engineer"
+           data-company="hex technologies"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="166000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Hex Technologies</div>
@@ -2117,7 +2985,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/crewai-forward-deployed-engineer-4a0d9a/" class="job-item">
+        <a href="/jobs/crewai-forward-deployed-engineer-4a0d9a/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="crewai"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">crewAI</div>
@@ -2131,7 +3005,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/polyai-forward-deployed-ai-engineer-must-be-pst-timezone-7b5bb9/" class="job-item">
+        <a href="/jobs/polyai-forward-deployed-ai-engineer-must-be-pst-timezone-7b5bb9/" class="job-item"
+           data-title="forward deployed ai engineer (must be pst timezone)"
+           data-company="polyai"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="150000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">PolyAI</div>
@@ -2145,7 +3025,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/forward-deployed-engineer-solutions-0ec569/" class="job-item">
+        <a href="/jobs/forward-deployed-engineer-solutions-0ec569/" class="job-item"
+           data-title="forward deployed engineer (solutions)"
+           data-company=""
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="130000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company"></div>
@@ -2159,7 +3045,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/stem-search-group-forward-deployed-engineer-ruby-or-python-cb791f/" class="job-item">
+        <a href="/jobs/stem-search-group-forward-deployed-engineer-ruby-or-python-cb791f/" class="job-item"
+           data-title="forward deployed engineer (ruby or python)"
+           data-company="stem search group"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">STEM Search Group</div>
@@ -2173,7 +3065,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/vercel-forward-deployed-engineer-v0-cd2da9/" class="job-item">
+        <a href="/jobs/vercel-forward-deployed-engineer-v0-cd2da9/" class="job-item"
+           data-title="forward deployed engineer, v0"
+           data-company="vercel"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="196000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Vercel</div>
@@ -2187,7 +3085,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/mattermost-forward-deployed-engineer-07fb64/" class="job-item">
+        <a href="/jobs/mattermost-forward-deployed-engineer-07fb64/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="mattermost"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="130000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Mattermost</div>
@@ -2201,7 +3105,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-platform-sled-new-york-google-public-sector-9f2f53/" class="job-item">
+        <a href="/jobs/google-customer-engineer-platform-sled-new-york-google-public-sector-9f2f53/" class="job-item"
+           data-title="customer engineer, platform, sled, new york, google public sector"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -2215,7 +3125,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-customer-engineer-iii-applied-ai-google-cloud-ed824a/" class="job-item">
+        <a href="/jobs/google-customer-engineer-iii-applied-ai-google-cloud-ed824a/" class="job-item"
+           data-title="customer engineer iii, applied ai, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="174000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -2229,7 +3145,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/google-forward-deployed-engineer-generative-ai-telecommunications-google-cloud-2a744b/" class="job-item">
+        <a href="/jobs/google-forward-deployed-engineer-generative-ai-telecommunications-google-cloud-2a744b/" class="job-item"
+           data-title="forward deployed engineer, generative ai, telecommunications, google cloud"
+           data-company="google"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="153000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Google</div>
@@ -2243,7 +3165,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/pubmatic-forward-deployed-engineer-63324d/" class="job-item">
+        <a href="/jobs/pubmatic-forward-deployed-engineer-63324d/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="pubmatic"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="200000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">PubMatic</div>
@@ -2257,7 +3185,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/insight-customer-engineer-google-workspace-a10399/" class="job-item">
+        <a href="/jobs/insight-customer-engineer-google-workspace-a10399/" class="job-item"
+           data-title="customer engineer - google workspace"
+           data-company="insight"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="0">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Insight</div>
@@ -2271,7 +3205,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/jda-tsg-intune-mecm-customer-engineer-c01f2b/" class="job-item">
+        <a href="/jobs/jda-tsg-intune-mecm-customer-engineer-c01f2b/" class="job-item"
+           data-title="intune + mecm customer engineer"
+           data-company="jda tsg"
+           data-remote="true"
+           data-seniority="mid"
+           data-location-key="remote"
+           data-min-salary="95000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">JDA TSG</div>
@@ -2285,7 +3225,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/amazon-web-services-senior-solutions-developer-prototyping-and-customer-engineer-860522/" class="job-item">
+        <a href="/jobs/amazon-web-services-senior-solutions-developer-prototyping-and-customer-engineer-860522/" class="job-item"
+           data-title="senior solutions developer, prototyping and customer engineering (pace)"
+           data-company="amazon web services"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="153600">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Amazon Web Services</div>
@@ -2299,7 +3245,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/amazon-web-services-principal-solutions-developer-prototyping-and-customer-engin-a880db/" class="job-item">
+        <a href="/jobs/amazon-web-services-principal-solutions-developer-prototyping-and-customer-engin-a880db/" class="job-item"
+           data-title="principal solutions developer , prototyping and customer engineering (pace)"
+           data-company="amazon web services"
+           data-remote="false"
+           data-seniority="senior"
+           data-location-key="New York, NY"
+           data-min-salary="182800">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Amazon Web Services</div>
@@ -2313,7 +3265,13 @@
                     <span class="job-item__cta">View role &rarr;</span>
             </div>
         </a>
-        <a href="/jobs/tagup-forward-deployed-engineer-85be70/" class="job-item">
+        <a href="/jobs/tagup-forward-deployed-engineer-85be70/" class="job-item"
+           data-title="forward deployed engineer"
+           data-company="tagup"
+           data-remote="false"
+           data-seniority="mid"
+           data-location-key="New York, NY"
+           data-min-salary="130000">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">Tagup</div>
@@ -2517,5 +3475,109 @@
         });
     }
     </script>
+
+<script>
+(function() {
+    var TOTAL = 134;
+    var search = document.getElementById('filterSearch');
+    var remoteToggle = document.getElementById('remoteToggle');
+    var selSeniority = document.getElementById('filterSeniority');
+    var selSalary = document.getElementById('filterSalary');
+    var selLocation = document.getElementById('filterLocation');
+    var countStrong = document.getElementById('filterCountNum');
+    var resetBtn = document.getElementById('filterReset');
+    var cards = Array.from(document.querySelectorAll('.job-item'));
+
+    var remoteFilter = 'all';
+
+    function isFiltered() {
+        return (search.value.trim() !== '') ||
+               (remoteFilter !== 'all') ||
+               (selSeniority.value !== '') ||
+               (parseInt(selSalary.value, 10) > 0) ||
+               (selLocation.value !== '');
+    }
+
+    function applyFilters() {
+        var q = search.value.trim().toLowerCase();
+        var sal = parseInt(selSalary.value, 10) || 0;
+        var seniority = selSeniority.value;
+        var loc = selLocation.value;
+        var visible = 0;
+
+        cards.forEach(function(card) {
+            var show = true;
+
+            if (q) {
+                var t = (card.dataset.title || '') + ' ' + (card.dataset.company || '');
+                if (t.indexOf(q) === -1) show = false;
+            }
+
+            if (show && remoteFilter !== 'all') {
+                var isRemote = card.dataset.remote === 'true';
+                if (remoteFilter === 'remote' && !isRemote) show = false;
+                if (remoteFilter === 'onsite' && isRemote) show = false;
+            }
+
+            if (show && seniority && card.dataset.seniority !== seniority) show = false;
+
+            if (show && sal > 0) {
+                var minSal = parseInt(card.dataset.minSalary, 10) || 0;
+                if (minSal <= 0 || minSal < sal) show = false;
+            }
+
+            if (show && loc) {
+                var locKey = card.dataset.locationKey || '';
+                if (loc === 'remote') {
+                    if (locKey !== 'remote') show = false;
+                } else if (loc === 'other') {
+                    if (locKey !== 'other') show = false;
+                } else {
+                    if (locKey !== loc) show = false;
+                }
+            }
+
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        if (countStrong) countStrong.textContent = String(visible);
+
+        if (isFiltered()) {
+            resetBtn.classList.add('visible');
+        } else {
+            resetBtn.classList.remove('visible');
+        }
+    }
+
+    remoteToggle.addEventListener('click', function(e) {
+        var pill = e.target.closest('.remote-toggle__pill');
+        if (!pill) return;
+        Array.from(remoteToggle.querySelectorAll('.remote-toggle__pill')).forEach(function(p) {
+            p.classList.remove('active');
+        });
+        pill.classList.add('active');
+        remoteFilter = pill.dataset.value;
+        applyFilters();
+    });
+
+    search.addEventListener('input', applyFilters);
+    selSeniority.addEventListener('change', applyFilters);
+    selSalary.addEventListener('change', applyFilters);
+    selLocation.addEventListener('change', applyFilters);
+
+    resetBtn.addEventListener('click', function() {
+        search.value = '';
+        remoteFilter = 'all';
+        Array.from(remoteToggle.querySelectorAll('.remote-toggle__pill')).forEach(function(p) {
+            p.classList.toggle('active', p.dataset.value === 'all');
+        });
+        selSeniority.value = '';
+        selSalary.value = '0';
+        selLocation.value = '';
+        applyFilters();
+    });
+})();
+</script>
 </body>
 </html>

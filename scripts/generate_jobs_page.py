@@ -43,6 +43,127 @@ FAQS = [
     },
 ]
 
+FILTER_BAR_CSS = """
+/* ── Filter bar ─────────────────────────────────────────────── */
+.job-filter-bar {
+    background: #162232;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    position: sticky;
+    top: 72px;
+    z-index: 10;
+}
+.job-filter-bar__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.job-filter-bar__search {
+    flex: 1;
+    min-width: 180px;
+    background: #0F1923;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 150ms ease;
+}
+.job-filter-bar__search::placeholder { color: rgba(255,255,255,0.35); }
+.job-filter-bar__search:focus { border-color: #F59E0B; }
+.job-filter-bar__select {
+    background: #0F1923;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 150ms ease;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff66' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+.job-filter-bar__select:focus { border-color: #F59E0B; }
+.job-filter-bar__select option { background: #162232; color: #fff; }
+
+/* Remote pill toggle */
+.remote-toggle {
+    display: flex;
+    background: #0F1923;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.remote-toggle__pill {
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: all 150ms ease;
+    white-space: nowrap;
+}
+.remote-toggle__pill:hover { color: #fff; }
+.remote-toggle__pill.active {
+    background: #F59E0B;
+    color: #0F1923;
+    font-weight: 600;
+}
+
+/* Result counter */
+.job-filter-bar__count {
+    margin-left: auto;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+}
+.job-filter-bar__count strong { color: #FBBF24; }
+
+/* Reset button */
+.job-filter-bar__reset {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.5);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+    display: none;
+}
+.job-filter-bar__reset.visible {
+    display: inline-block;
+}
+.job-filter-bar__reset:hover {
+    border-color: #F59E0B;
+    color: #FBBF24;
+}
+
+.jobs-list__count { display: none; }
+
+@media (max-width: 768px) {
+    .job-filter-bar { top: 0; padding: 10px 12px; }
+    .job-filter-bar__inner { gap: 8px; }
+    .job-filter-bar__search { min-width: 100%; }
+    .job-filter-bar__count { margin-left: 0; }
+}
+"""
+
 JOB_BOARD_CSS = """
 /* Job Board Specific Styles */
 .page-header {
@@ -225,6 +346,43 @@ JOB_BOARD_CSS = """
 """
 
 
+def derive_seniority(title):
+    """Classify a job title into a seniority bucket."""
+    t = title or ''
+    t_lower = t.lower()
+    if re.search(r'\b(manager|director|head of|vp|lead)\b', t_lower):
+        return 'lead'
+    if re.search(r'\b(senior|sr\.|sr |staff|principal)\b', t_lower):
+        return 'senior'
+    if re.search(r'\b(junior|jr\.|associate|entry|intern|analyst)\b', t_lower):
+        return 'junior'
+    return 'mid'
+
+
+SENIORITY_LABEL = {
+    'lead': 'Manager/Lead',
+    'senior': 'Senior+',
+    'junior': 'Junior',
+    'mid': 'Mid-level',
+}
+
+
+def normalize_location(loc, is_remote, top_location_set):
+    """Return the location bucket key for filtering."""
+    if is_remote:
+        return 'remote'
+    if not loc:
+        return 'other'
+    # Strip common US suffixes for grouping
+    stripped = re.sub(r',\s*(US|USA)$', '', loc.strip())
+    # "Remote, US" type strings
+    if re.match(r'^remote', stripped, re.IGNORECASE):
+        return 'remote'
+    if stripped in top_location_set:
+        return stripped
+    return 'other'
+
+
 def escape_html(text):
     if not text:
         return ''
@@ -281,6 +439,27 @@ def generate_jobs_page():
     global_min_k = int(round(min(sal_mins) / 1000)) if sal_mins else 0
     global_max_k = int(round(max(sal_maxs) / 1000)) if sal_maxs else 0
 
+    # ── Compute filter metadata ──────────────────────────────────────────────
+
+    # Seniority counts (derived from title)
+    from collections import Counter
+    seniority_counts = Counter(derive_seniority(j.get('title', '')) for j in jobs)
+
+    # Location buckets: strip ", US" / ", USA" suffix; treat is_remote=True as "Remote"
+    # Determine top 10 non-remote locations by raw location string (stripped)
+    stripped_loc_counts = Counter()
+    for j in jobs:
+        loc = j.get('location', '')
+        is_r = j.get('is_remote', False)
+        stripped = re.sub(r',\s*(US|USA)$', '', loc.strip())
+        if re.match(r'^remote', stripped, re.IGNORECASE) or is_r:
+            continue  # remote — skip for top-10 non-remote list
+        if stripped:
+            stripped_loc_counts[stripped] += 1
+
+    top_10_locs = [loc for loc, _ in stripped_loc_counts.most_common(10)]
+    top_10_set = set(top_10_locs)
+
     # Stats bar
     stats_bar = f'''
     <div class="job-stats-bar">
@@ -292,24 +471,84 @@ def generate_jobs_page():
         </div>
     </div>'''
 
-    # Job cards
+    # ── Filter bar ───────────────────────────────────────────────────────────
+    # Seniority dropdown options
+    seniority_options = ''
+    seniority_options += f'<option value="">All seniorities ({total_jobs})</option>'
+    for key in ('senior', 'lead', 'mid', 'junior'):
+        cnt = seniority_counts.get(key, 0)
+        label = SENIORITY_LABEL[key]
+        seniority_options += f'<option value="{key}">{label} ({cnt})</option>'
+
+    # Location dropdown options
+    location_options = '<option value="">All locations</option>'
+    location_options += f'<option value="remote">Remote ({remote_count})</option>'
+    for loc in top_10_locs:
+        cnt = stripped_loc_counts[loc]
+        location_options += f'<option value="{escape_html(loc)}">{escape_html(loc)} ({cnt})</option>'
+    other_count = total_jobs - remote_count - sum(stripped_loc_counts[l] for l in top_10_locs)
+    if other_count > 0:
+        location_options += f'<option value="other">Other ({other_count})</option>'
+
+    filter_bar = f'''
+    <div class="job-filter-bar" id="jobFilterBar">
+        <div class="job-filter-bar__inner">
+            <input
+                type="search"
+                id="filterSearch"
+                class="job-filter-bar__search"
+                placeholder="Search by title or company..."
+                autocomplete="off"
+            >
+            <div class="remote-toggle" id="remoteToggle" role="group" aria-label="Remote filter">
+                <button class="remote-toggle__pill active" data-value="all">All</button>
+                <button class="remote-toggle__pill" data-value="remote">Remote only</button>
+                <button class="remote-toggle__pill" data-value="onsite">On-site only</button>
+            </div>
+            <select id="filterSeniority" class="job-filter-bar__select" aria-label="Seniority">
+                {seniority_options}
+            </select>
+            <select id="filterSalary" class="job-filter-bar__select" aria-label="Minimum salary">
+                <option value="0">Any salary</option>
+                <option value="100000">$100K+</option>
+                <option value="150000">$150K+</option>
+                <option value="200000">$200K+</option>
+                <option value="300000">$300K+</option>
+            </select>
+            <select id="filterLocation" class="job-filter-bar__select" aria-label="Location">
+                {location_options}
+            </select>
+            <button class="job-filter-bar__reset" id="filterReset">Clear</button>
+            <span class="job-filter-bar__count" id="filterCount">
+                Showing <strong id="filterCountNum">{total_jobs}</strong> of {total_jobs} roles
+            </span>
+        </div>
+    </div>'''
+
+    # ── Job cards ─────────────────────────────────────────────────────────────
     job_cards_html = ""
     for job in jobs:
         company = escape_html(job.get('company', 'Confidential'))
-        title = escape_html(job.get('title', 'Forward Deployed Engineer'))
+        title_raw = job.get('title', 'Forward Deployed Engineer')
+        title = escape_html(title_raw)
         location = job.get('location', '')
         is_remote = job.get('is_remote', False)
         seniority = job.get('seniority', '')
         date_posted = format_date_short(job.get('date_posted', ''))
         source_url = job.get('source_url', '')
-        slug = make_slug(job.get('company', ''), job.get('title', ''), source_url)
+        min_amount = job.get('min_amount', 0) or 0
+        slug = make_slug(job.get('company', ''), title_raw, source_url)
+
+        # Derived filter attributes
+        derived_seniority = derive_seniority(title_raw)
+        loc_key = normalize_location(location, is_remote, top_10_set)
 
         salary_html = ''
-        sal_fmt = format_salary(job.get('min_amount', 0), job.get('max_amount', 0))
+        sal_fmt = format_salary(min_amount, job.get('max_amount', 0))
         if sal_fmt:
             salary_html = f'<span class="job-item__salary">{sal_fmt}</span>'
 
-        # Meta tags
+        # Meta tags (visual)
         meta_parts = []
         if is_remote:
             meta_parts.append('<span class="job-item__tag job-item__tag--remote">Remote</span>')
@@ -327,7 +566,13 @@ def generate_jobs_page():
         meta_html = '\n                    '.join(meta_parts)
 
         job_cards_html += f'''
-        <a href="/jobs/{slug}/" class="job-item">
+        <a href="/jobs/{slug}/" class="job-item"
+           data-title="{title.lower()}"
+           data-company="{company.lower()}"
+           data-remote="{'true' if is_remote else 'false'}"
+           data-seniority="{derived_seniority}"
+           data-location-key="{escape_html(loc_key)}"
+           data-min-salary="{int(min_amount)}">
             <div class="job-item__header">
                 <div class="job-item__left">
                     <div class="job-item__company">{company}</div>
@@ -358,6 +603,111 @@ def generate_jobs_page():
             }
         })
 
+    filter_js = f"""
+<script>
+(function() {{
+    var TOTAL = {total_jobs};
+    var search = document.getElementById('filterSearch');
+    var remoteToggle = document.getElementById('remoteToggle');
+    var selSeniority = document.getElementById('filterSeniority');
+    var selSalary = document.getElementById('filterSalary');
+    var selLocation = document.getElementById('filterLocation');
+    var countStrong = document.getElementById('filterCountNum');
+    var resetBtn = document.getElementById('filterReset');
+    var cards = Array.from(document.querySelectorAll('.job-item'));
+
+    var remoteFilter = 'all';
+
+    function isFiltered() {{
+        return (search.value.trim() !== '') ||
+               (remoteFilter !== 'all') ||
+               (selSeniority.value !== '') ||
+               (parseInt(selSalary.value, 10) > 0) ||
+               (selLocation.value !== '');
+    }}
+
+    function applyFilters() {{
+        var q = search.value.trim().toLowerCase();
+        var sal = parseInt(selSalary.value, 10) || 0;
+        var seniority = selSeniority.value;
+        var loc = selLocation.value;
+        var visible = 0;
+
+        cards.forEach(function(card) {{
+            var show = true;
+
+            if (q) {{
+                var t = (card.dataset.title || '') + ' ' + (card.dataset.company || '');
+                if (t.indexOf(q) === -1) show = false;
+            }}
+
+            if (show && remoteFilter !== 'all') {{
+                var isRemote = card.dataset.remote === 'true';
+                if (remoteFilter === 'remote' && !isRemote) show = false;
+                if (remoteFilter === 'onsite' && isRemote) show = false;
+            }}
+
+            if (show && seniority && card.dataset.seniority !== seniority) show = false;
+
+            if (show && sal > 0) {{
+                var minSal = parseInt(card.dataset.minSalary, 10) || 0;
+                if (minSal <= 0 || minSal < sal) show = false;
+            }}
+
+            if (show && loc) {{
+                var locKey = card.dataset.locationKey || '';
+                if (loc === 'remote') {{
+                    if (locKey !== 'remote') show = false;
+                }} else if (loc === 'other') {{
+                    if (locKey !== 'other') show = false;
+                }} else {{
+                    if (locKey !== loc) show = false;
+                }}
+            }}
+
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        }});
+
+        if (countStrong) countStrong.textContent = String(visible);
+
+        if (isFiltered()) {{
+            resetBtn.classList.add('visible');
+        }} else {{
+            resetBtn.classList.remove('visible');
+        }}
+    }}
+
+    remoteToggle.addEventListener('click', function(e) {{
+        var pill = e.target.closest('.remote-toggle__pill');
+        if (!pill) return;
+        Array.from(remoteToggle.querySelectorAll('.remote-toggle__pill')).forEach(function(p) {{
+            p.classList.remove('active');
+        }});
+        pill.classList.add('active');
+        remoteFilter = pill.dataset.value;
+        applyFilters();
+    }});
+
+    search.addEventListener('input', applyFilters);
+    selSeniority.addEventListener('change', applyFilters);
+    selSalary.addEventListener('change', applyFilters);
+    selLocation.addEventListener('change', applyFilters);
+
+    resetBtn.addEventListener('click', function() {{
+        search.value = '';
+        remoteFilter = 'all';
+        Array.from(remoteToggle.querySelectorAll('.remote-toggle__pill')).forEach(function(p) {{
+            p.classList.toggle('active', p.dataset.value === 'all');
+        }});
+        selSeniority.value = '';
+        selSalary.value = '0';
+        selLocation.value = '';
+        applyFilters();
+    }});
+}})();
+</script>"""
+
     body = f'''
 {stats_bar}
 
@@ -367,6 +717,8 @@ def generate_jobs_page():
                 <p class="page-header__subtitle">{total_jobs} FDE roles tracked across major job boards. Updated weekly.</p>
             </div>
         </div>
+
+{filter_bar}
 
         <div class="jobs-list">
             <div class="jobs-list__header">
@@ -436,7 +788,7 @@ def generate_jobs_page():
         ]
     }, indent=2)
 
-    extra_head = f'''<style>{JOB_BOARD_CSS}</style>
+    extra_head = f'''<style>{JOB_BOARD_CSS}{FILTER_BAR_CSS}</style>
     <script type="application/ld+json">
 {faq_schema}
     </script>
@@ -459,6 +811,7 @@ def generate_jobs_page():
 {get_footer_html()}
 {get_mobile_nav_js()}
 {get_signup_js()}
+{filter_js}
 </body>
 </html>'''
 
