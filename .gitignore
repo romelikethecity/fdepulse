@@ -1,15 +1,27 @@
-# Build scripts and internal docs — NEVER commit to GitHub Pages repo
-scripts/
-build.sh
+# Internal docs and strategy (NEVER commit — public repo)
 CLAUDE.md
+AGENTS.md
 .agents/
 .planning/
 brand/
+NEWSLETTER-SPEC.md
+NEWSLETTER-PLAN.md
+
+# Site-build scripts (gitignored — kept local + on server backup, not in public repo)
+# Newsletter scripts ARE tracked (see exception below)
+scripts/*
+!scripts/track_helper.py
+!scripts/generate_weekly_email.py
+!scripts/send_weekly_email.sh
+build.sh
+
+# Build outputs
+output/
 *.pyc
 __pycache__/
 .DS_Store
 
-# Data files
+# Data files (large generated artifacts)
 data/*.csv
 data/*.db
 data/*.json
@@ -18,6 +30,7 @@ data/*.json
 .env
 *.log
 node_modules/
+email-preview.html
 
 # Worker secrets
 worker/wrangler.toml
