@@ -36,6 +36,9 @@ python3 scripts/generate_about.py || true
 echo "  Generating jobs page..."
 python3 scripts/generate_jobs_page.py || true
 
+echo "  Generating individual job pages..."
+python3 scripts/generate_job_pages.py || true
+
 echo "  Generating salaries page..."
 python3 scripts/generate_salaries_page.py || true
 
