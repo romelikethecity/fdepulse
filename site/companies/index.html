@@ -76,7 +76,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Companies Hiring Forward Deployed Engineers | FDE Pulse</title>
-    <meta name="description" content="50+ companies hire FDEs: OpenAI, Salesforce, Palantir, Ramp, Databricks. Team sizes, structures, and what FDE teams do at each company.">
+    <meta name="description" content="69 companies with active FDE job postings. 134 open roles at Google, Deloitte, AWS, Accenture, and more. Updated weekly.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://fdepulse.com/companies/">
 
@@ -84,13 +84,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fdepulse.com/companies/">
     <meta property="og:title" content="Companies Hiring Forward Deployed Engineers | FDE Pulse">
-    <meta property="og:description" content="50+ companies hire FDEs: OpenAI, Salesforce, Palantir, Ramp, Databricks. Team sizes, structures, and what FDE teams do at each company.">
+    <meta property="og:description" content="69 companies with active FDE job postings. 134 open roles at Google, Deloitte, AWS, Accenture, and more. Updated weekly.">
     <meta property="og:site_name" content="FDE Pulse">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Companies Hiring Forward Deployed Engineers | FDE Pulse">
-    <meta name="twitter:description" content="50+ companies hire FDEs: OpenAI, Salesforce, Palantir, Ramp, Databricks. Team sizes, structures, and what FDE teams do at each company.">
+    <meta name="twitter:description" content="69 companies with active FDE job postings. 134 open roles at Google, Deloitte, AWS, Accenture, and more. Updated weekly.">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -107,6 +107,125 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.page-header {
+    padding: 8rem 0 3rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+}
+.page-header__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.page-header__title { font-size: 2.5rem; font-weight: 700; margin-bottom: var(--space-sm); }
+.page-header__subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+.job-stats-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem var(--space-lg);
+}
+.job-stats-bar__inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;
+}
+.job-stat-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--text-secondary); }
+.job-stat-item strong { color: var(--amber-light); font-weight: 600; }
+/* Filter bar */
+.job-filter-bar {
+    background: #162232;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    position: sticky;
+    top: 72px;
+    z-index: 10;
+}
+.job-filter-bar__inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.job-filter-bar__search {
+    flex: 1; min-width: 180px;
+    background: #0F1923; border: 1px solid rgba(255,255,255,0.08);
+    color: #fff; padding: 8px 12px; border-radius: 6px;
+    font-size: 0.9rem; font-family: inherit; outline: none;
+    transition: border-color 150ms ease;
+}
+.job-filter-bar__search::placeholder { color: rgba(255,255,255,0.35); }
+.job-filter-bar__search:focus { border-color: #F59E0B; }
+.job-filter-bar__select {
+    background: #0F1923; border: 1px solid rgba(255,255,255,0.08);
+    color: #fff; padding: 8px 12px; border-radius: 6px;
+    font-size: 0.9rem; font-family: inherit; cursor: pointer; outline: none;
+    transition: border-color 150ms ease; appearance: none; -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff66' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+}
+.job-filter-bar__select:focus { border-color: #F59E0B; }
+.job-filter-bar__select option { background: #162232; color: #fff; }
+.job-filter-bar__reset {
+    background: none; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.5);
+    padding: 8px 12px; border-radius: 6px; font-size: 0.875rem; font-family: inherit;
+    cursor: pointer; transition: all 150ms ease; white-space: nowrap; display: none;
+}
+.job-filter-bar__reset.visible { display: inline-block; }
+.job-filter-bar__reset:hover { border-color: #F59E0B; color: #FBBF24; }
+.job-filter-bar__count { margin-left: auto; font-size: 0.875rem; color: rgba(255,255,255,0.5); white-space: nowrap; }
+.job-filter-bar__count strong { color: #FBBF24; }
+/* Company grid */
+.co-body { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+.co-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+.co-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+.co-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
+.co-card__header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 0.5rem; gap: 0.5rem;
+}
+.co-card__name { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
+.co-card__badge {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    color: var(--amber-light); font-size: 0.78rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: var(--radius-full); white-space: nowrap;
+}
+.co-card__salary { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+.co-card__cta { font-size: 0.85rem; color: var(--amber-light); font-weight: 500; }
+/* Prose */
+.co-prose {
+    max-width: 900px; margin: 0 auto;
+    color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;
+}
+.co-prose h2 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem; }
+.co-prose p { margin-bottom: 1.25rem; }
+.co-prose strong { color: var(--text-primary); }
+@media (max-width: 768px) {
+    .page-header { padding: 6rem 0 2rem; }
+    .page-header__title { font-size: 2rem; }
+    .job-filter-bar { top: 0; padding: 10px 12px; }
+    .job-filter-bar__search { min-width: 100%; }
+    .job-filter-bar__count { margin-left: 0; }
+    .co-grid { grid-template-columns: 1fr; }
+}
+</style>
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -114,10 +233,10 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which company has the most Forward Deployed Engineers?",
+      "name": "Which company is hiring the most Forward Deployed Engineers right now?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Salesforce has committed to hiring 1,000 Forward Deployed Engineers for their Agentforce AI platform, making it the largest FDE hiring initiative. Currently, Palantir has the most established FDE program with 200+ FDEs built over a decade. OpenAI's 50-person FDE team is the largest among pure AI companies. PwC and other consulting firms employ FDE-equivalent roles at similar scale but under different titles."
+        "text": "Based on 134 active FDE postings as of April 30, 2026, Google leads with 34 open roles across their Cloud division. Deloitte is second with 19 active postings. Together, Google and Deloitte account for nearly 40% of all active FDE job postings in the dataset."
       }
     },
     {
@@ -125,31 +244,31 @@
       "name": "What types of companies hire Forward Deployed Engineers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "FDE hiring spans four main categories. AI/ML companies (OpenAI, Anthropic, Cohere, Databricks, Scale AI) hire FDEs to deploy models and AI products. Enterprise SaaS companies (Salesforce, ServiceNow, Rippling, UiPath) hire FDEs for complex platform implementations. Startups (PostHog, Watershed, Onyx, Commure) hire FDEs as product-adjacent engineers. Consulting firms (PwC, Deloitte) hire FDE-equivalent roles for client-facing technology deployment."
+        "text": "FDE hiring spans tech giants (Google, Amazon Web Services), major consulting firms (Deloitte, Accenture, KPMG, Boston Consulting Group), enterprise software companies (ServiceNow, Smartsheet, FloQast), fintech (BNY, Rippling, Bilt Rewards), and AI-focused startups (crewAI, LangChain, Hex Technologies). The role has spread well beyond Palantir's original model to cover nearly every sector in enterprise software."
       }
     },
     {
       "@type": "Question",
-      "name": "Are startups or large companies better for FDE careers?",
+      "name": "Do you need to work at a big company to be a Forward Deployed Engineer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Startups offer broader scope: you'll touch more of the stack, work directly with founders, and have more influence on the product. Large companies offer structure: defined career ladders, mentorship, larger teams, and higher base compensation. AI startups like Cohere and PostHog are strong middle ground options. The best choice depends on whether you prioritize breadth of experience (startup) or depth of resources and compensation (enterprise)."
+        "text": "No. Based on current postings, smaller companies like crewAI, LangChain, Hyperscience, and Neara also hire FDEs. Startups typically offer earlier-stage equity and broader scope per role. Larger companies (Google, Deloitte) offer more structured career ladders, training programs, and higher base salaries. Both paths have merit depending on where you are in your career."
       }
     },
     {
       "@type": "Question",
-      "name": "Do consulting firms hire Forward Deployed Engineers?",
+      "name": "Are consulting firms real FDE employers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. PwC, Deloitte, and Accenture all hire for FDE-equivalent roles, though they may use titles like 'Technology Consultant,' 'Solutions Engineer,' or 'Implementation Engineer.' The work is similar: deploying technology platforms at client sites. Key differences from product-company FDEs: consulting FDEs work across multiple clients and technology stacks rather than a single product, and compensation typically doesn't include equity."
+        "text": "Yes. Deloitte has 19 active FDE postings in this dataset, ranking second behind Google. Accenture and KPMG each have active FDE roles. Consulting firm FDE roles deploy specific technology platforms (AWS, Snowflake, Databricks) at client sites, which is functionally similar to product-company FDE work. The main difference is that consulting FDEs rotate across clients and platforms rather than specializing in one product."
       }
     },
     {
       "@type": "Question",
-      "name": "Which companies pay Forward Deployed Engineers the most?",
+      "name": "How do I find companies actively hiring FDEs?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "OpenAI pays the highest base salaries for FDEs, with ranges of $185,000-$285,000. Databricks ($175,000-$260,000), Palantir ($135,000-$250,000), and Scale AI ($165,000-$245,000) follow closely. However, total compensation including equity changes the ranking significantly. Pre-IPO companies like Databricks and Scale AI may offer higher total comp than public companies when equity appreciates. Salesforce offers strong equity grants as a public company with predictable RSU value."
+        "text": "FDE Pulse tracks 134 active postings across 70 companies as of April 30, 2026. The /jobs/ section shows every current opening with salary data, location, and direct links to apply. Companies with the most postings include Google (34 roles), Deloitte (19 roles), Amazon Web Services (3), Accenture (3), and Logic Inc. (3)."
       }
     }
   ]
@@ -216,152 +335,932 @@
 
     <main>
 
-        <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Companies Hiring Forward Deployed Engineers</h1>
-            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">50+ companies now hire FDEs. Here are the biggest employers, what their FDE teams do, and how they're structured.</p>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1rem; margin-bottom: 3rem;">
+    <div class="job-stats-bar">
+        <div class="job-stats-bar__inner">
+            <span class="job-stat-item"><strong>69</strong> companies hiring FDEs</span>
+            <span class="job-stat-item"><strong>134</strong> open roles total</span>
+            <span class="job-stat-item"><strong>1.9</strong> avg roles per company</span>
+        </div>
+    </div>
 
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">OpenAI</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">50+ FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">AI / ML &middot; San Francisco</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Largest dedicated FDE team in AI. FDEs deploy ChatGPT Enterprise and custom models for Fortune 500 customers.</p>
+        <div class="page-header">
+            <div class="page-header__inner">
+                <h1 class="page-header__title">Companies Hiring Forward Deployed Engineers</h1>
+                <p class="page-header__subtitle">69 companies with active FDE postings. 134 open roles total as of April 30, 2026.</p>
             </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Salesforce</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">1,000 (target) FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Enterprise SaaS &middot; San Francisco</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Committed to hiring 1,000 FDEs for their Agentforce AI platform. The largest single FDE hiring initiative in history.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Palantir</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">200+ FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Enterprise Analytics &middot; Denver</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Pioneered the FDE role in the 2010s. FDEs are central to Palantir's go-to-market strategy across government and commercial.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Ramp</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">15-25 FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Fintech &middot; New York</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs build custom financial integrations for enterprise customers adopting Ramp's corporate card and expense platform.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Databricks</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">30+ FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Data / AI &middot; San Francisco</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs deploy Databricks' lakehouse and ML platform inside enterprise data teams. Heavy data engineering focus.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Scale AI</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">20+ FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">AI / ML &middot; San Francisco</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs build custom data labeling and model evaluation pipelines for AI companies and government contracts.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Rippling</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">10-20 FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">HR Tech &middot; San Francisco</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs handle complex enterprise implementations of Rippling's unified HR, IT, and finance platform.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Cohere</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">10-15 FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">AI / ML &middot; Toronto</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs embed with enterprise customers deploying Cohere's LLMs for search, RAG, and document processing.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">ServiceNow</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">20+ FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Enterprise SaaS &middot; Santa Clara</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs deploy AI-powered workflow automation for enterprise IT and customer service operations.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">PostHog</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">5-10 FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Developer Tools &middot; Remote</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Product-adjacent FDE model. Engineers split time between customer implementations and core product development.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">PwC</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">50+ FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Consulting &middot; Global</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDE-equivalent roles within PwC's technology consulting practice, deploying AI and analytics platforms for enterprise clients.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">Watershed</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">5-10 FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Climate Tech &middot; San Francisco</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">FDEs help enterprise customers measure and reduce their carbon emissions using Watershed's climate platform.</p>
-            </div>
-            </div>
+        </div>
 
-            <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">The FDE Hiring Landscape</h2>
 
-                <p style="margin-bottom: 1.25rem;">Three years ago, Palantir was one of the only companies with "Forward Deployed Engineer" in their job titles. Today, the role exists at 50+ companies across AI, enterprise SaaS, fintech, climate tech, healthcare, and consulting. The expansion accelerated in 2025 when AI companies realized they couldn't sell enterprise AI products the same way they sold traditional SaaS.</p>
+    <div class="job-filter-bar" id="compFilterBar">
+        <div class="job-filter-bar__inner">
+            <input type="search" id="filterSearch" class="job-filter-bar__search"
+                placeholder="Search by company name..." autocomplete="off">
+            <select id="filterSize" class="job-filter-bar__select" aria-label="Company size">
+                <option value="">All sizes</option>
+                <option value="1">1 role</option>
+                <option value="2-5">2-5 roles</option>
+                <option value="6+">6+ roles</option>
+            </select>
+            <select id="filterSort" class="job-filter-bar__select" aria-label="Sort by">
+                <option value="roles">Most roles</option>
+                <option value="pay">Best paying</option>
+                <option value="az">A-Z</option>
+            </select>
+            <button class="job-filter-bar__reset" id="filterReset">Clear</button>
+            <span class="job-filter-bar__count" id="filterCount">
+                Showing <strong id="filterCountNum">69</strong> of 69 companies
+            </span>
+        </div>
+    </div>
 
-                <p style="margin-bottom: 1.25rem;">AI products require deep customization. A hospital deploying an AI clinical decision support system needs different integrations, data pipelines, and compliance guardrails than a logistics company deploying an AI routing optimizer. FDEs bridge that gap: they sit with the customer, understand their technical environment, and make the product work in practice.</p>
-
-                <p style="margin-bottom: 1.25rem;">Salesforce's 1,000-FDE hiring target for Agentforce validated the model at enterprise scale. When the world's largest enterprise software company restructures their go-to-market around Forward Deployed Engineers, it signals that the role isn't a niche experiment. It's becoming a standard function in enterprise software companies.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">How FDE Teams Are Structured</h2>
-
-                <p style="margin-bottom: 1.25rem;">FDE team structures vary by company maturity and size. Palantir runs the most structured program: FDEs are organized by vertical (government, healthcare, finance, energy) with dedicated mentors and career progression from FDSE to FDE to Lead FDE. New hires go through a multi-week deployment bootcamp before their first customer engagement.</p>
-
-                <p style="margin-bottom: 1.25rem;">Startups tend to have flatter structures. At PostHog, FDEs are effectively product engineers who spend 40-60% of their time on customer-facing work. At Watershed, FDEs report to engineering leadership but are paired with specific customer accounts managed by customer success teams. There's no separate "FDE organization" at most companies under 500 employees.</p>
-
-                <p style="margin-bottom: 1.25rem;">AI companies fall somewhere in between. OpenAI's 50-person FDE team has its own leadership and operates semi-independently from the research and product engineering organizations. They've built internal tooling specifically for customer deployments, and FDEs contribute to shared libraries that accelerate future customer onboarding.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
-
+        <div class="co-body">
+            <div class="co-grid" id="coGrid">
                 
+        <a href="/companies/google/" class="co-card"
+           data-name="google"
+           data-size="6+"
+           data-roles="34"
+           data-pay="184000">
+            <div class="co-card__header">
+                <div class="co-card__name">Google</div>
+                <span class="co-card__badge">34 roles</span>
+            </div>
+            <div class="co-card__salary">$184K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/deloitte/" class="co-card"
+           data-name="deloitte"
+           data-size="6+"
+           data-roles="19"
+           data-pay="187650">
+            <div class="co-card__header">
+                <div class="co-card__name">Deloitte</div>
+                <span class="co-card__badge">19 roles</span>
+            </div>
+            <div class="co-card__salary">$188K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/amazon-web-services/" class="co-card"
+           data-name="amazon web services"
+           data-size="2-5"
+           data-roles="3"
+           data-pay="195300">
+            <div class="co-card__header">
+                <div class="co-card__name">Amazon Web Services</div>
+                <span class="co-card__badge">3 roles</span>
+            </div>
+            <div class="co-card__salary">$195K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/accenture/" class="co-card"
+           data-name="accenture"
+           data-size="2-5"
+           data-roles="3"
+           data-pay="127940">
+            <div class="co-card__header">
+                <div class="co-card__name">Accenture</div>
+                <span class="co-card__badge">3 roles</span>
+            </div>
+            <div class="co-card__salary">$128K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/logic-inc/" class="co-card"
+           data-name="logic, inc."
+           data-size="2-5"
+           data-roles="3"
+           data-pay="127940">
+            <div class="co-card__header">
+                <div class="co-card__name">Logic, Inc.</div>
+                <span class="co-card__badge">3 roles</span>
+            </div>
+            <div class="co-card__salary">$128K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/bny/" class="co-card"
+           data-name="bny"
+           data-size="2-5"
+           data-roles="2"
+           data-pay="178500">
+            <div class="co-card__header">
+                <div class="co-card__name">BNY</div>
+                <span class="co-card__badge">2 roles</span>
+            </div>
+            <div class="co-card__salary">$178K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/floqast/" class="co-card"
+           data-name="floqast"
+           data-size="2-5"
+           data-roles="2"
+           data-pay="133000">
+            <div class="co-card__header">
+                <div class="co-card__name">FloQast</div>
+                <span class="co-card__badge">2 roles</span>
+            </div>
+            <div class="co-card__salary">$133K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/qualcomm/" class="co-card"
+           data-name="qualcomm"
+           data-size="2-5"
+           data-roles="2"
+           data-pay="152950">
+            <div class="co-card__header">
+                <div class="co-card__name">Qualcomm</div>
+                <span class="co-card__badge">2 roles</span>
+            </div>
+            <div class="co-card__salary">$153K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/syndio/" class="co-card"
+           data-name="syndio"
+           data-size="2-5"
+           data-roles="2"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Syndio</div>
+                <span class="co-card__badge">2 roles</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/hyperscience/" class="co-card"
+           data-name="hyperscience"
+           data-size="2-5"
+           data-roles="2"
+           data-pay="141500">
+            <div class="co-card__header">
+                <div class="co-card__name">Hyperscience</div>
+                <span class="co-card__badge">2 roles</span>
+            </div>
+            <div class="co-card__salary">$142K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/jda-tsg/" class="co-card"
+           data-name="jda tsg"
+           data-size="2-5"
+           data-roles="2"
+           data-pay="102500">
+            <div class="co-card__header">
+                <div class="co-card__name">JDA TSG</div>
+                <span class="co-card__badge">2 roles</span>
+            </div>
+            <div class="co-card__salary">$102K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/unit8-sa/" class="co-card"
+           data-name="unit8 sa"
+           data-size="1"
+           data-roles="1"
+           data-pay="135000">
+            <div class="co-card__header">
+                <div class="co-card__name">Unit8 SA</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$135K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/rippling/" class="co-card"
+           data-name="rippling"
+           data-size="1"
+           data-roles="1"
+           data-pay="184000">
+            <div class="co-card__header">
+                <div class="co-card__name">Rippling</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$184K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/parity/" class="co-card"
+           data-name="parity"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Parity</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/vista-equity-partners-management/" class="co-card"
+           data-name="vista equity partners management"
+           data-size="1"
+           data-roles="1"
+           data-pay="257500">
+            <div class="co-card__header">
+                <div class="co-card__name">Vista Equity Partners Management</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$258K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/ethicrithm-inc/" class="co-card"
+           data-name="ethicrithm inc."
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Ethicrithm Inc.</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/fractional-ai/" class="co-card"
+           data-name="fractional ai"
+           data-size="1"
+           data-roles="1"
+           data-pay="170000">
+            <div class="co-card__header">
+                <div class="co-card__name">Fractional AI</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$170K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/eliza/" class="co-card"
+           data-name="eliza"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Eliza</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/patch-my-pc/" class="co-card"
+           data-name="patch my pc"
+           data-size="1"
+           data-roles="1"
+           data-pay="90000">
+            <div class="co-card__header">
+                <div class="co-card__name">Patch My PC</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$90K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/reltio/" class="co-card"
+           data-name="reltio"
+           data-size="1"
+           data-roles="1"
+           data-pay="109500">
+            <div class="co-card__header">
+                <div class="co-card__name">Reltio</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$110K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/boston-consulting-group/" class="co-card"
+           data-name="boston consulting group"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Boston Consulting Group</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/ascertain/" class="co-card"
+           data-name="ascertain"
+           data-size="1"
+           data-roles="1"
+           data-pay="152500">
+            <div class="co-card__header">
+                <div class="co-card__name">Ascertain</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$152K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/decircle/" class="co-card"
+           data-name="decircle"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">deCircle</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/revenuebase/" class="co-card"
+           data-name="revenuebase"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">RevenueBase</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/west-monroe/" class="co-card"
+           data-name="west monroe"
+           data-size="1"
+           data-roles="1"
+           data-pay="196000">
+            <div class="co-card__header">
+                <div class="co-card__name">West Monroe</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$196K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/langchain/" class="co-card"
+           data-name="langchain"
+           data-size="1"
+           data-roles="1"
+           data-pay="155500">
+            <div class="co-card__header">
+                <div class="co-card__name">LangChain</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$156K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/sas/" class="co-card"
+           data-name="sas"
+           data-size="1"
+           data-roles="1"
+           data-pay="152164">
+            <div class="co-card__header">
+                <div class="co-card__name">SAS</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$152K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/humach-llc/" class="co-card"
+           data-name="humach, llc"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Humach, LLC</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/akka/" class="co-card"
+           data-name="akka"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">AKKA</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/revin/" class="co-card"
+           data-name="revin"
+           data-size="1"
+           data-roles="1"
+           data-pay="160000">
+            <div class="co-card__header">
+                <div class="co-card__name">Revin</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$160K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/digitalocean/" class="co-card"
+           data-name="digitalocean"
+           data-size="1"
+           data-roles="1"
+           data-pay="157000">
+            <div class="co-card__header">
+                <div class="co-card__name">DigitalOcean</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$157K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/bilt-rewards/" class="co-card"
+           data-name="bilt rewards"
+           data-size="1"
+           data-roles="1"
+           data-pay="220000">
+            <div class="co-card__header">
+                <div class="co-card__name">Bilt Rewards</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$220K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/cgi/" class="co-card"
+           data-name="cgi"
+           data-size="1"
+           data-roles="1"
+           data-pay="153900">
+            <div class="co-card__header">
+                <div class="co-card__name">CGI</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$154K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/hippocratic-ai/" class="co-card"
+           data-name="hippocratic ai"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Hippocratic AI</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/servicenow/" class="co-card"
+           data-name="servicenow"
+           data-size="1"
+           data-roles="1"
+           data-pay="276800">
+            <div class="co-card__header">
+                <div class="co-card__name">ServiceNow</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$277K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/ncr-atleos/" class="co-card"
+           data-name="ncr atleos"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">NCR Atleos</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/boomi/" class="co-card"
+           data-name="boomi"
+           data-size="1"
+           data-roles="1"
+           data-pay="136500">
+            <div class="co-card__header">
+                <div class="co-card__name">Boomi</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$136K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/g2/" class="co-card"
+           data-name="g2"
+           data-size="1"
+           data-roles="1"
+           data-pay="130000">
+            <div class="co-card__header">
+                <div class="co-card__name">G2</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$130K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/arcade-food-theatre/" class="co-card"
+           data-name="arcade food theatre"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Arcade Food Theatre</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/ahead/" class="co-card"
+           data-name="ahead"
+           data-size="1"
+           data-roles="1"
+           data-pay="105000">
+            <div class="co-card__header">
+                <div class="co-card__name">Ahead</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$105K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/matillion/" class="co-card"
+           data-name="matillion"
+           data-size="1"
+           data-roles="1"
+           data-pay="150300">
+            <div class="co-card__header">
+                <div class="co-card__name">Matillion</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$150K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/talkdesk/" class="co-card"
+           data-name="talkdesk"
+           data-size="1"
+           data-roles="1"
+           data-pay="249500">
+            <div class="co-card__header">
+                <div class="co-card__name">Talkdesk</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$250K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/tetrix/" class="co-card"
+           data-name="tetrix"
+           data-size="1"
+           data-roles="1"
+           data-pay="170000">
+            <div class="co-card__header">
+                <div class="co-card__name">Tetrix</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$170K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/axion/" class="co-card"
+           data-name="axion"
+           data-size="1"
+           data-roles="1"
+           data-pay="155000">
+            <div class="co-card__header">
+                <div class="co-card__name">Axion</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$155K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/guild/" class="co-card"
+           data-name="guild"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Guild</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/stevens-institute-of-technology/" class="co-card"
+           data-name="stevens institute of technology"
+           data-size="1"
+           data-roles="1"
+           data-pay="83200">
+            <div class="co-card__header">
+                <div class="co-card__name">Stevens Institute of Technology</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$83K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/tread/" class="co-card"
+           data-name="tread"
+           data-size="1"
+           data-roles="1"
+           data-pay="140000">
+            <div class="co-card__header">
+                <div class="co-card__name">Tread</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$140K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/neara/" class="co-card"
+           data-name="neara"
+           data-size="1"
+           data-roles="1"
+           data-pay="165000">
+            <div class="co-card__header">
+                <div class="co-card__name">Neara</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$165K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/rubie/" class="co-card"
+           data-name="rubie"
+           data-size="1"
+           data-roles="1"
+           data-pay="142500">
+            <div class="co-card__header">
+                <div class="co-card__name">Rubie</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$142K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/intermedia-intelligent-communications/" class="co-card"
+           data-name="intermedia intelligent communications"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Intermedia Intelligent Communications</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/brillio-llc/" class="co-card"
+           data-name="brillio llc"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Brillio LLC</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/sphere-inc/" class="co-card"
+           data-name="sphere, inc."
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Sphere, Inc.</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/nice/" class="co-card"
+           data-name="nice"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">NiCE</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/shield/" class="co-card"
+           data-name="shield"
+           data-size="1"
+           data-roles="1"
+           data-pay="187500">
+            <div class="co-card__header">
+                <div class="co-card__name">Shield</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$188K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/premier-cloud/" class="co-card"
+           data-name="premier cloud"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Premier Cloud</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/claryo/" class="co-card"
+           data-name="claryo"
+           data-size="1"
+           data-roles="1"
+           data-pay="172500">
+            <div class="co-card__header">
+                <div class="co-card__name">Claryo</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$172K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/kpmg/" class="co-card"
+           data-name="kpmg"
+           data-size="1"
+           data-roles="1"
+           data-pay="264000">
+            <div class="co-card__header">
+                <div class="co-card__name">KPMG</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$264K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/adonis/" class="co-card"
+           data-name="adonis"
+           data-size="1"
+           data-roles="1"
+           data-pay="200000">
+            <div class="co-card__header">
+                <div class="co-card__name">adonis</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$200K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/smartsheet/" class="co-card"
+           data-name="smartsheet"
+           data-size="1"
+           data-roles="1"
+           data-pay="236250">
+            <div class="co-card__header">
+                <div class="co-card__name">Smartsheet</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$236K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/just-appraised/" class="co-card"
+           data-name="just appraised"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Just Appraised</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/hex-technologies/" class="co-card"
+           data-name="hex technologies"
+           data-size="1"
+           data-roles="1"
+           data-pay="185500">
+            <div class="co-card__header">
+                <div class="co-card__name">Hex Technologies</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$186K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/crewai/" class="co-card"
+           data-name="crewai"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">crewAI</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/polyai/" class="co-card"
+           data-name="polyai"
+           data-size="1"
+           data-roles="1"
+           data-pay="170000">
+            <div class="co-card__header">
+                <div class="co-card__name">PolyAI</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$170K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/stem-search-group/" class="co-card"
+           data-name="stem search group"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">STEM Search Group</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/vercel/" class="co-card"
+           data-name="vercel"
+           data-size="1"
+           data-roles="1"
+           data-pay="245000">
+            <div class="co-card__header">
+                <div class="co-card__name">Vercel</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$245K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/mattermost/" class="co-card"
+           data-name="mattermost"
+           data-size="1"
+           data-roles="1"
+           data-pay="180000">
+            <div class="co-card__header">
+                <div class="co-card__name">Mattermost</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$180K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/pubmatic/" class="co-card"
+           data-name="pubmatic"
+           data-size="1"
+           data-roles="1"
+           data-pay="250000">
+            <div class="co-card__header">
+                <div class="co-card__name">PubMatic</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$250K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/insight/" class="co-card"
+           data-name="insight"
+           data-size="1"
+           data-roles="1"
+           data-pay="0">
+            <div class="co-card__header">
+                <div class="co-card__name">Insight</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">Salary not disclosed</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+        <a href="/companies/tagup/" class="co-card"
+           data-name="tagup"
+           data-size="1"
+           data-roles="1"
+           data-pay="145000">
+            <div class="co-card__header">
+                <div class="co-card__name">Tagup</div>
+                <span class="co-card__badge">1 role</span>
+            </div>
+            <div class="co-card__salary">$145K median</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>
+            </div>
+            
+        <div class="co-prose">
+            <h2>The FDE Company Landscape</h2>
+
+            <p>Based on 134 active FDE postings as of April 30, 2026, 69 companies are actively hiring Forward Deployed Engineers. Google, Deloitte, Amazon Web Services lead the market by raw posting volume. But the spread across company types is the more telling signal: FDE hiring now covers tech giants, consulting firms, enterprise SaaS platforms, fintech companies, and early-stage AI startups.</p>
+
+            <p>Google Cloud's 34 active FDE postings reflect a deliberate expansion of their customer deployment capability. Many of these roles are titled "Forward Deployed Developer" or "Forward Deployed Engineering Manager," indicating a structured FDE organization rather than ad-hoc customer engineering. Deloitte's 19 postings are spread across cloud migration, data platform deployment, and AI implementation roles. Both companies use the FDE title for roles that deploy specific technologies at client sites.</p>
+
+            <h2>How FDE Team Structures Differ</h2>
+
+            <p>Companies with many open FDE postings typically have formalized FDE programs: defined career ladders, onboarding processes, and internal tooling built specifically for customer deployments. Google Cloud and Deloitte fit this profile. These programs offer more career structure and training but can also mean more process and less autonomy per engineer.</p>
+
+            <p>Companies with one to three FDE roles tend to be in an earlier phase of building their FDE function. An "FDE first hire" at a company like crewAI or Hex Technologies means defining the role from scratch, which requires more initiative but offers broader influence on how the company serves customers. FDE Pulse's market_intelligence data shows 11% of current postings are "first hire" FDE roles where the engineer would build the program.</p>
+
+            <p>Consulting firms represent a distinct model. Deloitte, Accenture, KPMG, and Boston Consulting Group collectively account for more than 20% of active FDE postings. These roles deploy specific vendor platforms (AWS, Snowflake, Databricks, ServiceNow) for enterprise clients. Engineers rotate between clients rather than specializing in a single customer, which builds broad platform exposure but limits the depth of any single customer relationship.</p>
+
+            <h2>What to Look For When Evaluating FDE Companies</h2>
+
+            <p>When comparing FDE opportunities across companies, four factors matter most:</p>
+
+            <p><strong>Team size and structure.</strong> A company with 10 or more FDE roles has an established program. A company with one or two roles is building the function. Both are legitimate choices, but they require different skills and offer different growth trajectories.</p>
+
+            <p><strong>Salary disclosure rate.</strong> Companies that disclose salary ranges in job postings tend to be more transparent about compensation overall. Of the 69 companies in this dataset, those with disclosed salaries show ranges from $50K to $365K. Companies without disclosed salaries are not necessarily lower-paying, but you'll need to negotiate without benchmark data.</p>
+
+            <p><strong>Customer segment.</strong> Enterprise FDE roles (large Fortune 500 customers) involve longer sales cycles, higher stakes deployments, and more process. SMB-focused FDE roles move faster with more iterative customer relationships. The customer segment shapes the day-to-day work more than the company name does.</p>
+
+            <p><strong>Technology focus.</strong> AI company FDEs work primarily with LLMs, RAG architectures, and model deployment. Data platform FDEs (Databricks, Snowflake ecosystem) focus on pipeline architecture. ERP integration FDEs (Salesforce, ServiceNow, Rippling) work with business process automation. Match the technology focus to your engineering interests before applying.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which company has the most Forward Deployed Engineers?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Salesforce has committed to hiring 1,000 Forward Deployed Engineers for their Agentforce AI platform, making it the largest FDE hiring initiative. Currently, Palantir has the most established FDE program with 200+ FDEs built over a decade. OpenAI's 50-person FDE team is the largest among pure AI companies. PwC and other consulting firms employ FDE-equivalent roles at similar scale but under different titles.</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which company is hiring the most Forward Deployed Engineers right now?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">Based on 134 active FDE postings as of April 30, 2026, Google leads with 34 open roles across their Cloud division. Deloitte is second with 19 active postings. Together, Google and Deloitte account for nearly 40% of all active FDE job postings in the dataset.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
                 <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What types of companies hire Forward Deployed Engineers?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">FDE hiring spans four main categories. AI/ML companies (OpenAI, Anthropic, Cohere, Databricks, Scale AI) hire FDEs to deploy models and AI products. Enterprise SaaS companies (Salesforce, ServiceNow, Rippling, UiPath) hire FDEs for complex platform implementations. Startups (PostHog, Watershed, Onyx, Commure) hire FDEs as product-adjacent engineers. Consulting firms (PwC, Deloitte) hire FDE-equivalent roles for client-facing technology deployment.</p>
+                <p style="color: var(--text-secondary); line-height: 1.7;">FDE hiring spans tech giants (Google, Amazon Web Services), major consulting firms (Deloitte, Accenture, KPMG, Boston Consulting Group), enterprise software companies (ServiceNow, Smartsheet, FloQast), fintech (BNY, Rippling, Bilt Rewards), and AI-focused startups (crewAI, LangChain, Hex Technologies). The role has spread well beyond Palantir's original model to cover nearly every sector in enterprise software.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Are startups or large companies better for FDE careers?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Startups offer broader scope: you'll touch more of the stack, work directly with founders, and have more influence on the product. Large companies offer structure: defined career ladders, mentorship, larger teams, and higher base compensation. AI startups like Cohere and PostHog are strong middle ground options. The best choice depends on whether you prioritize breadth of experience (startup) or depth of resources and compensation (enterprise).</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do you need to work at a big company to be a Forward Deployed Engineer?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">No. Based on current postings, smaller companies like crewAI, LangChain, Hyperscience, and Neara also hire FDEs. Startups typically offer earlier-stage equity and broader scope per role. Larger companies (Google, Deloitte) offer more structured career ladders, training programs, and higher base salaries. Both paths have merit depending on where you are in your career.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do consulting firms hire Forward Deployed Engineers?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Yes. PwC, Deloitte, and Accenture all hire for FDE-equivalent roles, though they may use titles like 'Technology Consultant,' 'Solutions Engineer,' or 'Implementation Engineer.' The work is similar: deploying technology platforms at client sites. Key differences from product-company FDEs: consulting FDEs work across multiple clients and technology stacks rather than a single product, and compensation typically doesn't include equity.</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Are consulting firms real FDE employers?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">Yes. Deloitte has 19 active FDE postings in this dataset, ranking second behind Google. Accenture and KPMG each have active FDE roles. Consulting firm FDE roles deploy specific technology platforms (AWS, Snowflake, Databricks) at client sites, which is functionally similar to product-company FDE work. The main difference is that consulting FDEs rotate across clients and platforms rather than specializing in one product.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which companies pay Forward Deployed Engineers the most?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">OpenAI pays the highest base salaries for FDEs, with ranges of $185,000-$285,000. Databricks ($175,000-$260,000), Palantir ($135,000-$250,000), and Scale AI ($165,000-$245,000) follow closely. However, total compensation including equity changes the ranking significantly. Pre-IPO companies like Databricks and Scale AI may offer higher total comp than public companies when equity appreciates. Salesforce offers strong equity grants as a public company with predictable RSU value.</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How do I find companies actively hiring FDEs?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">FDE Pulse tracks 134 active postings across 70 companies as of April 30, 2026. The /jobs/ section shows every current opening with salary data, location, and direct links to apply. Companies with the most postings include Google (34 roles), Deloitte (19 roles), Amazon Web Services (3), Accenture (3), and Logic Inc. (3).</p>
             </div>
-            </div>
+        </div>
+        </div>
 
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 1.5rem 3rem;">
             
     <div class="cta-box" id="subscribe">
         <h3>Get the FDE Pulse Brief</h3>
@@ -374,8 +1273,7 @@
         <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
     </div>
 
-        </section>
-
+        </div>
     </main>
 
     <footer class="footer">
@@ -489,5 +1387,62 @@
         });
     }
     </script>
+
+<script>
+(function() {
+    var TOTAL = 69;
+    var search = document.getElementById('filterSearch');
+    var selSize = document.getElementById('filterSize');
+    var selSort = document.getElementById('filterSort');
+    var resetBtn = document.getElementById('filterReset');
+    var countNum = document.getElementById('filterCountNum');
+    var grid = document.getElementById('coGrid');
+    var cards = Array.from(grid.querySelectorAll('.co-card'));
+
+    function isFiltered() {
+        return search.value.trim() !== '' || selSize.value !== '';
+    }
+
+    function applyFilters() {
+        var q = search.value.trim().toLowerCase();
+        var size = selSize.value;
+        var sort = selSort.value;
+        var visible = [];
+
+        cards.forEach(function(card) {
+            var show = true;
+            if (q && card.dataset.name.indexOf(q) === -1) show = false;
+            if (show && size && card.dataset.size !== size) show = false;
+            if (show) visible.push(card);
+            card.style.display = show ? '' : 'none';
+        });
+
+        // Sort visible cards
+        visible.sort(function(a, b) {
+            if (sort === 'roles') return parseInt(b.dataset.roles) - parseInt(a.dataset.roles);
+            if (sort === 'pay') return parseInt(b.dataset.pay || 0) - parseInt(a.dataset.pay || 0);
+            if (sort === 'az') return a.dataset.name.localeCompare(b.dataset.name);
+            return 0;
+        });
+
+        // Re-insert in sorted order
+        visible.forEach(function(card) { grid.appendChild(card); });
+
+        if (countNum) countNum.textContent = String(visible.length);
+        if (isFiltered()) resetBtn.classList.add('visible');
+        else resetBtn.classList.remove('visible');
+    }
+
+    search.addEventListener('input', applyFilters);
+    selSize.addEventListener('change', applyFilters);
+    selSort.addEventListener('change', applyFilters);
+    resetBtn.addEventListener('click', function() {
+        search.value = '';
+        selSize.value = '';
+        selSort.value = 'roles';
+        applyFilters();
+    });
+})();
+</script>
 </body>
 </html>

@@ -1,186 +1,350 @@
 #!/usr/bin/env python3
 """
-Generate company-specific FDE profile pages.
-pSEO Profiles playbook. targets "[company] forward deployed engineer" queries.
+Generate company-specific FDE profile pages from jobs.json data.
+pSEO Profiles playbook. Targets "[company] forward deployed engineer" queries.
+Min 1,200 words per page.
 """
 
-import os, sys, json
+import os
+import sys
+import json
+import re
+import hashlib
+from collections import Counter
+from statistics import median as stat_median
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, script_dir)
 
 from nav_config import SITE_NAME, BASE_URL
-from templates import get_html_head, get_header_html, get_footer_html, get_mobile_nav_js, get_signup_js, get_cta_box, get_related_links
+from templates import (
+    get_html_head, get_header_html, get_footer_html,
+    get_mobile_nav_js, get_signup_js, get_cta_box, get_related_links
+)
 
 SITE_DIR = os.path.join(os.path.dirname(script_dir), 'site')
+DATA_DIR = os.path.join(os.path.dirname(script_dir), 'data')
 
-COMPANIES = [
-    {
-        "slug": "palantir", "name": "Palantir", "hq": "Denver, CO", "fde_count": "200+", "salary": "$135,000 - $250,000",
-        "overview": "Palantir invented the Forward Deployed Engineer role in the early 2010s. Their FDE program is the gold standard that every other company copies. Palantir FDEs deploy Foundry and Gotham platforms inside government agencies, healthcare systems, energy companies, and financial institutions. The role is central to Palantir's entire go-to-market strategy: instead of selling software licenses and walking away, Palantir embeds engineers with customers to build custom analytical applications on top of their platforms.",
-        "what_fdes_do": "Palantir FDEs work in verticals: government/defense, healthcare, energy, and financial services. A government FDE might build a logistics optimization system for the US Army. A healthcare FDE might build a clinical decision support application for a hospital network. Each deployment is custom. FDEs own the full stack: data modeling, pipeline construction, application building, user training, and ongoing support. Palantir distinguishes between FDE (more customer-facing, business-oriented) and FDSE (Forward Deployed Software Engineer, more code-heavy). New grads typically start as FDSE.",
-        "tech_stack": "Palantir's proprietary platforms (Foundry, Gotham, Apollo, AIP), Python, TypeScript, Java, SQL, Spark, data modeling. FDEs need to learn Palantir's platform deeply. External tool experience matters less than the ability to learn proprietary systems fast.",
-        "interview": "Palantir's FDE interview is 5-6 rounds: recruiter screen, coding (2 rounds, medium-hard), system design, customer scenario (called 'deployment exercise'), and a behavioral/values round. The deployment exercise is unique to Palantir: you're given a dataset and asked to build an analytical application while explaining your approach to a mock customer. The entire process takes 3-5 weeks. Palantir is known for slower hiring timelines than startups.",
-        "culture": "Mission-driven culture focused on building software for institutions that protect society. FDEs travel 40-60% (higher than most FDE roles elsewhere). Deployments can be intense: 2-3 months embedded at a customer site. Work-life balance varies by deployment. Palantir values independent operators who can run customer engagements with minimal oversight. The learning curve is steep but the career development is unmatched in the FDE space.",
-        "faq": [
-            {"q": "What is the difference between FDE and FDSE at Palantir?", "a": "FDE (Forward Deployed Engineer) is more customer-facing: scoping projects, managing relationships, translating business problems into technical solutions. FDSE (Forward Deployed Software Engineer) is more code-heavy: building data pipelines, applications, and platform customizations. In practice, both roles overlap significantly. FDSEs often transition to FDE as they gain customer experience. FDSE is the more common entry point for new grads and engineers with less customer-facing background."},
-            {"q": "Does Palantir hire new grads for FDE roles?", "a": "Yes, primarily through the FDSE (Forward Deployed Software Engineer) track. Palantir actively recruits from top CS programs and runs a structured onboarding program for new grads. The FDSE new grad role is one of the few entry-level FDE positions in the industry. Starting salaries for new grad FDSEs are $130,000-$155,000 base plus equity."},
-            {"q": "How much travel does a Palantir FDE do?", "a": "More than most FDE roles at other companies. Palantir FDEs travel 40-60%, often spending 2-3 months embedded at a single customer site. Government deployments may require security clearances and work at secure facilities. The travel intensity is one of the main lifestyle trade-offs of Palantir FDE work compared to FDE roles at companies like Salesforce or OpenAI that offer more remote flexibility."},
-            {"q": "What is Palantir FDE salary and total compensation?", "a": "Base salary ranges from $135,000 (new grad FDSE) to $250,000 (senior FDE). Total compensation including equity can reach $350,000+ at senior levels. Palantir RSUs vest over 4 years. As a public company (NYSE: PLTR), equity value is liquid. Palantir's compensation is competitive with Big Tech but below top-paying AI startups like OpenAI or Databricks at equivalent seniority levels."},
-            {"q": "Is Palantir FDE a good first job?", "a": "For the right person, it's one of the best first jobs in tech. You'll learn faster than in almost any other role: building real production systems, working with senior customers, and developing both technical and business skills simultaneously. The downsides are heavy travel, steep learning curve, and the pressure of customer-facing work from day one. If you thrive under intensity and want maximum career acceleration, Palantir FDSE is an excellent starting point."},
-        ],
-    },
-    {
-        "slug": "openai", "name": "OpenAI", "hq": "San Francisco, CA", "fde_count": "50+", "salary": "$185,000 - $285,000",
-        "overview": "OpenAI runs the largest dedicated FDE team among pure AI companies. Their FDEs deploy ChatGPT Enterprise, custom GPT models, and the OpenAI API inside Fortune 500 companies. As OpenAI shifted from research lab to enterprise software company, FDEs became essential to their go-to-market strategy. Enterprise customers buying $1M+ API contracts need more than documentation. They need engineers who understand both the models and the customer's business to make deployments successful.",
-        "what_fdes_do": "OpenAI FDEs work with enterprise customers across healthcare, financial services, legal, and technology sectors. Day-to-day work includes: designing RAG (retrieval-augmented generation) architectures specific to each customer's data, building custom prompt chains and agent workflows, integrating the OpenAI API with customer systems (EHR, CRM, ERP), evaluating model performance for specific use cases, and implementing safety guardrails and content filtering. FDEs also feed customer insights back to the product and research teams, directly influencing model development priorities.",
-        "tech_stack": "Python (primary), OpenAI API, LangChain/LlamaIndex (RAG frameworks), vector databases (Pinecone, Weaviate, Chroma), TypeScript, FastAPI, Docker, Kubernetes, AWS/Azure. FDEs need deep LLM knowledge: prompt engineering, fine-tuning, evaluation metrics, token optimization, and safety/alignment techniques.",
-        "interview": "OpenAI's FDE interview is 4-5 rounds over 2-3 weeks: recruiter screen, coding (practical Python, not LeetCode-heavy), system design (expect an LLM deployment scenario), customer scenario round, and a team/values interview. The system design round is heavily AI-focused: 'Design a RAG pipeline for a healthcare customer with HIPAA requirements.' OpenAI moves faster than Palantir but is highly selective. They want engineers who genuinely understand AI, not just engineers who can call APIs.",
-        "culture": "Mission-driven culture centered on ensuring AI benefits everyone. FDE work at OpenAI is high-profile: you're deploying the most talked-about AI technology in the world to the most demanding enterprise customers. The pace is intense. Product changes frequently, requiring FDEs to adapt quickly. Compensation is among the highest in the FDE market. The team is small (50 people) relative to the impact, meaning each FDE handles significant customer relationships.",
-        "faq": [
-            {"q": "What is the OpenAI FDE salary?", "a": "Base salary ranges from $185,000 to $285,000 depending on seniority. Total compensation including equity (PPUs. profit participation units) can significantly exceed base salary. OpenAI's PPUs are valued based on private market valuations that have increased substantially. At senior levels, total compensation can reach $400,000-$500,000+. OpenAI pays at or above the top of the FDE market."},
-            {"q": "Do I need AI/ML experience to be an OpenAI FDE?", "a": "Yes. Unlike FDE roles at non-AI companies, OpenAI expects FDE candidates to have hands-on experience with LLMs: prompt engineering, RAG architecture, model evaluation, and ideally fine-tuning. Candidates who've only used ChatGPT as a consumer product won't pass the technical bar. You need to have built production systems using the OpenAI API or similar LLM platforms. Prior ML engineering or AI research experience is a strong signal."},
-            {"q": "How does OpenAI's FDE interview differ from standard SWE interviews?", "a": "OpenAI's FDE coding rounds are more practical and less algorithmic than their SWE interviews. Expect to build something real (a data pipeline, an API integration, a prompt chain) rather than solve LeetCode problems. The system design round is AI-specific: you'll design an LLM deployment architecture for a customer scenario. The customer scenario round tests your ability to scope a deployment, manage stakeholder expectations, and communicate technical trade-offs to non-technical customers."},
-            {"q": "Is OpenAI FDE remote?", "a": "OpenAI's FDE roles are primarily based in San Francisco with some travel to customer sites. Fully remote FDE positions at OpenAI are rare. The company emphasizes in-person collaboration, especially for customer-facing roles where team coordination is critical. If remote work is a priority, consider Salesforce or Databricks FDE roles, which offer more location flexibility."},
-            {"q": "What's the career path for an OpenAI FDE?", "a": "OpenAI's FDE team is still relatively new, so career paths are less formalized than at Palantir. Common trajectories include: moving into a senior/lead FDE role managing larger customer portfolios, transitioning to product management (FDEs have direct customer insight that PMs value), moving to the solutions architecture or partnerships team, or returning to a research/engineering role on the core model team. The AI domain expertise you build as an OpenAI FDE is highly transferable to any AI company."},
-        ],
-    },
-    {
-        "slug": "anthropic", "name": "Anthropic", "hq": "San Francisco, CA", "fde_count": "20-30", "salary": "$180,000 - $280,000",
-        "overview": "Anthropic's FDE team deploys Claude (their AI assistant) for enterprise customers. As one of the leading AI safety companies, Anthropic's FDE role carries an additional dimension: ensuring that enterprise deployments meet Anthropic's safety standards while delivering customer value. Anthropic FDEs work at the intersection of powerful AI capabilities and responsible deployment, making the role uniquely challenging and impactful.",
-        "what_fdes_do": "Anthropic FDEs build custom Claude integrations for enterprise customers in healthcare, legal, financial services, and technology. Typical projects include: building RAG systems over proprietary customer data, implementing custom agent workflows using Claude's tool use capabilities, designing safety guardrails specific to regulated industries (HIPAA, SOC2, FINRA), and integrating Claude into existing customer workflows. FDEs also work closely with Anthropic's safety research team to ensure enterprise deployments align with responsible AI principles.",
-        "tech_stack": "Python, Anthropic API, Claude SDK, TypeScript, vector databases, Docker/Kubernetes, AWS/GCP. Strong emphasis on AI safety tooling: content filtering, output evaluation, red-teaming, and bias detection. FDEs need to understand constitutional AI and RLHF concepts to explain Anthropic's safety approach to enterprise customers.",
-        "interview": "Anthropic's FDE interview is 4-5 rounds: recruiter screen, coding (practical, not algorithmic), system design (AI deployment scenario), customer scenario (with a safety twist), and a values/mission alignment interview. The values round is more important at Anthropic than at most companies. They specifically assess whether candidates care about AI safety and can articulate why responsible deployment matters. Candidates who are purely motivated by compensation or prestige may not be a good fit.",
-        "culture": "Safety-first culture with a research-lab feel. Anthropic is smaller than OpenAI and more academically oriented. FDEs are expected to engage with safety research and contribute to internal discussions about responsible deployment. The pace is fast but thoughtful. Anthropic values careful reasoning over speed. FDE team sizes are smaller, meaning more autonomy per engineer but also higher expectations for independent judgment.",
-        "faq": [
-            {"q": "How does Anthropic's FDE role differ from OpenAI's?", "a": "The technical work is similar (deploying LLMs for enterprise customers), but Anthropic places significantly more emphasis on AI safety in the FDE role. Anthropic FDEs are expected to be safety advocates at customer sites, sometimes pushing back on customer requests that conflict with responsible AI practices. OpenAI FDEs are more focused on maximizing customer value with fewer safety constraints in the deployment process. If AI safety is important to you, Anthropic is the stronger cultural fit."},
-            {"q": "What is the Anthropic FDE salary?", "a": "Base salary ranges from $180,000 to $280,000 depending on seniority. Total compensation including equity is competitive with OpenAI. Anthropic's private valuation has increased significantly, making early equity grants potentially very valuable. The compensation is at the top of the FDE market, similar to OpenAI and slightly above Palantir at equivalent seniority levels."},
-            {"q": "Does Anthropic have FDE roles in London?", "a": "Yes. Anthropic has expanded FDE hiring to London as part of their European operations. London FDE roles focus on enterprise customers in the UK and European markets, with additional emphasis on EU AI Act compliance. London FDE salaries are adjusted for the local market but remain competitive with top London tech compensation."},
-            {"q": "Do I need a PhD to be an Anthropic FDE?", "a": "No. Anthropic's research roles often prefer PhDs, but FDE roles prioritize practical engineering experience. A strong software engineering background (3-5+ years) with hands-on LLM experience is the core requirement. That said, FDE candidates who can engage with AI safety concepts at a technical level (understanding RLHF, constitutional AI, model evaluation) have a meaningful advantage in Anthropic's interview process."},
-            {"q": "Is Anthropic FDE a good career move if I'm interested in AI safety?", "a": "It's one of the best roles in the industry for combining AI safety interests with practical engineering work. You'll deploy AI systems in high-stakes enterprise environments while working closely with Anthropic's safety research team. The domain knowledge and safety expertise you build are highly differentiated. Few other companies offer FDE roles where safety is a first-class concern rather than an afterthought."},
-        ],
-    },
-    {
-        "slug": "salesforce", "name": "Salesforce", "hq": "San Francisco, CA", "fde_count": "1,000 (target)", "salary": "$170,000 - $240,000",
-        "overview": "Salesforce committed to hiring 1,000 Forward Deployed Engineers for their Agentforce AI platform, making it the largest single FDE hiring initiative in history. When the world's largest enterprise software company restructures their go-to-market around Forward Deployed Engineers, it validates the role as a standard function in enterprise software. Salesforce FDEs deploy AI agents that automate sales, service, marketing, and commerce workflows for Salesforce's 150,000+ enterprise customers.",
-        "what_fdes_do": "Salesforce FDEs deploy Agentforce AI agents inside enterprise customer orgs. Day-to-day work includes: configuring and customizing AI agents for specific business processes, building data integrations between Salesforce and customer data sources, training customer teams on AI agent capabilities, monitoring agent performance and iterating on prompts/workflows, and feeding deployment insights back to the Agentforce product team. Salesforce FDEs work within the existing Salesforce ecosystem, so deep Salesforce platform knowledge (Apex, Lightning, SOQL, Einstein) is a differentiator.",
-        "tech_stack": "Salesforce platform (Apex, Lightning Web Components, SOQL, Einstein AI), Python, JavaScript/TypeScript, MuleSoft (integration), Tableau (analytics), SQL. FDEs also need familiarity with LLM concepts since Agentforce is built on AI foundations. Salesforce's proprietary ecosystem means FDEs spend significant time learning platform-specific tools rather than open-source technologies.",
-        "interview": "Salesforce FDE interviews are 4-5 rounds: recruiter screen, coding (medium difficulty, often Salesforce-ecosystem-adjacent), system design (focused on integration and data architecture), customer scenario, and behavioral/values. Salesforce values 'Ohana' culture fit and customer obsession. The interview is less algorithmically difficult than Palantir or OpenAI but places more emphasis on communication skills and Salesforce ecosystem knowledge. Prior Salesforce experience isn't required but is a significant advantage.",
-        "culture": "Salesforce has a structured, process-oriented culture with strong training infrastructure. FDEs benefit from Trailhead (Salesforce's learning platform), mentorship programs, and a large peer community. Travel is moderate (20-30%). Work-life balance is generally better than at startups. Salesforce is a public company (NYSE: CRM) with predictable compensation and benefits. The FDE program is designed for scale: standardized onboarding, documented playbooks, and clear career progression from FDE I to FDE III and beyond.",
-        "faq": [
-            {"q": "Is Salesforce really hiring 1,000 FDEs?", "a": "Salesforce CEO Marc Benioff announced the 1,000-FDE target for the Agentforce platform. As of early 2026, hiring is actively ramping. The company is posting FDE roles across multiple geographies and seniority levels. Whether they hit exactly 1,000 depends on market conditions and Agentforce adoption, but the commitment signals a massive, sustained investment in the FDE model."},
-            {"q": "Do I need Salesforce experience to become a Salesforce FDE?", "a": "No, but it helps significantly. Salesforce FDE job postings list Salesforce platform experience as 'preferred' rather than 'required.' Strong software engineering skills plus willingness to learn the Salesforce ecosystem are sufficient. However, candidates with existing Salesforce certifications (Admin, Developer I/II, Platform App Builder) skip the platform learning curve and can contribute faster to customer deployments."},
-            {"q": "How does Salesforce FDE compare to Salesforce Solutions Engineer?", "a": "Salesforce Solutions Engineers are pre-sales: they demo Salesforce products to prospects and help close deals. FDEs are post-sale: they deploy Agentforce AI agents inside existing customer environments. SEs have quota-based compensation with commissions. FDEs have standard engineering compensation with equity. If you prefer building over selling, FDE is the better fit. Both roles require strong customer communication skills."},
-            {"q": "What is the Salesforce FDE career progression?", "a": "Salesforce has a structured FDE career ladder: FDE I (entry/junior), FDE II (mid-level), FDE III (senior), Lead FDE, and FDE Manager. The progression mirrors Salesforce's standard engineering ladder with equivalent compensation bands. Promotion timelines are typically 2-3 years per level. FDEs can also transition to product management, solutions architecture, or engineering management roles within Salesforce."},
-            {"q": "Is Salesforce FDE remote?", "a": "Many Salesforce FDE roles offer remote or hybrid options. Salesforce adopted a flexible work model ('Work from Anywhere') during the pandemic and has maintained it. Remote FDE roles require periodic travel to customer sites (estimated 20-30% travel). Fully on-site FDE roles exist at major Salesforce hubs (SF, NYC, Chicago, Atlanta) for candidates who prefer in-person collaboration."},
-        ],
-    },
-    {
-        "slug": "databricks", "name": "Databricks", "hq": "San Francisco, CA", "fde_count": "30+", "salary": "$175,000 - $260,000",
-        "overview": "Databricks FDEs deploy the Databricks Lakehouse Platform and Mosaic AI tools inside enterprise data teams. As one of the highest-valued private tech companies, Databricks' FDE equity could be worth significantly more than the base salary if the company goes public. FDEs at Databricks sit at the intersection of data engineering, ML/AI, and customer deployment, making it one of the most technically demanding FDE roles in the market.",
-        "what_fdes_do": "Databricks FDEs build custom data pipelines, ML workflows, and AI applications on the Databricks platform for enterprise customers. Typical projects: migrating a customer's data warehouse to a lakehouse architecture, building MLOps pipelines for model training and deployment, implementing Unity Catalog for data governance across a customer's organization, and deploying Mosaic AI for custom model fine-tuning. The role is heavier on data engineering than most FDE positions. FDEs work with Apache Spark, Delta Lake, MLflow, and Databricks' proprietary tools daily.",
-        "tech_stack": "Python, SQL, Apache Spark, Delta Lake, MLflow, Databricks Notebooks, Unity Catalog, Mosaic AI, Terraform, Docker, AWS/Azure/GCP. Strong data engineering fundamentals are essential. FDEs who understand distributed computing, data modeling, and ML pipelines thrive. Web development skills are less important than at other FDE roles.",
-        "interview": "Databricks FDE interviews are 4-5 rounds: recruiter screen, coding (data-focused Python, SQL heavy), system design (expect a data pipeline or lakehouse architecture question), customer scenario, and a team/values round. The technical bar is high. Databricks wants engineers who can explain complex data concepts to non-technical stakeholders. Strong SQL skills are surprisingly important for this role.",
-        "culture": "Engineering-centric culture with a strong open-source heritage (Apache Spark originated at Databricks). FDEs are treated as peers to product engineers, not as a separate support organization. The company is growing fast with pre-IPO energy. Compensation is competitive, and the equity component could be substantial. Travel is moderate (20-30%). Remote-friendly for many FDE roles.",
-        "faq": [
-            {"q": "What is the Databricks FDE salary and equity?", "a": "Base salary ranges from $175,000 to $260,000. Total compensation including RSUs (restricted stock units) can reach $350,000-$450,000 at senior levels. As a private company valued at $43B+, Databricks equity isn't liquid yet but could be very valuable at IPO. FDEs who join pre-IPO with significant equity grants stand to benefit most."},
-            {"q": "Do I need Spark experience to be a Databricks FDE?", "a": "It's strongly preferred but not strictly required. If you have strong Python, SQL, and general data engineering experience, you can learn Spark on the job. However, candidates who already know Spark, Delta Lake, and the Databricks platform have a significant advantage in interviews and ramp up to customer deployments much faster. Consider getting a Databricks certification before applying."},
-            {"q": "How technical is the Databricks FDE role?", "a": "Very technical. Databricks FDE is one of the most engineering-heavy FDE roles in the market. You'll write production data pipelines, optimize Spark jobs, build ML workflows, and debug distributed computing issues. If you're looking for an FDE role that's closer to data engineering than customer management, Databricks is the right fit."},
-            {"q": "Is Databricks FDE a good path to ML engineering?", "a": "Excellent. Databricks FDEs work daily with ML tooling (MLflow, Mosaic AI, model deployment pipelines). The customer exposure gives you applied ML experience that pure ML engineers in research labs don't get. Many Databricks FDEs transition to ML engineering or MLOps roles, either within Databricks or at other companies."},
-            {"q": "Does Databricks have FDE roles outside San Francisco?", "a": "Yes. Databricks has FDE roles in multiple locations including New York, Seattle, London, and some remote positions. The company is more distributed than OpenAI or Anthropic. Remote FDE roles require periodic customer site visits but are available for candidates who prefer not to relocate to the Bay Area."},
-        ],
-    },
-    {
-        "slug": "scale-ai", "name": "Scale AI", "hq": "San Francisco, CA", "fde_count": "20+", "salary": "$165,000 - $245,000",
-        "overview": "Scale AI FDEs deploy data labeling, model evaluation, and AI infrastructure products for enterprise and government customers. Scale AI sits at a unique intersection: their FDEs need to understand both the data annotation workflows that train AI models and the production ML systems that use that training data. The company serves defense (US DOD), automotive (self-driving cars), and general enterprise AI customers.",
-        "what_fdes_do": "Scale AI FDEs build custom data pipelines for AI training: designing annotation workflows, integrating customer data sources with Scale's labeling platform, building quality assurance systems for labeled data, and deploying model evaluation frameworks. Government FDEs work on classified projects requiring security clearances. Commercial FDEs work with autonomous vehicle companies, healthcare AI firms, and large language model developers. The work is uniquely data-centric compared to other FDE roles.",
-        "tech_stack": "Python, SQL, Scale AI platform, data pipeline tools (Airflow, dbt), cloud platforms (AWS/GCP), Docker, Kubernetes. Government-focused FDEs also need familiarity with classified computing environments and FedRAMP compliance. Data quality assessment and annotation workflow design are Scale-specific skills that transfer to any ML data engineering role.",
-        "interview": "Scale AI FDE interviews are 4-5 rounds: recruiter screen, coding (practical Python, data processing focus), system design (data pipeline architecture), customer scenario, and behavioral. The technical emphasis is on data engineering and quality systems rather than frontend or web development. Scale looks for engineers who understand how data quality impacts model performance.",
-        "culture": "Mission-oriented culture (Scale's tagline: 'Accelerate the development of AI'). The government contracts add a national security dimension to the work. Scale AI's FDE team is smaller than Palantir's but growing fast. Compensation is strong, with pre-IPO equity that could be significant. Travel varies by customer: government deployments may require more on-site presence than commercial deployments.",
-        "faq": [
-            {"q": "Does Scale AI FDE require a security clearance?", "a": "For government-focused FDE roles, yes. Scale AI has significant DOD contracts. FDEs working on these projects need an active or obtainable security clearance (typically Secret or Top Secret). Commercial FDE roles at Scale AI do not require clearances. The application process will specify if a clearance is needed."},
-            {"q": "What makes Scale AI FDE different from other FDE roles?", "a": "Scale AI FDEs are uniquely data-centric. While most FDE roles focus on deploying a software product, Scale AI FDEs design and manage the data pipelines that train AI models. This means more work on data quality, annotation workflow design, and evaluation metrics. It's the most data-engineering-heavy FDE role in the market, making it a strong fit for engineers who love working with data rather than building user-facing applications."},
-            {"q": "What is Scale AI FDE total compensation?", "a": "Base salary ranges from $165,000 to $245,000. Total compensation including equity can reach $300,000-$400,000 at senior levels. As a private company valued at $14B+, Scale AI's equity is pre-liquidity. FDEs who joined early and received significant equity grants could see substantial returns at IPO. Current grants are priced at the latest valuation."},
-            {"q": "Is Scale AI FDE remote-friendly?", "a": "Scale AI offers remote FDE positions for commercial customers. Government FDE roles typically require on-site presence at secure facilities. Remote commercial FDE roles require periodic travel to customer sites (estimated 20-30%). The company is San Francisco-headquartered but supports distributed teams for non-classified work."},
-            {"q": "What career paths do Scale AI FDEs pursue after?", "a": "Scale AI FDEs commonly move into: ML engineering (the data pipeline expertise transfers directly), data engineering leadership at AI companies, product management for AI/data products, or founding AI-focused startups. The government FDE path also opens doors to defense tech companies like Anduril, Palantir, and Shield AI."},
-        ],
-    },
-    {
-        "slug": "ramp", "name": "Ramp", "hq": "New York, NY", "fde_count": "15-25", "salary": "$160,000 - $220,000",
-        "overview": "Ramp FDEs deploy the company's corporate card, expense management, and financial automation platform for enterprise customers. Ramp is one of the fastest-growing fintech companies, and their FDE team handles the complex financial system integrations that enterprise adoption requires. FDEs at Ramp work at the intersection of fintech infrastructure and enterprise IT, making it a unique FDE role focused on financial data rather than AI or analytics.",
-        "what_fdes_do": "Ramp FDEs build custom integrations between Ramp's financial platform and customer systems: ERP platforms (NetSuite, SAP, Oracle), HRIS systems (Workday, BambooHR), accounting software (QuickBooks, Xero), and banking infrastructure. They also configure custom approval workflows, build expense policy automation, and implement financial controls specific to each customer. The work is less AI-focused than OpenAI or Anthropic but more operationally critical: getting financial data wrong has immediate, measurable business impact.",
-        "tech_stack": "Python, TypeScript, SQL, REST APIs, GraphQL, Ramp's internal platform, ERP integration tools, financial data standards (ISO 20022, NACHA). FDEs need strong API integration skills and comfort working with financial data. Understanding of accounting principles (GL codes, cost centers, accrual vs. cash accounting) is surprisingly helpful for this role.",
-        "interview": "Ramp's FDE interview is 4-5 rounds: recruiter screen, coding (practical API and data work), system design (integration architecture focus), customer scenario, and a team fit round. Ramp moves faster than most companies (2 weeks from first call to offer). They value speed and execution. The technical bar is high but the problems are more practical than algorithmic. Expect questions about designing strong integrations, handling edge cases in financial data, and managing data migration between systems.",
-        "culture": "Speed-obsessed startup culture. Ramp ships fast and expects FDEs to match that pace. The team is lean, which means each FDE handles significant customer impact. NYC-based with a strong in-office culture, though some remote FDE roles exist. Compensation is competitive for a growth-stage startup, with meaningful equity grants. Ramp's valuation has grown rapidly, making early equity grants potentially very valuable.",
-        "faq": [
-            {"q": "What makes Ramp's FDE role different?", "a": "Ramp FDEs focus on financial system integrations rather than AI or analytics deployments. This means more work with ERP systems, accounting software, and banking infrastructure. The work is highly operational: accuracy matters more than speed because financial data errors have immediate, quantifiable business impact. If you enjoy data integration and financial systems, Ramp's FDE role is uniquely well-suited."},
-            {"q": "Do I need fintech experience for Ramp's FDE role?", "a": "Not required but helpful. Ramp looks for strong software engineers who can learn financial systems on the job. That said, candidates who understand accounting concepts (GL codes, journal entries, cost centers) or have worked with ERP systems have a meaningful advantage. If you've built integrations with financial APIs or worked at a fintech company, highlight that experience prominently."},
-            {"q": "What is Ramp FDE compensation?", "a": "Base salary ranges from $160,000 to $220,000. Total compensation including equity is competitive with larger companies when factoring in Ramp's rapid valuation growth. Ramp stock options are pre-IPO, meaning they carry both upside potential and liquidity risk. The equity component can be significant for early FDE hires."},
-            {"q": "Is Ramp's FDE role in-office?", "a": "Ramp has a strong in-office culture in their New York City headquarters. Most FDE roles are based in NYC with in-office expectations 3-4 days per week. Some remote FDE roles exist but are less common. If you're committed to remote work, other companies (Salesforce, Databricks) offer more flexibility."},
-            {"q": "What's the career path for a Ramp FDE?", "a": "Ramp FDEs commonly progress to: senior FDE (managing larger enterprise accounts), engineering management within Ramp's customer-facing engineering org, product management (especially for integration and platform products), or solutions architecture roles at other fintech companies. Ramp's lean team structure means FDEs get broad exposure that accelerates career growth faster than at larger companies."},
-        ],
-    },
-    {
-        "slug": "rippling", "name": "Rippling", "hq": "San Francisco, CA", "fde_count": "10-20", "salary": "$155,000 - $230,000",
-        "overview": "Rippling FDEs deploy the company's unified HR, IT, and finance platform for enterprise customers. Rippling's product is unusually broad (it replaces 5-10 separate SaaS tools), which makes FDE deployments complex but impactful. FDEs handle the migration, integration, and customization work that lets enterprise customers consolidate their HR, payroll, benefits, device management, and app provisioning onto a single platform.",
-        "what_fdes_do": "Rippling FDEs manage complex enterprise migrations: moving customer data from legacy HRIS, payroll, and IT systems to Rippling's unified platform. This includes data migration, custom workflow configuration, SSO/identity integration, device management setup, and benefits administration configuration. FDEs also build custom integrations between Rippling and customer systems that aren't natively supported. The role requires understanding of HR/IT/finance business processes in addition to software engineering.",
-        "tech_stack": "Python, TypeScript, SQL, REST APIs, Rippling's internal platform, SCIM (identity provisioning), SSO protocols (SAML, OIDC), MDM (mobile device management) tools, HRIS data standards. FDEs need comfortable working with identity and access management systems. Understanding of HR workflows (onboarding, offboarding, payroll processing) differentiates strong candidates.",
-        "interview": "Rippling FDE interviews are 4-5 rounds: recruiter screen, coding (practical, integration-focused), system design (enterprise migration scenario), customer scenario, and behavioral. Rippling values engineers who can handle complexity and ambiguity. Expect system design questions about migrating an enterprise customer from 5 separate SaaS tools to Rippling's unified platform. They want to see how you handle interconnected systems with conflicting data.",
-        "culture": "Intense, execution-focused startup culture led by Parker Conrad (serial founder). Rippling moves fast and expects FDEs to match. The product surface area is enormous, which means FDEs need to learn many domains (HR, IT, finance, identity) rather than specializing in one. Compensation is competitive with meaningful pre-IPO equity. The company has raised $1.4B+ at high valuations.",
-        "faq": [
-            {"q": "What makes Rippling's FDE role unique?", "a": "Rippling's product breadth makes this the most domain-diverse FDE role. You'll work across HR, IT, finance, and identity management in a single deployment. Most FDE roles at other companies focus on one domain (AI at OpenAI, data at Databricks, finance at Ramp). Rippling FDEs need to be generalists who can quickly learn new business domains."},
-            {"q": "Do I need HR or IT experience for Rippling's FDE role?", "a": "Not required, but understanding HR workflows (onboarding, payroll, benefits) and IT administration (SSO, device management, identity provisioning) accelerates your ramp time significantly. Rippling trains FDEs on the platform, but domain knowledge helps you ask better questions during customer deployments and anticipate migration challenges."},
-            {"q": "What is Rippling FDE compensation?", "a": "Base salary ranges from $155,000 to $230,000. Total compensation including equity can be substantial given Rippling's high valuation ($13.5B as of last raise). Pre-IPO equity carries both upside potential and liquidity risk. The equity grants for early FDE hires could be significant if Rippling goes public."},
-            {"q": "How much travel do Rippling FDEs do?", "a": "Moderate. Rippling FDEs typically travel 15-25% for customer onsite visits during migrations. The company is San Francisco-based with a strong in-office culture. Some remote FDE positions exist but most roles are based at Rippling offices. Travel intensity peaks during new enterprise customer deployments and decreases as the customer stabilizes on the platform."},
-            {"q": "Is Rippling FDE a good career move?", "a": "If you want breadth over depth, yes. Rippling FDEs develop a uniquely broad skill set spanning HR tech, IT infrastructure, identity management, and financial systems. This generalist expertise is valuable for founding startups, consulting, or taking product/engineering leadership roles at enterprise software companies. The risk is that Rippling's intense culture isn't for everyone."},
-        ],
-    },
-]
+# Curated profiles for top companies (kept from original)
+CURATED = {
+    "palantir", "openai", "anthropic", "salesforce", "databricks",
+    "scale-ai", "ramp", "rippling",
+}
+
+# Pages already generated by generate_more_company_profiles.py
+ALREADY_GENERATED = {
+    "anduril", "atlassian", "cohere", "elevenlabs", "google-deepmind",
+    "posthog", "servicenow",
+}
 
 
-def generate_company_profile_pages():
-    print("  Generating company profile pages...")
-    count = 0
+# duplicated from generate_jobs_page.py -- keep in sync
+def derive_seniority(title):
+    t = title or ''
+    t_lower = t.lower()
+    if re.search(r'\b(manager|director|head of|vp|lead)\b', t_lower):
+        return 'lead'
+    if re.search(r'\b(senior|sr\.|sr |staff|principal)\b', t_lower):
+        return 'senior'
+    if re.search(r'\b(junior|jr\.|associate|entry|intern|analyst)\b', t_lower):
+        return 'junior'
+    return 'mid'
 
-    for co in COMPANIES:
-        faq_html = ""
-        faq_items = []
-        for faq in co["faq"]:
-            faq_html += f'''
+
+def make_slug(name):
+    return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+
+
+def make_job_slug(company, title, source_url):
+    text = company + '-' + title
+    base = re.sub(r'[^a-z0-9]+', '-', text.lower()).strip('-')[:80]
+    hash_input = source_url or (company + title)
+    hash6 = hashlib.md5(hash_input.encode()).hexdigest()[:6]
+    return base + '-' + hash6
+
+
+def format_k(amount):
+    if not amount or amount <= 0:
+        return None
+    return '$' + str(int(round(amount / 1000))) + 'K'
+
+
+def extract_company_blurb(description, company_name):
+    """Extract first 2 paragraphs that mention the company, or return None."""
+    if not description:
+        return None
+    paragraphs = [p.strip() for p in description.split('\n\n') if p.strip()]
+    company_lower = company_name.lower()
+    matches = []
+    for p in paragraphs:
+        if company_lower in p.lower() and len(p) > 80:
+            matches.append(p[:600])
+            if len(matches) == 2:
+                break
+    return ' '.join(matches) if matches else None
+
+
+def generate_data_driven_profile(company_name, co_jobs, all_jobs, market_intel):
+    """Generate a full company profile page from jobs.json data."""
+    slug = make_slug(company_name)
+    count = len(co_jobs)
+    total_jobs = len(all_jobs)
+
+    # Salary stats
+    sal_jobs = [(j.get('min_amount', 0) or 0, j.get('max_amount', 0) or 0)
+                for j in co_jobs if (j.get('min_amount', 0) or 0) > 0 and (j.get('max_amount', 0) or 0) > 0]
+
+    if sal_jobs:
+        mins = [s[0] for s in sal_jobs]
+        maxs = [s[1] for s in sal_jobs]
+        all_vals = mins + maxs
+        med = int(stat_median(all_vals))
+        sal_range = (format_k(min(mins)) or 'N/A') + ' to ' + (format_k(max(maxs)) or 'N/A')
+        med_str = format_k(med) or 'N/A'
+    else:
+        med = 0
+        sal_range = 'Not disclosed'
+        med_str = 'Not disclosed'
+
+    # Location info
+    locations = list(set(
+        re.sub(r',\s*(US|USA)$', '', (j.get('location') or '').strip())
+        for j in co_jobs
+        if (j.get('location') or '').strip() and not (j.get('is_remote', False))
+    ))
+    locations = [l for l in locations if l]
+
+    remote_count = sum(1 for j in co_jobs if j.get('is_remote', False))
+    onsite_count = count - remote_count
+
+    # Extract blurb from first job description
+    blurb = None
+    for j in co_jobs:
+        blurb = extract_company_blurb(j.get('description', ''), company_name)
+        if blurb:
+            break
+
+    if not blurb:
+        loc_str = locations[0] if locations else 'multiple cities'
+        blurb = (
+            f'{company_name} is currently hiring {count} Forward Deployed Engineer'
+            f'{"s" if count != 1 else ""} '
+            f'{"across " + ", ".join(locations[:3]) if locations else "in various locations"}. '
+            f'The roles {"are" if count != 1 else "is"} part of {company_name}\'s customer engineering function, '
+            f'responsible for deploying and customizing the company\'s products directly at customer sites. '
+            f'FDE roles at {company_name} require strong software engineering skills combined with the ability '
+            f'to work directly with enterprise customers on production deployments.'
+        )
+
+    # Job list HTML
+    job_list_html = ''
+    for j in co_jobs:
+        title = j.get('title', 'Forward Deployed Engineer')
+        loc = j.get('location', '')
+        is_remote = j.get('is_remote', False)
+        mn = j.get('min_amount', 0) or 0
+        mx = j.get('max_amount', 0) or 0
+        source_url = j.get('source_url', '')
+        job_slug = make_job_slug(company_name, title, source_url)
+
+        sal_badge = ''
+        if mn > 0 and mx > 0:
+            sal_badge = f'<span class="cp-job__salary">{format_k(mn)} &ndash; {format_k(mx)}</span>'
+
+        loc_badge = ''
+        if is_remote:
+            loc_badge = '<span class="cp-job__tag cp-job__tag--remote">Remote</span>'
+        elif loc:
+            loc_badge = f'<span class="cp-job__tag">{loc}</span>'
+
+        seniority = derive_seniority(title)
+        sen_labels = {'lead': 'Manager/Lead', 'senior': 'Senior+', 'mid': 'Mid-level', 'junior': 'Junior'}
+        sen_badge = f'<span class="cp-job__tag cp-job__tag--sen">{sen_labels.get(seniority, "Mid-level")}</span>'
+
+        job_list_html += f'''
+                <a href="/jobs/{job_slug}/" class="cp-job">
+                    <div class="cp-job__header">
+                        <div>
+                            <div class="cp-job__title">{title}</div>
+                        </div>
+                        {sal_badge}
+                    </div>
+                    <div class="cp-job__meta">
+                        {loc_badge}
+                        {sen_badge}
+                        <span class="cp-job__cta">View role &rarr;</span>
+                    </div>
+                </a>'''
+
+    # Similar companies -- closest by role count
+    all_by_company = {}
+    for j in all_jobs:
+        c = (j.get('company') or '').strip()
+        if c:
+            all_by_company.setdefault(c, []).append(j)
+
+    sorted_by_count = sorted(all_by_company.items(), key=lambda x: len(x[1]), reverse=True)
+    similar = [
+        (n, len(js)) for n, js in sorted_by_count
+        if n != company_name and make_slug(n) not in CURATED and make_slug(n) not in ALREADY_GENERATED
+    ][:5]
+
+    similar_html = ''
+    for sim_name, sim_count in similar:
+        sim_slug = make_slug(sim_name)
+        similar_html += f'''
+                <a href="/companies/{sim_slug}/" class="cp-sim-card">
+                    <div class="cp-sim-card__name">{sim_name}</div>
+                    <div class="cp-sim-card__count">{sim_count} role{"s" if sim_count != 1 else ""}</div>
+                </a>'''
+
+    # Tools mentioned in job descriptions
+    tools_mentioned = Counter()
+    for j in co_jobs:
+        for tool in (j.get('tools') or []):
+            if isinstance(tool, dict):
+                name = tool.get('tool_name', '')
+            else:
+                name = str(tool)
+            if name:
+                tools_mentioned[name.strip()] += 1
+
+    # Global tool context
+    global_tools = market_intel.get('tools', {})
+    total_jobs_for_pct = market_intel.get('total_jobs', total_jobs)
+
+    # Build about section
+    loc_str = ', '.join(locations[:3]) if locations else 'various locations'
+    if remote_count > 0 and onsite_count > 0:
+        work_type = f'{onsite_count} on-site and {remote_count} remote'
+    elif remote_count > 0:
+        work_type = f'{remote_count} fully remote'
+    else:
+        work_type = f'{onsite_count} on-site'
+
+    # Tools context for this company
+    if tools_mentioned:
+        top_tools = [t for t, _ in tools_mentioned.most_common(8)]
+        tools_prose = f'Job descriptions for {company_name} FDE roles mention the following tools and technologies: {", ".join(top_tools)}.'
+    else:
+        # Fall back to global top tools
+        top_global = [t for t, _ in sorted(global_tools.items(), key=lambda x: x[1], reverse=True)[:8]]
+        tools_prose = f'FDE roles broadly require expertise in: {", ".join(top_global)}. {company_name} postings do not itemize specific tools.'
+
+    # Seniority breakdown for this company
+    sen_counts = Counter(derive_seniority(j.get('title', '')) for j in co_jobs)
+    sen_prose_parts = []
+    for bucket, label in [('lead', 'manager or lead-level'), ('senior', 'senior-level'), ('mid', 'mid-level'), ('junior', 'junior-level')]:
+        if sen_counts.get(bucket, 0) > 0:
+            sen_prose_parts.append(f'{sen_counts[bucket]} {label}')
+    sen_prose = f'The {count} {"role is" if count == 1 else "roles are"} broken down as: {", ".join(sen_prose_parts)}.' if sen_prose_parts else ''
+
+    # Market context
+    mkt_segment = market_intel.get('segment', {})
+    enterprise_pct = int(round(100 * mkt_segment.get('Enterprise', 0) / total_jobs_for_pct)) if total_jobs_for_pct else 0
+
+    # Build FAQs
+    faq_items_data = [
+        {
+            "q": f"What does a Forward Deployed Engineer do at {company_name}?",
+            "a": f"A Forward Deployed Engineer at {company_name} is embedded with enterprise customers to deploy, customize, and maintain the company's products. Based on {count} active FDE {'role' if count == 1 else 'roles'} as of April 30, 2026, these positions are {work_type} and located {'in ' + loc_str if locations else 'across various markets'}. FDEs write production code, design integration architectures, and translate customer feedback into product improvements."
+        },
+        {
+            "q": f"What is the salary range for FDE roles at {company_name}?",
+            "a": (
+                f"Based on {len(sal_jobs)} of {count} active {company_name} FDE {'posting' if count == 1 else 'postings'} that disclosed compensation, the salary range is {sal_range} with a median of {med_str}. "
+                if sal_jobs else
+                f"{company_name}'s active FDE postings do not disclose salary ranges. The overall FDE market median is $135,000 based on 111 of 134 postings with disclosed pay. "
+            ) + f"Equity is included in most FDE compensation packages at venture-backed and public companies."
+        },
+        {
+            "q": f"How many Forward Deployed Engineers does {company_name} hire?",
+            "a": f"{company_name} has {count} active FDE {'posting' if count == 1 else 'postings'} as of April 30, 2026, making {'it' if count == 1 else 'them'} one of {total_jobs} total active FDE roles tracked by FDE Pulse across {len(all_by_company)} companies. {sen_prose}"
+        },
+        {
+            "q": f"What skills are required for {company_name} FDE roles?",
+            "a": tools_prose + f" Strong software engineering fundamentals (typically 3 or more years of experience), customer communication skills, and the ability to work independently at client sites are standard requirements across all FDE postings at {company_name}."
+        },
+        {
+            "q": f"How does an FDE role at {company_name} compare to a software engineer role?",
+            "a": f"FDE roles at {company_name} differ from internal software engineering in two key ways: customer proximity and deployment scope. FDEs work directly at customer sites or in close coordination with customer teams, building solutions on top of {company_name}'s platform rather than contributing to the core product. This requires stronger communication skills and higher tolerance for ambiguity than most product engineering roles. Compensation typically reflects this premium: the FDE market median is $135,000 base across 134 active postings."
+        },
+    ]
+
+    faq_html = ''
+    faq_schema_list = []
+    for fq in faq_items_data:
+        faq_html += f'''
                 <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">{faq["q"]}</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.7;">{faq["a"]}</p>
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">{fq["q"]}</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">{fq["a"]}</p>
                 </div>'''
-            faq_items.append({"@type": "Question", "name": faq["q"], "acceptedAnswer": {"@type": "Answer", "text": faq["a"]}})
+        faq_schema_list.append({
+            "@type": "Question",
+            "name": fq["q"],
+            "acceptedAnswer": {"@type": "Answer", "text": fq["a"]}
+        })
 
-        related = get_related_links([
-            {"href": "/salaries/", "label": "FDE Salary Data"},
-            {"href": "/career/forward-deployed-engineer-interview-questions/", "label": "FDE Interview Questions"},
-            {"href": "/insights/forward-deployed-engineer-vs-software-engineer/", "label": "FDE vs Software Engineer"},
-            {"href": "/career/forward-deployed-engineer-levels/", "label": "FDE Career Levels"},
-            {"href": "/jobs/", "label": "Browse All FDE Jobs"},
-        ])
+    related = get_related_links([
+        {"href": "/salaries/", "label": "FDE Salary Data"},
+        {"href": "/companies/", "label": "All Companies Hiring FDEs"},
+        {"href": "/jobs/", "label": "Browse All FDE Jobs"},
+        {"href": "/insights/fde-hiring-trends-2026/", "label": "FDE Hiring Trends 2026"},
+        {"href": "/insights/fde-salary-benchmarks/", "label": "FDE Salary Benchmarks"},
+    ])
 
-        body = f'''
-        <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer at {co["name"]}</h1>
-            <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem;">{co["hq"]} &middot; {co["fde_count"]} FDEs &middot; {co["salary"]}</p>
+    # ── Extended prose (pad to 1200+ words) ─────────────────────────────────────
+    geo_focus = market_intel.get('geo_focus', {})
+    na_pct = int(round(100 * geo_focus.get('North America', 0) / total_jobs_for_pct)) if total_jobs_for_pct else 0
 
-            <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 0 0 1rem;">Overview</h2>
-                <p style="margin-bottom: 1.25rem;">{co["overview"]}</p>
+    hiring_signals = market_intel.get('hiring_signals', {})
+    growth_pct = int(round(100 * hiring_signals.get('Growth Hire', 0) / total_jobs_for_pct)) if total_jobs_for_pct else 0
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDEs Do at {co["name"]}</h2>
-                <p style="margin-bottom: 1.25rem;">{co["what_fdes_do"]}</p>
+    team_structure = market_intel.get('team_structure', {})
+    build_team_pct = int(round(100 * team_structure.get('Build Team', 0) / total_jobs_for_pct)) if total_jobs_for_pct else 0
+    first_hire_pct = int(round(100 * team_structure.get('First Hire', 0) / total_jobs_for_pct)) if total_jobs_for_pct else 0
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Tech Stack</h2>
-                <p style="margin-bottom: 1.25rem;">{co["tech_stack"]}</p>
+    about_fde = f'''
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">About Forward Deployed Engineering at {company_name}</h2>
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Interview Process</h2>
-                <p style="margin-bottom: 1.25rem;">{co["interview"]}</p>
+                <p style="margin-bottom: 1.25rem;">{blurb}</p>
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Culture & Work-Life</h2>
-                <p style="margin-bottom: 1.25rem;">{co["culture"]}</p>
+                <p style="margin-bottom: 1.25rem;">Companies like {company_name} typically structure FDE teams around a build-team model, where engineers join an existing customer engineering function and deploy the product across a portfolio of accounts. Based on FDE Pulse data across {total_jobs} active postings, {build_team_pct}% of FDE roles are build-team positions and {first_hire_pct}% are "first hire" situations where the engineer defines the function. {company_name}'s {count} active {'posting' if count == 1 else 'postings'} {'falls' if count == 1 else 'fall'} into the {"first hire" if count <= 2 else "build team"} category based on role count.</p>
+
+                <p style="margin-bottom: 1.25rem;">FDE roles across the market are {na_pct}% North America-focused based on {total_jobs} active postings. {growth_pct}% of FDE roles are classified as growth hires, meaning the company is expanding its customer base rather than backfilling an existing position. This context matters for FDE candidates evaluating {company_name}: growth hire roles often come with more pressure to ramp quickly but also clearer performance metrics tied to customer success.</p>
+
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDEs Do at {company_name}</h2>
+
+                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineers at {company_name} own the technical success of customer deployments. This means designing integration architectures specific to each customer's infrastructure, writing and maintaining production code that runs in customer environments, and serving as the primary technical point of contact for enterprise accounts. The role sits at the intersection of product engineering and customer success without being either.</p>
+
+                <p style="margin-bottom: 1.25rem;">Day-to-day work for an FDE at {company_name} varies by customer complexity and deployment stage. In the early phases of a new customer engagement, FDEs focus on environment setup, data mapping, and building the first integrations. As deployments mature, the work shifts toward performance tuning, expanding use cases, and training customer teams on new capabilities. Some FDE roles also feed product insights back to internal engineering, effectively acting as a bridge between customer needs and the roadmap.</p>
+
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Career Path for FDEs at {company_name}</h2>
+
+                <p style="margin-bottom: 1.25rem;">FDE careers typically progress along one of three paths: deepening technical specialization within the FDE function (moving from mid-level to senior to staff FDE), transitioning into engineering management (leading FDE teams or broader customer engineering organizations), or lateral moves into product management (where customer-facing FDE experience is highly valued). All three paths are available at companies with established FDE programs.</p>
+
+                <p style="margin-bottom: 1.25rem;">The FDE market median of $135,000 base salary across 134 active postings reflects a market that prices the role at a premium over equivalent-seniority software engineers at the same companies. Total compensation including equity, particularly at venture-backed companies, can be 20 to 50 percent higher than base salary. FDEs considering opportunities at {company_name} should evaluate total compensation, not just base salary, when comparing offers.</p>
+
+                <p style="margin-bottom: 1.25rem;">Interview processes for FDE roles at most companies include a technical coding round, a system design round specific to customer deployment scenarios, and a customer scenario exercise where candidates are asked to scope a deployment, communicate trade-offs, and handle technical objections. Strong candidates combine engineering depth with the ability to explain complex systems to non-technical stakeholders clearly and without jargon.</p>'''
+
+    body = f'''
+        <section class="cp-section">
+            <div class="cp-hero">
+                <h1 class="cp-hero__title">Forward Deployed Engineer at {company_name}</h1>
+                <div class="cp-hero__meta">
+                    {count} active FDE role{"s" if count != 1 else ""}
+                    {(" &middot; " + sal_range + " salary") if sal_range != "Not disclosed" else ""}
+                    {(" &middot; " + loc_str) if locations else ""}
+                </div>
+            </div>
+
+            <h2 class="cp-jobs-title">FDE Roles at {company_name}</h2>
+            <div class="cp-jobs-list">
+                {job_list_html}
+            </div>
+
+            <div class="cp-content">
+                {about_fde}
 
                 <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
                 {faq_html}
@@ -189,42 +353,195 @@ def generate_company_profile_pages():
             {related}
 
             {get_cta_box()}
-        </section>
-'''
 
-        faq_schema = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq_items}, indent=2)
-        breadcrumb = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            <div class="cp-similar">
+                <h2 class="cp-similar__title">Other Companies Hiring FDEs</h2>
+                <div class="cp-similar__grid">
+                    {similar_html}
+                </div>
+            </div>
+        </section>'''
+
+    # Job posting schema for first job
+    job_schemas = []
+    for j in co_jobs[:3]:
+        title = j.get('title', 'Forward Deployed Engineer')
+        mn = j.get('min_amount', 0) or 0
+        mx = j.get('max_amount', 0) or 0
+        jp = {
+            "@context": "https://schema.org",
+            "@type": "JobPosting",
+            "title": title,
+            "hiringOrganization": {
+                "@type": "Organization",
+                "name": company_name,
+            },
+            "jobLocation": {
+                "@type": "Place",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": (j.get('location') or '').split(',')[0].strip() or 'United States',
+                    "addressCountry": "US",
+                }
+            },
+            "datePosted": j.get('date_posted', '2026-04-30'),
+            "validThrough": "2026-07-30",
+            "employmentType": "FULL_TIME",
+            "url": j.get('source_url', ''),
+        }
+        if mn > 0 and mx > 0:
+            jp["baseSalary"] = {
+                "@type": "MonetaryAmount",
+                "currency": "USD",
+                "value": {"@type": "QuantitativeValue", "minValue": mn, "maxValue": mx, "unitText": "YEAR"}
+            }
+        job_schemas.append(json.dumps(jp, indent=2))
+
+    faq_schema = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq_schema_list
+    }, indent=2)
+
+    breadcrumb = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL},
             {"@type": "ListItem", "position": 2, "name": "Companies", "item": BASE_URL + "/companies/"},
-            {"@type": "ListItem", "position": 3, "name": co["name"], "item": BASE_URL + "/companies/" + co["slug"] + "/"},
-        ]}, indent=2)
-        org_schema = json.dumps({"@context": "https://schema.org", "@type": "Organization", "name": co["name"]}, indent=2)
+            {"@type": "ListItem", "position": 3, "name": company_name, "item": BASE_URL + "/companies/" + slug + "/"},
+        ]
+    }, indent=2)
 
-        extra_head = '<script type="application/ld+json">\n' + faq_schema + '\n    </script>\n    <script type="application/ld+json">\n' + breadcrumb + '\n    </script>\n    <script type="application/ld+json">\n' + org_schema + '\n    </script>'
+    org_schema = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": company_name,
+        "url": BASE_URL + "/companies/" + slug + "/"
+    }, indent=2)
 
-        html = get_html_head(
-            title="FDE at " + co["name"] + ": Salary, Interview, Role",
-            description="Forward Deployed Engineer at " + co["name"] + ". " + co["salary"] + " salary, interview process, tech stack, and what FDEs do. Complete guide.",
-            canonical_path="/companies/" + co["slug"] + "/",
-            extra_head=extra_head
+    schema_tags = ''.join(
+        f'    <script type="application/ld+json">\n{s}\n    </script>\n'
+        for s in [faq_schema, breadcrumb, org_schema] + job_schemas
+    )
+
+    page_css = '''
+.cp-section { max-width: 900px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+.cp-hero { margin-bottom: 2.5rem; }
+.cp-hero__title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.cp-hero__meta { font-size: 1rem; color: var(--text-muted); }
+.cp-jobs-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+.cp-jobs-list { margin-bottom: 3rem; }
+.cp-job {
+    display: block; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    text-decoration: none; transition: all var(--transition-fast);
+}
+.cp-job:hover { background: var(--bg-card-hover); border-color: var(--amber); box-shadow: var(--shadow-glow); }
+.cp-job__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; gap: 0.75rem; }
+.cp-job__title { font-weight: 600; color: var(--text-primary); font-size: 1.05rem; }
+.cp-job__salary {
+    background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.25);
+    padding: 0.25rem 0.65rem; border-radius: var(--radius-full);
+    font-size: 0.85rem; font-weight: 600; color: #4ade80; white-space: nowrap;
+}
+.cp-job__meta { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.cp-job__tag {
+    display: inline-flex; align-items: center; padding: 3px 10px;
+    background: rgba(255,255,255,0.05); border-radius: var(--radius-full);
+    font-size: 0.8rem; color: var(--text-muted);
+}
+.cp-job__tag--remote { background: rgba(74, 222, 128, 0.12); color: var(--success); font-weight: 500; }
+.cp-job__tag--sen { background: rgba(245, 158, 11, 0.12); color: var(--amber-light); }
+.cp-job__cta { margin-left: auto; font-size: 0.85rem; color: var(--amber-light); font-weight: 500; }
+.cp-content { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; margin-bottom: 2.5rem; }
+.cp-similar { margin-top: 3rem; }
+.cp-similar__title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+.cp-similar__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; }
+.cp-sim-card {
+    display: block; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 0.85rem 1rem; text-decoration: none;
+    transition: all var(--transition-fast);
+}
+.cp-sim-card:hover { border-color: var(--amber); background: var(--bg-card-hover); }
+.cp-sim-card__name { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem; }
+.cp-sim-card__count { font-size: 0.8rem; color: var(--text-muted); }
+@media (max-width: 768px) {
+    .cp-section { padding: 6rem 1rem 3rem; }
+    .cp-hero__title { font-size: 2rem; }
+    .cp-job__header { flex-direction: column; }
+}
+'''
+
+    extra_head = f'<style>{page_css}</style>\n{schema_tags}'
+
+    sal_desc = f' Salary {sal_range}.' if sal_range != 'Not disclosed' else ''
+    html = get_html_head(
+        title=f"FDE at {company_name}: Roles, Salary, How to Apply",
+        description=f"{company_name} has {count} active Forward Deployed Engineer {'role' if count == 1 else 'roles'} as of April 2026.{sal_desc} Full breakdown of open positions and what FDEs do.",
+        canonical_path=f"/companies/{slug}/",
+        extra_head=extra_head
+    )
+    html += f'''
+<body>
+{get_header_html()}
+    <main>
+{body}
+    </main>
+{get_footer_html()}
+{get_mobile_nav_js()}
+{get_signup_js()}
+</body>
+</html>'''
+
+    return slug, html
+
+
+def generate_company_profile_pages():
+    print("  Generating company profile pages...")
+
+    jobs_file = os.path.join(DATA_DIR, 'jobs.json')
+    market_file = os.path.join(DATA_DIR, 'market_intelligence.json')
+
+    with open(jobs_file, encoding='utf-8') as f:
+        jobs_data = json.load(f)
+
+    with open(market_file, encoding='utf-8') as f:
+        market_intel = json.load(f)
+
+    jobs = jobs_data.get('jobs', [])
+
+    # Group jobs by company
+    by_company = {}
+    for j in jobs:
+        comp = (j.get('company') or '').strip()
+        if not comp:
+            continue
+        by_company.setdefault(comp, []).append(j)
+
+    # Sort by role count descending
+    sorted_companies = sorted(by_company.items(), key=lambda x: len(x[1]), reverse=True)
+
+    count = 0
+    for company_name, co_jobs in sorted_companies:
+        slug = make_slug(company_name)
+
+        # Skip curated profiles (generated by original script)
+        if slug in CURATED or slug in ALREADY_GENERATED:
+            continue
+
+        slug_out, html = generate_data_driven_profile(
+            company_name, co_jobs, jobs, market_intel
         )
-        html += "\n<body>\n"
-        html += get_header_html()
-        html += "\n    <main>\n"
-        html += body
-        html += "\n    </main>\n"
-        html += get_footer_html()
-        html += get_mobile_nav_js()
-        html += get_signup_js()
-        html += "\n</body>\n</html>"
 
-        out_dir = os.path.join(SITE_DIR, 'companies', co['slug'])
+        out_dir = os.path.join(SITE_DIR, 'companies', slug_out)
         os.makedirs(out_dir, exist_ok=True)
-        with open(os.path.join(out_dir, 'index.html'), 'w', encoding='utf-8') as f:
+        out_path = os.path.join(out_dir, 'index.html')
+        with open(out_path, 'w', encoding='utf-8') as f:
             f.write(html)
         count += 1
 
-    print("  " + str(count) + " company profile pages generated")
+    print(f"  {count} data-driven company profile pages generated")
 
 
 if __name__ == "__main__":

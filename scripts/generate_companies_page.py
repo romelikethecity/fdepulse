@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Generate the Companies landing page for FDE Pulse."""
+"""Generate the Companies landing page for FDE Pulse using real jobs.json data."""
 
 import os
 import sys
 import json
+import re
+from collections import Counter
+from statistics import median as stat_median
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, script_dir)
@@ -15,117 +18,431 @@ from templates import (
 )
 
 SITE_DIR = os.path.join(os.path.dirname(script_dir), 'site')
-
-COMPANIES = [
-    {"name": "OpenAI", "fde_count": "50+", "category": "AI / ML", "hq": "San Francisco", "note": "Largest dedicated FDE team in AI. FDEs deploy ChatGPT Enterprise and custom models for Fortune 500 customers."},
-    {"name": "Salesforce", "fde_count": "1,000 (target)", "category": "Enterprise SaaS", "hq": "San Francisco", "note": "Committed to hiring 1,000 FDEs for their Agentforce AI platform. The largest single FDE hiring initiative in history."},
-    {"name": "Palantir", "fde_count": "200+", "category": "Enterprise Analytics", "hq": "Denver", "note": "Pioneered the FDE role in the 2010s. FDEs are central to Palantir's go-to-market strategy across government and commercial."},
-    {"name": "Ramp", "fde_count": "15-25", "category": "Fintech", "hq": "New York", "note": "FDEs build custom financial integrations for enterprise customers adopting Ramp's corporate card and expense platform."},
-    {"name": "Databricks", "fde_count": "30+", "category": "Data / AI", "hq": "San Francisco", "note": "FDEs deploy Databricks' lakehouse and ML platform inside enterprise data teams. Heavy data engineering focus."},
-    {"name": "Scale AI", "fde_count": "20+", "category": "AI / ML", "hq": "San Francisco", "note": "FDEs build custom data labeling and model evaluation pipelines for AI companies and government contracts."},
-    {"name": "Rippling", "fde_count": "10-20", "category": "HR Tech", "hq": "San Francisco", "note": "FDEs handle complex enterprise implementations of Rippling's unified HR, IT, and finance platform."},
-    {"name": "Cohere", "fde_count": "10-15", "category": "AI / ML", "hq": "Toronto", "note": "FDEs embed with enterprise customers deploying Cohere's LLMs for search, RAG, and document processing."},
-    {"name": "ServiceNow", "fde_count": "20+", "category": "Enterprise SaaS", "hq": "Santa Clara", "note": "FDEs deploy AI-powered workflow automation for enterprise IT and customer service operations."},
-    {"name": "PostHog", "fde_count": "5-10", "category": "Developer Tools", "hq": "Remote", "note": "Product-adjacent FDE model. Engineers split time between customer implementations and core product development."},
-    {"name": "PwC", "fde_count": "50+", "category": "Consulting", "hq": "Global", "note": "FDE-equivalent roles within PwC's technology consulting practice, deploying AI and analytics platforms for enterprise clients."},
-    {"name": "Watershed", "fde_count": "5-10", "category": "Climate Tech", "hq": "San Francisco", "note": "FDEs help enterprise customers measure and reduce their carbon emissions using Watershed's climate platform."},
-]
+DATA_DIR = os.path.join(os.path.dirname(script_dir), 'data')
 
 FAQS = [
     {
-        "q": "Which company has the most Forward Deployed Engineers?",
-        "a": "Salesforce has committed to hiring 1,000 Forward Deployed Engineers for their Agentforce AI platform, making it the largest FDE hiring initiative. Currently, Palantir has the most established FDE program with 200+ FDEs built over a decade. OpenAI's 50-person FDE team is the largest among pure AI companies. PwC and other consulting firms employ FDE-equivalent roles at similar scale but under different titles."
+        "q": "Which company is hiring the most Forward Deployed Engineers right now?",
+        "a": "Based on 134 active FDE postings as of April 30, 2026, Google leads with 34 open roles across their Cloud division. Deloitte is second with 19 active postings. Together, Google and Deloitte account for nearly 40% of all active FDE job postings in the dataset."
     },
     {
         "q": "What types of companies hire Forward Deployed Engineers?",
-        "a": "FDE hiring spans four main categories. AI/ML companies (OpenAI, Anthropic, Cohere, Databricks, Scale AI) hire FDEs to deploy models and AI products. Enterprise SaaS companies (Salesforce, ServiceNow, Rippling, UiPath) hire FDEs for complex platform implementations. Startups (PostHog, Watershed, Onyx, Commure) hire FDEs as product-adjacent engineers. Consulting firms (PwC, Deloitte) hire FDE-equivalent roles for client-facing technology deployment."
+        "a": "FDE hiring spans tech giants (Google, Amazon Web Services), major consulting firms (Deloitte, Accenture, KPMG, Boston Consulting Group), enterprise software companies (ServiceNow, Smartsheet, FloQast), fintech (BNY, Rippling, Bilt Rewards), and AI-focused startups (crewAI, LangChain, Hex Technologies). The role has spread well beyond Palantir's original model to cover nearly every sector in enterprise software."
     },
     {
-        "q": "Are startups or large companies better for FDE careers?",
-        "a": "Startups offer broader scope: you'll touch more of the stack, work directly with founders, and have more influence on the product. Large companies offer structure: defined career ladders, mentorship, larger teams, and higher base compensation. AI startups like Cohere and PostHog are strong middle ground options. The best choice depends on whether you prioritize breadth of experience (startup) or depth of resources and compensation (enterprise)."
+        "q": "Do you need to work at a big company to be a Forward Deployed Engineer?",
+        "a": "No. Based on current postings, smaller companies like crewAI, LangChain, Hyperscience, and Neara also hire FDEs. Startups typically offer earlier-stage equity and broader scope per role. Larger companies (Google, Deloitte) offer more structured career ladders, training programs, and higher base salaries. Both paths have merit depending on where you are in your career."
     },
     {
-        "q": "Do consulting firms hire Forward Deployed Engineers?",
-        "a": "Yes. PwC, Deloitte, and Accenture all hire for FDE-equivalent roles, though they may use titles like 'Technology Consultant,' 'Solutions Engineer,' or 'Implementation Engineer.' The work is similar: deploying technology platforms at client sites. Key differences from product-company FDEs: consulting FDEs work across multiple clients and technology stacks rather than a single product, and compensation typically doesn't include equity."
+        "q": "Are consulting firms real FDE employers?",
+        "a": "Yes. Deloitte has 19 active FDE postings in this dataset, ranking second behind Google. Accenture and KPMG each have active FDE roles. Consulting firm FDE roles deploy specific technology platforms (AWS, Snowflake, Databricks) at client sites, which is functionally similar to product-company FDE work. The main difference is that consulting FDEs rotate across clients and platforms rather than specializing in one product."
     },
     {
-        "q": "Which companies pay Forward Deployed Engineers the most?",
-        "a": "OpenAI pays the highest base salaries for FDEs, with ranges of $185,000-$285,000. Databricks ($175,000-$260,000), Palantir ($135,000-$250,000), and Scale AI ($165,000-$245,000) follow closely. However, total compensation including equity changes the ranking significantly. Pre-IPO companies like Databricks and Scale AI may offer higher total comp than public companies when equity appreciates. Salesforce offers strong equity grants as a public company with predictable RSU value."
+        "q": "How do I find companies actively hiring FDEs?",
+        "a": "FDE Pulse tracks 134 active postings across 70 companies as of April 30, 2026. The /jobs/ section shows every current opening with salary data, location, and direct links to apply. Companies with the most postings include Google (34 roles), Deloitte (19 roles), Amazon Web Services (3), Accenture (3), and Logic Inc. (3)."
     },
 ]
+
+
+def make_company_slug(name):
+    """Convert company name to URL slug."""
+    s = re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+    return s
+
+
+def format_k(amount):
+    if not amount or amount <= 0:
+        return None
+    return '$' + str(int(round(amount / 1000))) + 'K'
 
 
 def generate_companies_page():
     print("  Generating companies page...")
 
-    company_cards = ""
-    for c in COMPANIES:
-        company_cards += f'''
-            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; transition: all 250ms ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary);">{c["name"]}</h3>
-                    <span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">{c["fde_count"]} FDEs</span>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">{c["category"]} &middot; {c["hq"]}</div>
-                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">{c["note"]}</p>
-            </div>'''
+    jobs_file = os.path.join(DATA_DIR, 'jobs.json')
+    with open(jobs_file, encoding='utf-8') as f:
+        jobs_data = json.load(f)
 
-    faq_html = ""
-    faq_items = []
+    jobs = jobs_data.get('jobs', [])
+    total_jobs = len(jobs)
+
+    # Build company data from jobs.json
+    by_company = {}
+    for j in jobs:
+        comp = (j.get('company') or '').strip()
+        if not comp:
+            continue
+        if comp not in by_company:
+            by_company[comp] = []
+        by_company[comp].append(j)
+
+    total_companies = len(by_company)
+    avg_roles = round(total_jobs / total_companies, 1) if total_companies else 0
+
+    # Sort companies by role count
+    sorted_companies = sorted(by_company.items(), key=lambda x: len(x[1]), reverse=True)
+
+    # Build filter data for JS
+    company_filter_data = []
+    for name, co_jobs in sorted_companies:
+        count = len(co_jobs)
+        sal_jobs = [(j.get('min_amount', 0) or 0, j.get('max_amount', 0) or 0) for j in co_jobs if (j.get('min_amount', 0) or 0) > 0 and (j.get('max_amount', 0) or 0) > 0]
+        if sal_jobs:
+            all_sals = [s[0] for s in sal_jobs] + [s[1] for s in sal_jobs]
+            med = int(stat_median(all_sals))
+        else:
+            med = 0
+        size_bucket = '1' if count == 1 else ('2-5' if count <= 5 else '6+')
+        slug = make_company_slug(name)
+        company_filter_data.append({
+            'name': name,
+            'count': count,
+            'med': med,
+            'size': size_bucket,
+            'slug': slug,
+        })
+
+    # ── Stats bar ───────────────────────────────────────────────────────────────
+    stats_bar = f'''
+    <div class="job-stats-bar">
+        <div class="job-stats-bar__inner">
+            <span class="job-stat-item"><strong>{total_companies}</strong> companies hiring FDEs</span>
+            <span class="job-stat-item"><strong>{total_jobs}</strong> open roles total</span>
+            <span class="job-stat-item"><strong>{avg_roles}</strong> avg roles per company</span>
+        </div>
+    </div>'''
+
+    # ── Filter bar ──────────────────────────────────────────────────────────────
+    filter_bar = f'''
+    <div class="job-filter-bar" id="compFilterBar">
+        <div class="job-filter-bar__inner">
+            <input type="search" id="filterSearch" class="job-filter-bar__search"
+                placeholder="Search by company name..." autocomplete="off">
+            <select id="filterSize" class="job-filter-bar__select" aria-label="Company size">
+                <option value="">All sizes</option>
+                <option value="1">1 role</option>
+                <option value="2-5">2-5 roles</option>
+                <option value="6+">6+ roles</option>
+            </select>
+            <select id="filterSort" class="job-filter-bar__select" aria-label="Sort by">
+                <option value="roles">Most roles</option>
+                <option value="pay">Best paying</option>
+                <option value="az">A-Z</option>
+            </select>
+            <button class="job-filter-bar__reset" id="filterReset">Clear</button>
+            <span class="job-filter-bar__count" id="filterCount">
+                Showing <strong id="filterCountNum">{total_companies}</strong> of {total_companies} companies
+            </span>
+        </div>
+    </div>'''
+
+    # ── Company grid cards ──────────────────────────────────────────────────────
+    company_cards_html = ''
+    for item in company_filter_data:
+        name = item['name']
+        count = item['count']
+        med = item['med']
+        size = item['size']
+        slug = item['slug']
+        med_str = format_k(med) if med else 'Salary not disclosed'
+        med_numeric = med  # for sorting
+
+        # Build company page link -- only if profile page exists or we generate one
+        profile_link = f'/companies/{slug}/'
+
+        company_cards_html += f'''
+        <a href="{profile_link}" class="co-card"
+           data-name="{name.lower()}"
+           data-size="{size}"
+           data-roles="{count}"
+           data-pay="{med_numeric}">
+            <div class="co-card__header">
+                <div class="co-card__name">{name}</div>
+                <span class="co-card__badge">{count} role{"s" if count != 1 else ""}</span>
+            </div>
+            <div class="co-card__salary">{med_str}{"" if not med else " median"}</div>
+            <div class="co-card__cta">View FDE roles &rarr;</div>
+        </a>'''
+
+    # ── Prose content ───────────────────────────────────────────────────────────
+    top3 = sorted_companies[:3]
+    top3_names = ', '.join(n for n, _ in top3)
+
+    faq_html = ''
+    faq_schema_items = []
     for faq in FAQS:
         faq_html += f'''
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
                 <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">{faq["q"]}</h3>
                 <p style="color: var(--text-secondary); line-height: 1.7;">{faq["a"]}</p>
             </div>'''
-        faq_items.append({"@type": "Question", "name": faq["q"], "acceptedAnswer": {"@type": "Answer", "text": faq["a"]}})
+        faq_schema_items.append({
+            "@type": "Question",
+            "name": faq["q"],
+            "acceptedAnswer": {"@type": "Answer", "text": faq["a"]}
+        })
+
+    prose = f'''
+        <div class="co-prose">
+            <h2>The FDE Company Landscape</h2>
+
+            <p>Based on 134 active FDE postings as of April 30, 2026, {total_companies} companies are actively hiring Forward Deployed Engineers. {top3_names} lead the market by raw posting volume. But the spread across company types is the more telling signal: FDE hiring now covers tech giants, consulting firms, enterprise SaaS platforms, fintech companies, and early-stage AI startups.</p>
+
+            <p>Google Cloud's 34 active FDE postings reflect a deliberate expansion of their customer deployment capability. Many of these roles are titled "Forward Deployed Developer" or "Forward Deployed Engineering Manager," indicating a structured FDE organization rather than ad-hoc customer engineering. Deloitte's 19 postings are spread across cloud migration, data platform deployment, and AI implementation roles. Both companies use the FDE title for roles that deploy specific technologies at client sites.</p>
+
+            <h2>How FDE Team Structures Differ</h2>
+
+            <p>Companies with many open FDE postings typically have formalized FDE programs: defined career ladders, onboarding processes, and internal tooling built specifically for customer deployments. Google Cloud and Deloitte fit this profile. These programs offer more career structure and training but can also mean more process and less autonomy per engineer.</p>
+
+            <p>Companies with one to three FDE roles tend to be in an earlier phase of building their FDE function. An "FDE first hire" at a company like crewAI or Hex Technologies means defining the role from scratch, which requires more initiative but offers broader influence on how the company serves customers. FDE Pulse's market_intelligence data shows {int(100 * 16 / 134)}% of current postings are "first hire" FDE roles where the engineer would build the program.</p>
+
+            <p>Consulting firms represent a distinct model. Deloitte, Accenture, KPMG, and Boston Consulting Group collectively account for more than 20% of active FDE postings. These roles deploy specific vendor platforms (AWS, Snowflake, Databricks, ServiceNow) for enterprise clients. Engineers rotate between clients rather than specializing in a single customer, which builds broad platform exposure but limits the depth of any single customer relationship.</p>
+
+            <h2>What to Look For When Evaluating FDE Companies</h2>
+
+            <p>When comparing FDE opportunities across companies, four factors matter most:</p>
+
+            <p><strong>Team size and structure.</strong> A company with 10 or more FDE roles has an established program. A company with one or two roles is building the function. Both are legitimate choices, but they require different skills and offer different growth trajectories.</p>
+
+            <p><strong>Salary disclosure rate.</strong> Companies that disclose salary ranges in job postings tend to be more transparent about compensation overall. Of the {total_companies} companies in this dataset, those with disclosed salaries show ranges from $50K to $365K. Companies without disclosed salaries are not necessarily lower-paying, but you'll need to negotiate without benchmark data.</p>
+
+            <p><strong>Customer segment.</strong> Enterprise FDE roles (large Fortune 500 customers) involve longer sales cycles, higher stakes deployments, and more process. SMB-focused FDE roles move faster with more iterative customer relationships. The customer segment shapes the day-to-day work more than the company name does.</p>
+
+            <p><strong>Technology focus.</strong> AI company FDEs work primarily with LLMs, RAG architectures, and model deployment. Data platform FDEs (Databricks, Snowflake ecosystem) focus on pipeline architecture. ERP integration FDEs (Salesforce, ServiceNow, Rippling) work with business process automation. Match the technology focus to your engineering interests before applying.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            {faq_html}
+        </div>'''
 
     body = f'''
-        <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Companies Hiring Forward Deployed Engineers</h1>
-            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">50+ companies now hire FDEs. Here are the biggest employers, what their FDE teams do, and how they're structured.</p>
+{stats_bar}
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1rem; margin-bottom: 3rem;">
-{company_cards}
+        <div class="page-header">
+            <div class="page-header__inner">
+                <h1 class="page-header__title">Companies Hiring Forward Deployed Engineers</h1>
+                <p class="page-header__subtitle">{total_companies} companies with active FDE postings. {total_jobs} open roles total as of April 30, 2026.</p>
             </div>
+        </div>
 
-            <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">The FDE Hiring Landscape</h2>
+{filter_bar}
 
-                <p style="margin-bottom: 1.25rem;">Three years ago, Palantir was one of the only companies with "Forward Deployed Engineer" in their job titles. Today, the role exists at 50+ companies across AI, enterprise SaaS, fintech, climate tech, healthcare, and consulting. The expansion accelerated in 2025 when AI companies realized they couldn't sell enterprise AI products the same way they sold traditional SaaS.</p>
-
-                <p style="margin-bottom: 1.25rem;">AI products require deep customization. A hospital deploying an AI clinical decision support system needs different integrations, data pipelines, and compliance guardrails than a logistics company deploying an AI routing optimizer. FDEs bridge that gap: they sit with the customer, understand their technical environment, and make the product work in practice.</p>
-
-                <p style="margin-bottom: 1.25rem;">Salesforce's 1,000-FDE hiring target for Agentforce validated the model at enterprise scale. When the world's largest enterprise software company restructures their go-to-market around Forward Deployed Engineers, it signals that the role isn't a niche experiment. It's becoming a standard function in enterprise software companies.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">How FDE Teams Are Structured</h2>
-
-                <p style="margin-bottom: 1.25rem;">FDE team structures vary by company maturity and size. Palantir runs the most structured program: FDEs are organized by vertical (government, healthcare, finance, energy) with dedicated mentors and career progression from FDSE to FDE to Lead FDE. New hires go through a multi-week deployment bootcamp before their first customer engagement.</p>
-
-                <p style="margin-bottom: 1.25rem;">Startups tend to have flatter structures. At PostHog, FDEs are effectively product engineers who spend 40-60% of their time on customer-facing work. At Watershed, FDEs report to engineering leadership but are paired with specific customer accounts managed by customer success teams. There's no separate "FDE organization" at most companies under 500 employees.</p>
-
-                <p style="margin-bottom: 1.25rem;">AI companies fall somewhere in between. OpenAI's 50-person FDE team has its own leadership and operates semi-independently from the research and product engineering organizations. They've built internal tooling specifically for customer deployments, and FDEs contribute to shared libraries that accelerate future customer onboarding.</p>
-
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
-
-                {faq_html}
+        <div class="co-body">
+            <div class="co-grid" id="coGrid">
+                {company_cards_html}
             </div>
+            {prose}
+        </div>
 
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 1.5rem 3rem;">
             {get_cta_box()}
-        </section>
+        </div>'''
+
+    # Filter + sort JS
+    filter_js = f'''
+<script>
+(function() {{
+    var TOTAL = {total_companies};
+    var search = document.getElementById('filterSearch');
+    var selSize = document.getElementById('filterSize');
+    var selSort = document.getElementById('filterSort');
+    var resetBtn = document.getElementById('filterReset');
+    var countNum = document.getElementById('filterCountNum');
+    var grid = document.getElementById('coGrid');
+    var cards = Array.from(grid.querySelectorAll('.co-card'));
+
+    function isFiltered() {{
+        return search.value.trim() !== '' || selSize.value !== '';
+    }}
+
+    function applyFilters() {{
+        var q = search.value.trim().toLowerCase();
+        var size = selSize.value;
+        var sort = selSort.value;
+        var visible = [];
+
+        cards.forEach(function(card) {{
+            var show = true;
+            if (q && card.dataset.name.indexOf(q) === -1) show = false;
+            if (show && size && card.dataset.size !== size) show = false;
+            if (show) visible.push(card);
+            card.style.display = show ? '' : 'none';
+        }});
+
+        // Sort visible cards
+        visible.sort(function(a, b) {{
+            if (sort === 'roles') return parseInt(b.dataset.roles) - parseInt(a.dataset.roles);
+            if (sort === 'pay') return parseInt(b.dataset.pay || 0) - parseInt(a.dataset.pay || 0);
+            if (sort === 'az') return a.dataset.name.localeCompare(b.dataset.name);
+            return 0;
+        }});
+
+        // Re-insert in sorted order
+        visible.forEach(function(card) {{ grid.appendChild(card); }});
+
+        if (countNum) countNum.textContent = String(visible.length);
+        if (isFiltered()) resetBtn.classList.add('visible');
+        else resetBtn.classList.remove('visible');
+    }}
+
+    search.addEventListener('input', applyFilters);
+    selSize.addEventListener('change', applyFilters);
+    selSort.addEventListener('change', applyFilters);
+    resetBtn.addEventListener('click', function() {{
+        search.value = '';
+        selSize.value = '';
+        selSort.value = 'roles';
+        applyFilters();
+    }});
+}})();
+</script>'''
+
+    # Page CSS
+    page_css = '''
+.page-header {
+    padding: 8rem 0 3rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+}
+.page-header__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.page-header__title { font-size: 2.5rem; font-weight: 700; margin-bottom: var(--space-sm); }
+.page-header__subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+.job-stats-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem var(--space-lg);
+}
+.job-stats-bar__inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;
+}
+.job-stat-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--text-secondary); }
+.job-stat-item strong { color: var(--amber-light); font-weight: 600; }
+/* Filter bar */
+.job-filter-bar {
+    background: #162232;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    position: sticky;
+    top: 72px;
+    z-index: 10;
+}
+.job-filter-bar__inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.job-filter-bar__search {
+    flex: 1; min-width: 180px;
+    background: #0F1923; border: 1px solid rgba(255,255,255,0.08);
+    color: #fff; padding: 8px 12px; border-radius: 6px;
+    font-size: 0.9rem; font-family: inherit; outline: none;
+    transition: border-color 150ms ease;
+}
+.job-filter-bar__search::placeholder { color: rgba(255,255,255,0.35); }
+.job-filter-bar__search:focus { border-color: #F59E0B; }
+.job-filter-bar__select {
+    background: #0F1923; border: 1px solid rgba(255,255,255,0.08);
+    color: #fff; padding: 8px 12px; border-radius: 6px;
+    font-size: 0.9rem; font-family: inherit; cursor: pointer; outline: none;
+    transition: border-color 150ms ease; appearance: none; -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff66' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+}
+.job-filter-bar__select:focus { border-color: #F59E0B; }
+.job-filter-bar__select option { background: #162232; color: #fff; }
+.job-filter-bar__reset {
+    background: none; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.5);
+    padding: 8px 12px; border-radius: 6px; font-size: 0.875rem; font-family: inherit;
+    cursor: pointer; transition: all 150ms ease; white-space: nowrap; display: none;
+}
+.job-filter-bar__reset.visible { display: inline-block; }
+.job-filter-bar__reset:hover { border-color: #F59E0B; color: #FBBF24; }
+.job-filter-bar__count { margin-left: auto; font-size: 0.875rem; color: rgba(255,255,255,0.5); white-space: nowrap; }
+.job-filter-bar__count strong { color: #FBBF24; }
+/* Company grid */
+.co-body { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+.co-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+.co-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+.co-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
+.co-card__header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 0.5rem; gap: 0.5rem;
+}
+.co-card__name { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
+.co-card__badge {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    color: var(--amber-light); font-size: 0.78rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: var(--radius-full); white-space: nowrap;
+}
+.co-card__salary { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+.co-card__cta { font-size: 0.85rem; color: var(--amber-light); font-weight: 500; }
+/* Prose */
+.co-prose {
+    max-width: 900px; margin: 0 auto;
+    color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;
+}
+.co-prose h2 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem; }
+.co-prose p { margin-bottom: 1.25rem; }
+.co-prose strong { color: var(--text-primary); }
+@media (max-width: 768px) {
+    .page-header { padding: 6rem 0 2rem; }
+    .page-header__title { font-size: 2rem; }
+    .job-filter-bar { top: 0; padding: 10px 12px; }
+    .job-filter-bar__search { min-width: 100%; }
+    .job-filter-bar__count { margin-left: 0; }
+    .co-grid { grid-template-columns: 1fr; }
+}
 '''
 
-    faq_schema = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq_items}, indent=2)
-    breadcrumb = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL},
-        {"@type": "ListItem", "position": 2, "name": "Companies", "item": f"{BASE_URL}/companies/"}
-    ]}, indent=2)
+    # Schemas
+    faq_schema = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq_schema_items
+    }, indent=2)
 
-    extra_head = f'<script type="application/ld+json">\n{faq_schema}\n    </script>\n    <script type="application/ld+json">\n{breadcrumb}\n    </script>'
+    breadcrumb = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL},
+            {"@type": "ListItem", "position": 2, "name": "Companies", "item": BASE_URL + "/companies/"}
+        ]
+    }, indent=2)
+
+    extra_head = (
+        f'<style>{page_css}</style>\n'
+        f'    <script type="application/ld+json">\n{faq_schema}\n    </script>\n'
+        f'    <script type="application/ld+json">\n{breadcrumb}\n    </script>'
+    )
 
     html = get_html_head(
-        title="Companies Hiring Forward Deployed Engineers",
-        description="50+ companies hire FDEs: OpenAI, Salesforce, Palantir, Ramp, Databricks. Team sizes, structures, and what FDE teams do at each company.",
+        title=f"Companies Hiring Forward Deployed Engineers ({total_companies})",
+        description=f"{total_companies} companies with active FDE job postings. {total_jobs} open roles at Google, Deloitte, AWS, Accenture, and more. Updated weekly.",
         canonical_path="/companies/",
         extra_head=extra_head
     )
@@ -138,13 +455,15 @@ def generate_companies_page():
 {get_footer_html()}
 {get_mobile_nav_js()}
 {get_signup_js()}
+{filter_js}
 </body>
 </html>'''
 
     os.makedirs(os.path.join(SITE_DIR, 'companies'), exist_ok=True)
-    with open(os.path.join(SITE_DIR, 'companies', 'index.html'), 'w', encoding='utf-8') as f:
+    out_path = os.path.join(SITE_DIR, 'companies', 'index.html')
+    with open(out_path, 'w', encoding='utf-8') as f:
         f.write(html)
-    print("  Companies page generated")
+    print(f"  Companies page generated: {out_path} ({len(html):,} bytes)")
 
 
 if __name__ == "__main__":

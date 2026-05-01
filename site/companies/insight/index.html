@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDE at Insight: Roles, Salary, How to Apply | FDE Pulse</title>
+    <meta name="description" content="Insight has 1 active Forward Deployed Engineer role as of April 2026. Full breakdown of open positions and what FDEs do.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/companies/insight/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/companies/insight/">
+    <meta property="og:title" content="FDE at Insight: Roles, Salary, How to Apply | FDE Pulse">
+    <meta property="og:description" content="Insight has 1 active Forward Deployed Engineer role as of April 2026. Full breakdown of open positions and what FDEs do.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FDE at Insight: Roles, Salary, How to Apply | FDE Pulse">
+    <meta name="twitter:description" content="Insight has 1 active Forward Deployed Engineer role as of April 2026. Full breakdown of open positions and what FDEs do.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.cp-section { max-width: 900px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+.cp-hero { margin-bottom: 2.5rem; }
+.cp-hero__title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.cp-hero__meta { font-size: 1rem; color: var(--text-muted); }
+.cp-jobs-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+.cp-jobs-list { margin-bottom: 3rem; }
+.cp-job {
+    display: block; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    text-decoration: none; transition: all var(--transition-fast);
+}
+.cp-job:hover { background: var(--bg-card-hover); border-color: var(--amber); box-shadow: var(--shadow-glow); }
+.cp-job__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; gap: 0.75rem; }
+.cp-job__title { font-weight: 600; color: var(--text-primary); font-size: 1.05rem; }
+.cp-job__salary {
+    background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.25);
+    padding: 0.25rem 0.65rem; border-radius: var(--radius-full);
+    font-size: 0.85rem; font-weight: 600; color: #4ade80; white-space: nowrap;
+}
+.cp-job__meta { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.cp-job__tag {
+    display: inline-flex; align-items: center; padding: 3px 10px;
+    background: rgba(255,255,255,0.05); border-radius: var(--radius-full);
+    font-size: 0.8rem; color: var(--text-muted);
+}
+.cp-job__tag--remote { background: rgba(74, 222, 128, 0.12); color: var(--success); font-weight: 500; }
+.cp-job__tag--sen { background: rgba(245, 158, 11, 0.12); color: var(--amber-light); }
+.cp-job__cta { margin-left: auto; font-size: 0.85rem; color: var(--amber-light); font-weight: 500; }
+.cp-content { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; margin-bottom: 2.5rem; }
+.cp-similar { margin-top: 3rem; }
+.cp-similar__title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+.cp-similar__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; }
+.cp-sim-card {
+    display: block; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 0.85rem 1rem; text-decoration: none;
+    transition: all var(--transition-fast);
+}
+.cp-sim-card:hover { border-color: var(--amber); background: var(--bg-card-hover); }
+.cp-sim-card__name { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem; }
+.cp-sim-card__count { font-size: 0.8rem; color: var(--text-muted); }
+@media (max-width: 768px) {
+    .cp-section { padding: 6rem 1rem 3rem; }
+    .cp-hero__title { font-size: 2rem; }
+    .cp-job__header { flex-direction: column; }
+}
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does a Forward Deployed Engineer do at Insight?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Forward Deployed Engineer at Insight is embedded with enterprise customers to deploy, customize, and maintain the company's products. Based on 1 active FDE role as of April 30, 2026, these positions are 1 fully remote and located across various markets. FDEs write production code, design integration architectures, and translate customer feedback into product improvements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the salary range for FDE roles at Insight?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Insight's active FDE postings do not disclose salary ranges. The overall FDE market median is $135,000 based on 111 of 134 postings with disclosed pay. Equity is included in most FDE compensation packages at venture-backed and public companies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many Forward Deployed Engineers does Insight hire?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Insight has 1 active FDE posting as of April 30, 2026, making it one of 134 total active FDE roles tracked by FDE Pulse across 69 companies. The 1 role is broken down as: 1 mid-level."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What skills are required for Insight FDE roles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Job descriptions for Insight FDE roles mention the following tools and technologies: Gemini, Python, Javascript, Gcp. Strong software engineering fundamentals (typically 3 or more years of experience), customer communication skills, and the ability to work independently at client sites are standard requirements across all FDE postings at Insight."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does an FDE role at Insight compare to a software engineer role?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FDE roles at Insight differ from internal software engineering in two key ways: customer proximity and deployment scope. FDEs work directly at customer sites or in close coordination with customer teams, building solutions on top of Insight's platform rather than contributing to the core product. This requires stronger communication skills and higher tolerance for ambiguity than most product engineering roles. Compensation typically reflects this premium: the FDE market median is $135,000 base across 134 active postings."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Companies",
+      "item": "https://fdepulse.com/companies/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Insight",
+      "item": "https://fdepulse.com/companies/insight/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Insight",
+  "url": "https://fdepulse.com/companies/insight/"
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": "Customer Engineer - Google Workspace",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "Insight"
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Chandler",
+      "addressCountry": "US"
+    }
+  },
+  "datePosted": "2026-03-31",
+  "validThrough": "2026-07-30",
+  "employmentType": "FULL_TIME",
+  "url": "https://www.indeed.com/viewjob?jk=e47d53a560fdb290"
+}
+    </script>
+
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="cp-section">
+            <div class="cp-hero">
+                <h1 class="cp-hero__title">Forward Deployed Engineer at Insight</h1>
+                <div class="cp-hero__meta">
+                    1 active FDE role
+                    
+                    
+                </div>
+            </div>
+
+            <h2 class="cp-jobs-title">FDE Roles at Insight</h2>
+            <div class="cp-jobs-list">
+                
+                <a href="/jobs/insight-customer-engineer-google-workspace-a10399/" class="cp-job">
+                    <div class="cp-job__header">
+                        <div>
+                            <div class="cp-job__title">Customer Engineer - Google Workspace</div>
+                        </div>
+                        
+                    </div>
+                    <div class="cp-job__meta">
+                        <span class="cp-job__tag cp-job__tag--remote">Remote</span>
+                        <span class="cp-job__tag cp-job__tag--sen">Mid-level</span>
+                        <span class="cp-job__cta">View role &rarr;</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="cp-content">
+                
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">About Forward Deployed Engineering at Insight</h2>
+
+                <p style="margin-bottom: 1.25rem;">* 14,000\+ engaged teammates globally
+* \#20 on Fortune’s World's Best Workplaces™ list
+* $9\.2 billion in revenue
+* Received 35\+ industry and partner awards in the past year
+* $1\.4M\+ total charitable contributions in 2023 by Insight globally Now is the time to bring your expertise to Insight. We are not just a tech company; we are a people\-first company. We believe that by unlocking the power of people and technology, we can accelerate transformation and achieve extraordinary results. As a **Fortune 500 Solutions Integrator** with deep expertise in cloud, data, AI, cybersecurity, and intelligent edge, we guide organisations through complex digital decisions.</p>
+
+                <p style="margin-bottom: 1.25rem;">Companies like Insight typically structure FDE teams around a build-team model, where engineers join an existing customer engineering function and deploy the product across a portfolio of accounts. Based on FDE Pulse data across 134 active postings, 57% of FDE roles are build-team positions and 12% are "first hire" situations where the engineer defines the function. Insight's 1 active posting falls into the first hire category based on role count.</p>
+
+                <p style="margin-bottom: 1.25rem;">FDE roles across the market are 43% North America-focused based on 134 active postings. 53% of FDE roles are classified as growth hires, meaning the company is expanding its customer base rather than backfilling an existing position. This context matters for FDE candidates evaluating Insight: growth hire roles often come with more pressure to ramp quickly but also clearer performance metrics tied to customer success.</p>
+
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDEs Do at Insight</h2>
+
+                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineers at Insight own the technical success of customer deployments. This means designing integration architectures specific to each customer's infrastructure, writing and maintaining production code that runs in customer environments, and serving as the primary technical point of contact for enterprise accounts. The role sits at the intersection of product engineering and customer success without being either.</p>
+
+                <p style="margin-bottom: 1.25rem;">Day-to-day work for an FDE at Insight varies by customer complexity and deployment stage. In the early phases of a new customer engagement, FDEs focus on environment setup, data mapping, and building the first integrations. As deployments mature, the work shifts toward performance tuning, expanding use cases, and training customer teams on new capabilities. Some FDE roles also feed product insights back to internal engineering, effectively acting as a bridge between customer needs and the roadmap.</p>
+
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Career Path for FDEs at Insight</h2>
+
+                <p style="margin-bottom: 1.25rem;">FDE careers typically progress along one of three paths: deepening technical specialization within the FDE function (moving from mid-level to senior to staff FDE), transitioning into engineering management (leading FDE teams or broader customer engineering organizations), or lateral moves into product management (where customer-facing FDE experience is highly valued). All three paths are available at companies with established FDE programs.</p>
+
+                <p style="margin-bottom: 1.25rem;">The FDE market median of $135,000 base salary across 134 active postings reflects a market that prices the role at a premium over equivalent-seniority software engineers at the same companies. Total compensation including equity, particularly at venture-backed companies, can be 20 to 50 percent higher than base salary. FDEs considering opportunities at Insight should evaluate total compensation, not just base salary, when comparing offers.</p>
+
+                <p style="margin-bottom: 1.25rem;">Interview processes for FDE roles at most companies include a technical coding round, a system design round specific to customer deployment scenarios, and a customer scenario exercise where candidates are asked to scope a deployment, communicate trade-offs, and handle technical objections. Strong candidates combine engineering depth with the ability to explain complex systems to non-technical stakeholders clearly and without jargon.</p>
+
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+                
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What does a Forward Deployed Engineer do at Insight?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">A Forward Deployed Engineer at Insight is embedded with enterprise customers to deploy, customize, and maintain the company's products. Based on 1 active FDE role as of April 30, 2026, these positions are 1 fully remote and located across various markets. FDEs write production code, design integration architectures, and translate customer feedback into product improvements.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What is the salary range for FDE roles at Insight?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Insight's active FDE postings do not disclose salary ranges. The overall FDE market median is $135,000 based on 111 of 134 postings with disclosed pay. Equity is included in most FDE compensation packages at venture-backed and public companies.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How many Forward Deployed Engineers does Insight hire?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Insight has 1 active FDE posting as of April 30, 2026, making it one of 134 total active FDE roles tracked by FDE Pulse across 69 companies. The 1 role is broken down as: 1 mid-level.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What skills are required for Insight FDE roles?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Job descriptions for Insight FDE roles mention the following tools and technologies: Gemini, Python, Javascript, Gcp. Strong software engineering fundamentals (typically 3 or more years of experience), customer communication skills, and the ability to work independently at client sites are standard requirements across all FDE postings at Insight.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does an FDE role at Insight compare to a software engineer role?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">FDE roles at Insight differ from internal software engineering in two key ways: customer proximity and deployment scope. FDEs work directly at customer sites or in close coordination with customer teams, building solutions on top of Insight's platform rather than contributing to the core product. This requires stronger communication skills and higher tolerance for ambiguity than most product engineering roles. Compensation typically reflects this premium: the FDE market median is $135,000 base across 134 active postings.</p>
+                </div>
+            </div>
+
+            
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/salaries/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">All Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse All FDE Jobs</a></li>
+<li><a href="/insights/fde-hiring-trends-2026/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Hiring Trends 2026</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Benchmarks</a></li>
+
+        </ul>
+    </div>
+
+
+            
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+
+            <div class="cp-similar">
+                <h2 class="cp-similar__title">Other Companies Hiring FDEs</h2>
+                <div class="cp-similar__grid">
+                    
+                <a href="/companies/google/" class="cp-sim-card">
+                    <div class="cp-sim-card__name">Google</div>
+                    <div class="cp-sim-card__count">34 roles</div>
+                </a>
+                <a href="/companies/deloitte/" class="cp-sim-card">
+                    <div class="cp-sim-card__name">Deloitte</div>
+                    <div class="cp-sim-card__count">19 roles</div>
+                </a>
+                <a href="/companies/amazon-web-services/" class="cp-sim-card">
+                    <div class="cp-sim-card__name">Amazon Web Services</div>
+                    <div class="cp-sim-card__count">3 roles</div>
+                </a>
+                <a href="/companies/accenture/" class="cp-sim-card">
+                    <div class="cp-sim-card__name">Accenture</div>
+                    <div class="cp-sim-card__count">3 roles</div>
+                </a>
+                <a href="/companies/logic-inc/" class="cp-sim-card">
+                    <div class="cp-sim-card__name">Logic, Inc.</div>
+                    <div class="cp-sim-card__count">3 roles</div>
+                </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
