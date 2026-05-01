@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 echo "=== Building FDE Pulse ==="
 
 # Create directories
-mkdir -p site/jobs site/salaries site/companies site/insights site/about site/assets/images site/assets/css
+mkdir -p site/jobs site/salaries site/companies site/insights site/about site/newsletter site/assets/images site/assets/css
 
 # Brand assets
 echo "  Copying brand assets..."
@@ -80,6 +80,9 @@ python3 scripts/generate_topical_pages.py || true
 
 echo "  Generating top voices page..."
 python3 scripts/generate_top_voices.py || true
+
+echo "  Generating newsletter page..."
+python3 scripts/generate_newsletter_page.py || true
 
 # Finalization
 echo "  Generating sitemap..."
