@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Companies Hiring Forward Deployed | FDE Pulse</title>
+    <meta name="description" content="The companies with the most active FDE job postings as of April 2026. Role counts, salary ranges, and direct links to open positions.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/top-fde-companies/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/top-fde-companies/">
+    <meta property="og:title" content="30 Companies Hiring Forward Deployed | FDE Pulse">
+    <meta property="og:description" content="The companies with the most active FDE job postings as of April 2026. Role counts, salary ranges, and direct links to open positions.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="30 Companies Hiring Forward Deployed | FDE Pulse">
+    <meta name="twitter:description" content="The companies with the most active FDE job postings as of April 2026. Role counts, salary ranges, and direct links to open positions.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.article-wrapper { max-width: 860px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+.article-header { margin-bottom: 2.5rem; }
+.article-header__label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--amber-light); font-weight: 600; margin-bottom: 0.75rem; }
+.article-header__title { font-size: 2.25rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+.article-header__meta { font-size: 0.875rem; color: var(--text-muted); }
+.article-body { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.85; }
+.article-body h2 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem; }
+.article-body h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin: 2rem 0 0.75rem; }
+.article-body p { margin-bottom: 1.25rem; }
+.article-body ul, .article-body ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+.article-body li { margin-bottom: 0.5rem; }
+.article-body strong { color: var(--text-primary); }
+.data-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    margin: 1.5rem 0;
+}
+.data-table thead tr { border-bottom: 1px solid var(--border); }
+.data-table th {
+    padding: 0.75rem 1rem; text-align: left;
+    font-size: 0.8rem; color: var(--text-muted);
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.data-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-light); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--bg-card-hover); }
+.data-highlight { color: var(--amber-light); font-weight: 600; }
+.insight-index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+}
+.insight-card {
+    display: block; text-decoration: none;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    transition: all var(--transition-base);
+}
+.insight-card:hover { border-color: var(--amber); box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+.insight-card__label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--amber-light); font-weight: 600; margin-bottom: 0.5rem; }
+.insight-card__title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.35; }
+.insight-card__desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+.insight-card__cta { font-size: 0.875rem; color: var(--amber-light); font-weight: 500; }
+@media (max-width: 768px) {
+    .article-wrapper { padding: 6rem 1rem 3rem; }
+    .article-header__title { font-size: 1.75rem; }
+    .insight-index-grid { grid-template-columns: 1fr; }
+}
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "30 Companies Hiring Forward Deployed Engineers Right Now",
+      "item": "https://fdepulse.com/insights/top-fde-companies/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "30 Companies Hiring Forward Deployed Engineers Right Now", "description": "The companies with the most active FDE job postings as of April 2026. Role counts, salary ranges, and direct links to open positions.", "url": "https://fdepulse.com/insights/top-fde-companies/", "datePublished": "2026-04-30", "dateModified": "2026-04-30", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/top-fde-companies/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="article-wrapper">
+
+            <div class="article-header">
+                <div class="article-header__label">Company Report &middot; April 30, 2026</div>
+                <h1 class="article-header__title">30 Companies Hiring Forward Deployed Engineers Right Now</h1>
+                <div class="article-header__meta">Based on 134 active FDE job postings across 69 companies. Updated April 30, 2026.</div>
+            </div>
+
+            <div class="article-body">
+                <p>As of April 30, 2026, FDE Pulse tracks 134 active Forward Deployed Engineer job postings across 69 companies. Below are the top 30 by open role count. All data is sourced from active job postings and reflects base compensation only where disclosed.</p>
+
+                <h2>Top 30 Companies by Active FDE Role Count</h2>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">#</th>
+                                <th>Company</th>
+                                <th style="text-align:center;">Open Roles</th>
+                                <th>Salary Range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">1</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/google/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Google</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">34</td>
+                <td style="padding:0.8rem 1rem;">$105K &ndash; $365K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">2</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/deloitte/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Deloitte</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">19</td>
+                <td style="padding:0.8rem 1rem;">$113K &ndash; $308K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">3</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/amazon-web-services/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Amazon Web Services</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;">$154K &ndash; $272K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">4</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/accenture/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Accenture</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;">$50K &ndash; $305K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">5</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/logic-inc/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Logic, Inc.</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;">$50K &ndash; $305K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">6</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/bny/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">BNY</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">2</td>
+                <td style="padding:0.8rem 1rem;">$104K &ndash; $260K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">7</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/floqast/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">FloQast</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">2</td>
+                <td style="padding:0.8rem 1rem;">$90K &ndash; $198K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">8</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/qualcomm/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Qualcomm</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">2</td>
+                <td style="padding:0.8rem 1rem;">$108K &ndash; $215K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">9</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/syndio/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Syndio</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">2</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">10</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/hyperscience/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Hyperscience</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">2</td>
+                <td style="padding:0.8rem 1rem;">$94K &ndash; $185K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">11</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/jda-tsg/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">JDA TSG</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">2</td>
+                <td style="padding:0.8rem 1rem;">$95K &ndash; $110K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">12</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/unit8-sa/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Unit8 SA</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$120K &ndash; $150K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">13</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/rippling/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Rippling</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$138K &ndash; $230K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">14</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/parity/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Parity</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">15</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/vista-equity-partners-management/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Vista Equity Partners Management</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$200K &ndash; $315K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">16</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/ethicrithm-inc/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Ethicrithm Inc.</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">17</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/fractional-ai/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Fractional AI</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$160K &ndash; $180K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">18</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/eliza/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Eliza</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">19</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/patch-my-pc/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Patch My PC</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$80K &ndash; $100K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">20</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/reltio/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Reltio</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$77K &ndash; $142K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">21</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/boston-consulting-group/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Boston Consulting Group</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">22</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/ascertain/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Ascertain</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$130K &ndash; $175K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">23</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/decircle/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">deCircle</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">24</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/revenuebase/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">RevenueBase</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">25</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/west-monroe/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">West Monroe</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$171K &ndash; $221K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">26</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/langchain/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">LangChain</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$116K &ndash; $195K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">27</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/sas/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">SAS</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$137K &ndash; $167K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">28</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/humach-llc/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Humach, LLC</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">29</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/akka/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">AKKA</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">Not disclosed</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted); font-weight:600;">30</td>
+                <td style="padding:0.8rem 1rem;">
+                    <a href="/companies/revin/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Revin</a>
+                </td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">1</td>
+                <td style="padding:0.8rem 1rem;">$120K &ndash; $200K</td>
+            </tr></tbody>
+                    </table>
+                </div>
+
+                <h2>What the Company Distribution Tells Us</h2>
+
+                <p>The top 30 companies account for all 134 active FDE postings because the dataset includes only companies with at least one active posting. However, the distribution is highly concentrated: Google (34 roles) and Deloitte (19 roles) together account for 40% of all active postings. The bottom 20 companies in this list each have one or two open roles.</p>
+
+                <p>This concentration has implications for FDE job seekers. At Google and Deloitte, you're joining an established FDE organization with structured onboarding, peer mentorship, and defined career ladders. At smaller companies with one to two openings, you're more likely to be defining the FDE function as you build it. Both paths are valid, but they require different skills and offer different growth trajectories.</p>
+
+                <h2>Consulting Firms as FDE Employers</h2>
+
+                <p>Deloitte (19 roles), Accenture (3 roles), KPMG (1 role), and Boston Consulting Group (1 role) collectively have more active FDE postings than any single product company except Google. This reflects a meaningful shift in the FDE market: the role is no longer the exclusive domain of product companies deploying their own technology.</p>
+
+                <p>Consulting FDE roles deploy specific vendor platforms at client sites. Deloitte's FDE postings reference AWS, Snowflake, and Databricks. These are not roles where you build the product being deployed. Instead, you configure, integrate, and operationalize third-party platforms for enterprise clients. The compensation is similar to product-company FDE roles (the $135K market median applies across both categories), but the day-to-day work differs.</p>
+
+                <h2>AI and Data Platform Companies</h2>
+
+                <p>Several AI and data platform companies appear in the top 30: LangChain, crewAI, Hex Technologies, and ServiceNow. These roles typically involve deploying AI/ML systems at enterprise customers, which requires a different skill set than traditional SaaS FDE work. RAG architecture, LLM evaluation, and prompt engineering are mentioned in these postings at rates well above the overall market average.</p>
+
+                <p>The presence of LangChain and crewAI as FDE employers reflects the maturation of the AI developer tools market. Companies building infrastructure for AI agents are now large enough to have customer deployment teams rather than relying on founder-led customer success. FDE roles at these companies sit at the edge of what's technically possible with AI, which can be both exciting and demanding.</p>
+
+                <h2>How to Evaluate These Companies as Employers</h2>
+
+                <p>Four factors to evaluate when comparing FDE opportunities across this list:</p>
+
+                <p><strong>Salary disclosure rate.</strong> Roughly 83% of active postings disclose salary. Companies that don't disclose should be asked for ranges early in the process. The $135K market median is your baseline for negotiation.</p>
+
+                <p><strong>Remote vs. on-site.</strong> Check each company's posting for location requirements. Companies like Logic Inc. and JDA TSG post roles with specific city requirements. Companies like crewAI and LangChain are more remote-flexible. Your personal location situation may narrow the realistic list significantly.</p>
+
+                <p><strong>Industry domain.</strong> The technology you deploy shapes your career trajectory. Financial services FDE work (BNY, Bilt Rewards) builds fintech expertise. Data platform FDE work (Deloitte + Databricks/Snowflake stacks) builds data engineering expertise. AI tool FDE work (LangChain, crewAI) builds LLM deployment expertise. All are valuable, but they lead to different subsequent opportunities.</p>
+
+                <p><strong>Company stage.</strong> Public companies (Google, Accenture, Qualcomm, BNY) offer predictable compensation and structured roles. Private companies (crewAI, LangChain, Hyperscience) offer equity upside and broader scope but more ambiguity. Match your risk tolerance to the company stage.</p>
+
+                <h2>Methodology</h2>
+
+                <p>Role counts reflect active FDE job postings as of April 30, 2026. A company appears in this list if it has at least one active posting matching "Forward Deployed Engineer" in the job title. Salary ranges represent the disclosed range across all postings for that company; companies with no disclosed salary are listed as "Not disclosed." Data is updated weekly.</p>
+            </div>
+
+            
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/insights/fde-hiring-trends-2026/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Forward Deployed Engineer Hiring Trends 2026</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Benchmarks: What Forward Deployed Engineers Earn in 2026</a></li>
+<li><a href="/insights/fde-skills-tools/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">What Skills Do Forward Deployed Engineers Need?</a></li>
+<li><a href="/insights/fde-locations/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Where Forward Deployed Engineers Are Hiring</a></li>
+
+        </ul>
+    </div>
+
+            
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

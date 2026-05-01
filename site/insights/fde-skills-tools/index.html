@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Skills Do Forward Deployed Engineers Need? | FDE Pulse</title>
+    <meta name="description" content="The tools and skills mentioned in 134 active FDE job postings. Python leads at 53%, GCP at 53%, AWS at 31%. Full breakdown with percentages.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/fde-skills-tools/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/fde-skills-tools/">
+    <meta property="og:title" content="What Skills Do Forward Deployed Engineers Need? | FDE Pulse">
+    <meta property="og:description" content="The tools and skills mentioned in 134 active FDE job postings. Python leads at 53%, GCP at 53%, AWS at 31%. Full breakdown with percentages.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Skills Do Forward Deployed Engineers Need? | FDE Pulse">
+    <meta name="twitter:description" content="The tools and skills mentioned in 134 active FDE job postings. Python leads at 53%, GCP at 53%, AWS at 31%. Full breakdown with percentages.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.article-wrapper { max-width: 860px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+.article-header { margin-bottom: 2.5rem; }
+.article-header__label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--amber-light); font-weight: 600; margin-bottom: 0.75rem; }
+.article-header__title { font-size: 2.25rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+.article-header__meta { font-size: 0.875rem; color: var(--text-muted); }
+.article-body { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.85; }
+.article-body h2 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem; }
+.article-body h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin: 2rem 0 0.75rem; }
+.article-body p { margin-bottom: 1.25rem; }
+.article-body ul, .article-body ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+.article-body li { margin-bottom: 0.5rem; }
+.article-body strong { color: var(--text-primary); }
+.data-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    margin: 1.5rem 0;
+}
+.data-table thead tr { border-bottom: 1px solid var(--border); }
+.data-table th {
+    padding: 0.75rem 1rem; text-align: left;
+    font-size: 0.8rem; color: var(--text-muted);
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.data-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-light); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--bg-card-hover); }
+.data-highlight { color: var(--amber-light); font-weight: 600; }
+.insight-index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+}
+.insight-card {
+    display: block; text-decoration: none;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    transition: all var(--transition-base);
+}
+.insight-card:hover { border-color: var(--amber); box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+.insight-card__label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--amber-light); font-weight: 600; margin-bottom: 0.5rem; }
+.insight-card__title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.35; }
+.insight-card__desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+.insight-card__cta { font-size: 0.875rem; color: var(--amber-light); font-weight: 500; }
+@media (max-width: 768px) {
+    .article-wrapper { padding: 6rem 1rem 3rem; }
+    .article-header__title { font-size: 1.75rem; }
+    .insight-index-grid { grid-template-columns: 1fr; }
+}
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What Skills Do Forward Deployed Engineers Need?",
+      "item": "https://fdepulse.com/insights/fde-skills-tools/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "What Skills Do Forward Deployed Engineers Need?", "description": "The tools and skills mentioned in 134 active FDE job postings. Python leads at 53%, GCP at 53%, AWS at 31%. Full breakdown with percentages.", "url": "https://fdepulse.com/insights/fde-skills-tools/", "datePublished": "2026-04-30", "dateModified": "2026-04-30", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/fde-skills-tools/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="article-wrapper">
+
+            <div class="article-header">
+                <div class="article-header__label">Skills Report &middot; April 30, 2026</div>
+                <h1 class="article-header__title">What Skills Do Forward Deployed Engineers Need?</h1>
+                <div class="article-header__meta">Based on tool and skill mentions in 134 active FDE job descriptions. Updated April 30, 2026.</div>
+            </div>
+
+            <div class="article-body">
+                <p>FDE Pulse parses tool and skill mentions from job description text across all tracked postings. The table below shows the raw count and percentage of postings that mention each tool or skill. All data is sourced from 134 active FDE job postings as of April 30, 2026.</p>
+
+                <h2>Tools Mentioned in FDE Job Postings</h2>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tool / Skill</th>
+                                <th style="text-align:center;">Postings</th>
+                                <th>% of Total</th>
+                                <th style="min-width:120px;">Frequency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Python</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">71</td>
+                <td style="padding:0.8rem 1rem;">53%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:100%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Gcp</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">71</td>
+                <td style="padding:0.8rem 1rem;">53%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:100%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Aws</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">41</td>
+                <td style="padding:0.8rem 1rem;">31%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:62%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Azure</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">37</td>
+                <td style="padding:0.8rem 1rem;">28%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:56%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Rag</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">29</td>
+                <td style="padding:0.8rem 1rem;">22%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:44%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Typescript</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">26</td>
+                <td style="padding:0.8rem 1rem;">19%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:38%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Javascript</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">25</td>
+                <td style="padding:0.8rem 1rem;">19%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:38%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Prompt Engineering</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">20</td>
+                <td style="padding:0.8rem 1rem;">15%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:30%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Openai</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">17</td>
+                <td style="padding:0.8rem 1rem;">13%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:26%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Claude</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">16</td>
+                <td style="padding:0.8rem 1rem;">12%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:24%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Kubernetes</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">16</td>
+                <td style="padding:0.8rem 1rem;">12%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:24%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Anthropic</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">15</td>
+                <td style="padding:0.8rem 1rem;">11%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:22%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Gemini</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">12</td>
+                <td style="padding:0.8rem 1rem;">9%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:18%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Vertex Ai</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">12</td>
+                <td style="padding:0.8rem 1rem;">9%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:18%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Langchain</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">9</td>
+                <td style="padding:0.8rem 1rem;">7%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:14%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Crewai</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">8</td>
+                <td style="padding:0.8rem 1rem;">6%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:12%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Docker</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">8</td>
+                <td style="padding:0.8rem 1rem;">6%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:12%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Salesforce</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">7</td>
+                <td style="padding:0.8rem 1rem;">5%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:10%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Vector Search</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">6</td>
+                <td style="padding:0.8rem 1rem;">4%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:8%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Catalyst</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">6</td>
+                <td style="padding:0.8rem 1rem;">4%</td>
+                <td style="padding:0.8rem 1rem;">
+                    <div style="height:8px; background:var(--bg-secondary); border-radius:4px; overflow:hidden;">
+                        <div style="height:100%; width:8%; background:var(--amber); border-radius:4px;"></div>
+                    </div>
+                </td>
+            </tr></tbody>
+                    </table>
+                </div>
+
+                <h2>Category Breakdown</h2>
+
+                <p>The 50 distinct tools and skills mentioned across 134 postings can be grouped into four categories:</p>
+
+                <ul>
+                    <li><strong>Programming Languages:</strong> Python (71 postings, 53%), TypeScript (26, 19%), JavaScript (25, 19%). Python dominates, consistent with its use in data pipelines, AI integration, and backend scripting. Combined, language mentions appear across 122 postings (91%).</li>
+                    <li><strong>Cloud Platforms:</strong> GCP (71 postings, 53%), AWS (41, 31%), Azure (37, 28%). GCP leading AWS is notable and likely reflects Google Cloud's 34 active FDE postings in the dataset. Combined cloud mentions appear across 149 postings.</li>
+                    <li><strong>AI and LLM Tools:</strong> RAG (29 postings, 22%), OpenAI (17, 13%), Claude (16, 12%), Anthropic (15, 11%), Gemini (12, 9%), Vertex AI (12, 9%). Combined AI tool mentions appear across 126 postings (94%).</li>
+                    <li><strong>Infrastructure:</strong> Kubernetes (16 postings, 12%), Docker (8, 6%), PyTorch (6, 4%), TensorFlow (6, 4%). Combined infrastructure mentions appear across 40 postings (30%).</li>
+                </ul>
+
+                <h2>What the Tool Data Tells Us About FDE Work</h2>
+
+                <p>Python and GCP appearing in over half of all FDE postings (53% and 53% respectively) reflects two market realities. First, Python has become the lingua franca of enterprise AI and data engineering work. Second, Google Cloud's dominance in the FDE posting dataset (34 of 134 roles) inflates GCP's frequency relative to AWS and Azure, which both appear in far more job postings in the broader software engineering market.</p>
+
+                <p>RAG appearing in 22% of postings is the strongest signal of how AI has changed the FDE role. Retrieval-augmented generation is the dominant architecture for deploying LLMs with proprietary enterprise data. An FDE building a RAG system wires together vector databases, embedding models, LLM APIs, and the customer's existing data infrastructure. This is complex, high-stakes engineering work that requires understanding both the AI primitives and the customer's data environment.</p>
+
+                <p>Prompt Engineering appearing in 20 postings (15%) signals that optimizing model inputs is a real work requirement for FDEs at AI companies, not just a casual skill. FDEs often build and maintain prompt libraries, evaluate model outputs, and iterate on instruction design as a core part of the job.</p>
+
+                <h2>Skills Not Listed in the Data</h2>
+
+                <p>Job description tool parsing captures explicit skill mentions but misses soft skills that experienced FDE hiring managers weight heavily. Based on FDE job description text patterns, the following non-technical requirements appear frequently:</p>
+
+                <ul>
+                    <li>Customer communication and executive stakeholder management</li>
+                    <li>Technical writing and documentation</li>
+                    <li>Project scoping and estimation</li>
+                    <li>Ability to context-switch between multiple customer environments</li>
+                    <li>Travel flexibility (most on-site roles require 20 to 40% travel)</li>
+                </ul>
+
+                <p>These skills are harder to measure from job posting text but are consistently cited as differentiators between FDE candidates who pass technical screens and those who get offers.</p>
+
+                <h2>Tool Investment Recommendations</h2>
+
+                <p>Based on the April 30, 2026 dataset, engineers targeting FDE roles should prioritize these tool investments in order:</p>
+
+                <ol>
+                    <li><strong>Python proficiency</strong> (53% of postings) is non-negotiable. If you can't write production Python without reference material, FDE work will be difficult.</li>
+                    <li><strong>At least one cloud platform</strong> (31% AWS, 53% GCP, 28% Azure). Pick the one your target company uses. Don't try to be certified in all three before applying.</li>
+                    <li><strong>RAG architecture fundamentals</strong> (22% of postings). Build a production RAG pipeline over your own data before interviewing at AI-company FDE roles. This is table stakes.</li>
+                    <li><strong>One LLM API</strong> (OpenAI 13%, Anthropic 11%, Gemini 9%). Deep experience with one is more valuable than surface familiarity with all three.</li>
+                    <li><strong>Kubernetes basics</strong> (12% of postings). You don't need to be a platform engineer, but you need to understand containerization and basic cluster operations for production deployments.</li>
+                </ol>
+
+                <h2>Methodology</h2>
+
+                <p>Tool and skill mentions are extracted from structured parsing of 134 active FDE job description texts as of April 30, 2026. A tool is counted once per posting regardless of how many times it appears in the description. Percentages are calculated against the total of 134 postings. Tool names are normalized (e.g., "Typescript" covers TypeScript in all capitalizations). Skills not explicitly listed as tool names (communication, project management) are not counted in this dataset.</p>
+            </div>
+
+            
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/insights/fde-hiring-trends-2026/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Forward Deployed Engineer Hiring Trends 2026</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Benchmarks: What Forward Deployed Engineers Earn in 2026</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">30 Companies Hiring Forward Deployed Engineers Right Now</a></li>
+<li><a href="/insights/fde-locations/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Where Forward Deployed Engineers Are Hiring</a></li>
+
+        </ul>
+    </div>
+
+            
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

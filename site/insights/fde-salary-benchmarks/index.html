@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDE Salary Benchmarks: What Forward Deployed | FDE Pulse</title>
+    <meta name="description" content="FDE salary data from 111 real job postings. Median $135K, range $50K to $365K. By seniority, metro, and remote vs on-site.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/fde-salary-benchmarks/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/fde-salary-benchmarks/">
+    <meta property="og:title" content="FDE Salary Benchmarks: What Forward Deployed | FDE Pulse">
+    <meta property="og:description" content="FDE salary data from 111 real job postings. Median $135K, range $50K to $365K. By seniority, metro, and remote vs on-site.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FDE Salary Benchmarks: What Forward Deployed | FDE Pulse">
+    <meta name="twitter:description" content="FDE salary data from 111 real job postings. Median $135K, range $50K to $365K. By seniority, metro, and remote vs on-site.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.article-wrapper { max-width: 860px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+.article-header { margin-bottom: 2.5rem; }
+.article-header__label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--amber-light); font-weight: 600; margin-bottom: 0.75rem; }
+.article-header__title { font-size: 2.25rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+.article-header__meta { font-size: 0.875rem; color: var(--text-muted); }
+.article-body { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.85; }
+.article-body h2 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem; }
+.article-body h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin: 2rem 0 0.75rem; }
+.article-body p { margin-bottom: 1.25rem; }
+.article-body ul, .article-body ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+.article-body li { margin-bottom: 0.5rem; }
+.article-body strong { color: var(--text-primary); }
+.data-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    margin: 1.5rem 0;
+}
+.data-table thead tr { border-bottom: 1px solid var(--border); }
+.data-table th {
+    padding: 0.75rem 1rem; text-align: left;
+    font-size: 0.8rem; color: var(--text-muted);
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.data-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-light); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--bg-card-hover); }
+.data-highlight { color: var(--amber-light); font-weight: 600; }
+.insight-index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+}
+.insight-card {
+    display: block; text-decoration: none;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    transition: all var(--transition-base);
+}
+.insight-card:hover { border-color: var(--amber); box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+.insight-card__label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--amber-light); font-weight: 600; margin-bottom: 0.5rem; }
+.insight-card__title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.35; }
+.insight-card__desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+.insight-card__cta { font-size: 0.875rem; color: var(--amber-light); font-weight: 500; }
+@media (max-width: 768px) {
+    .article-wrapper { padding: 6rem 1rem 3rem; }
+    .article-header__title { font-size: 1.75rem; }
+    .insight-index-grid { grid-template-columns: 1fr; }
+}
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "FDE Salary Benchmarks: What Forward Deployed Engineers Earn in 2026",
+      "item": "https://fdepulse.com/insights/fde-salary-benchmarks/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "FDE Salary Benchmarks: What Forward Deployed Engineers Earn in 2026", "description": "FDE salary data from 111 real job postings. Median $135K, range $50K to $365K. By seniority, metro, and remote vs on-site.", "url": "https://fdepulse.com/insights/fde-salary-benchmarks/", "datePublished": "2026-04-30", "dateModified": "2026-04-30", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/fde-salary-benchmarks/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="article-wrapper">
+
+            <div class="article-header">
+                <div class="article-header__label">Salary Report &middot; April 30, 2026</div>
+                <h1 class="article-header__title">FDE Salary Benchmarks: What Forward Deployed Engineers Earn in 2026</h1>
+                <div class="article-header__meta">Based on 111 of 134 active FDE postings with disclosed compensation. Updated April 30, 2026.</div>
+            </div>
+
+            <div class="article-body">
+                <p>FDE Pulse tracks compensation data from active Forward Deployed Engineer job postings. As of April 30, 2026, 111 of 134 tracked postings (83%) disclose salary ranges. The data below covers base compensation only. Equity, sign-on bonuses, OTE, and benefits are excluded from all calculations.</p>
+
+                <h2>Summary Statistics</h2>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:1rem; margin:1.5rem 0 2rem;">
+                    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+                        <div style="font-size:2rem; font-weight:700; color:var(--amber-light);">$135K</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Median base</div>
+                    </div>
+                    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+                        <div style="font-size:2rem; font-weight:700; color:var(--amber-light);">$139K</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Average base</div>
+                    </div>
+                    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+                        <div style="font-size:2rem; font-weight:700; color:var(--amber-light);">$50K</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Minimum disclosed</div>
+                    </div>
+                    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+                        <div style="font-size:2rem; font-weight:700; color:var(--amber-light);">$365K</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Maximum disclosed</div>
+                    </div>
+                </div>
+
+                <h2>Salary by Metro</h2>
+
+                <p>Based on 134 active postings, 57 postings list no specific metro. The remaining 77 are grouped by primary city below, sorted by median salary.</p>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead><tr><th>Metro</th><th style="text-align:center;">Roles</th><th>Median Base</th><th>Avg Range</th></tr></thead>
+                        <tbody>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Seattle</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$171K</td>
+                <td style="padding:0.8rem 1rem;">$166K &ndash; $236K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">San Francisco</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$160K</td>
+                <td style="padding:0.8rem 1rem;">$159K &ndash; $194K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">New York</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">32</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$153K</td>
+                <td style="padding:0.8rem 1rem;">$152K &ndash; $224K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Washington DC</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$149K</td>
+                <td style="padding:0.8rem 1rem;">$131K &ndash; $219K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Los Angeles</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">5</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$143K</td>
+                <td style="padding:0.8rem 1rem;">$146K &ndash; $225K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Austin</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">3</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$141K</td>
+                <td style="padding:0.8rem 1rem;">$160K &ndash; $227K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Chicago</td>
+                <td style="padding:0.8rem 1rem; text-align:center;" class="data-highlight">4</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$87K</td>
+                <td style="padding:0.8rem 1rem;">$82K &ndash; $223K</td>
+            </tr></tbody>
+                    </table>
+                </div>
+
+                <p>Seattle-area FDE roles show the highest median at $171K, followed by New York at $153K. The Seattle sample is small (3 postings), so treat it as directional rather than definitive.</p>
+
+                <h2>Remote vs. On-Site Pay</h2>
+
+                <p>Based on 134 active postings, on-site FDE roles pay a median of $140K versus $120K for fully remote roles. That is a 14% gap at the median. Remote roles carry lower base salaries but eliminate cost-of-living expenses in major markets, narrowing the effective pay gap for engineers outside New York and San Francisco.</p>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1.5rem 0;">
+                    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; text-align:center;">
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px;">On-Site</div>
+                        <div style="font-size:2.25rem; font-weight:700; color:var(--amber-light);">$140K</div>
+                        <div style="font-size:0.85rem; color:var(--text-secondary);">median base &middot; 88 roles</div>
+                    </div>
+                    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; text-align:center;">
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px;">Remote</div>
+                        <div style="font-size:2.25rem; font-weight:700; color:var(--amber-light);">$120K</div>
+                        <div style="font-size:0.85rem; color:var(--text-secondary);">median base &middot; 12 roles</div>
+                    </div>
+                </div>
+
+                <h2>Top 10 Highest-Paying FDE Roles</h2>
+
+                <p>These roles represent the upper end of the current FDE compensation market. All are active postings as of April 30, 2026.</p>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead><tr><th style="text-align:center;">#</th><th>Title</th><th>Company</th><th>Salary Range</th></tr></thead>
+                        <tbody>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">1</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Senior Staff Forward Deployed Developer, Google Cloud</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Google</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$262K &ndash; $365K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">2</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Director/Senior Director, Technical Lead Forward Deployed Engineering</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">KPMG</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$171K &ndash; $357K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">3</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Forward Deployed Solution Engineer- Applied AI</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">ServiceNow</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$201K &ndash; $352K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">4</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Manager, Forward Deployed Engineering, Generative AI, Google Cloud</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Google</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$234K &ndash; $325K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">5</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Forward Deployed Engineering Manager, GenAI, Google Cloud</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Google</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$234K &ndash; $325K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">6</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Senior Forward Deployed Engineer</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Vista Equity Partners Management</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$200K &ndash; $315K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">7</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Forward Deployed AI Product Manager</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Talkdesk</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$187K &ndash; $312K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">8</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Senior Forward Deployed Engineer - Snowflake</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Deloitte</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$167K &ndash; $308K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">9</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Lead Forward Deployed Engineer - AWS</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Deloitte</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$167K &ndash; $308K</td>
+            </tr>
+            <tr>
+                <td style="padding:0.8rem 1rem; text-align:center; color:var(--text-muted);">10</td>
+                <td style="padding:0.8rem 1rem; font-weight:600; color:var(--text-primary);">Lead Forward Deployed Engineer - Databricks</td>
+                <td style="padding:0.8rem 1rem; color:var(--text-secondary);">Deloitte</td>
+                <td style="padding:0.8rem 1rem;" class="data-highlight">$167K &ndash; $308K</td>
+            </tr></tbody>
+                    </table>
+                </div>
+
+                <p>The top 10 roles show max salaries between $308K and $365K. All are senior, staff, or director-level positions at major technology firms or consulting companies. Entry-level FDE roles are not represented in the top 10.</p>
+
+                <h2>Understanding FDE Compensation Structure</h2>
+
+                <p>Base salary is one component of FDE total compensation. Based on 134 active postings, 114 (85%) include equity. At pre-IPO companies, equity grants can represent 20 to 50 percent of annual total compensation if the company eventually goes public or is acquired. At public companies, RSUs vest over four years and carry a predictable cash value.</p>
+
+                <p>3 postings mention OTE, indicating pre-sales FDE roles that include a variable commission component tied to deal closure. 3 postings offer uncapped commission, the highest ceiling for variable FDE pay.</p>
+
+                <p>The 17% non-disclosure rate (23 postings) introduces uncertainty into market comparisons. Companies that do not disclose salary ranges are not necessarily lower-paying, but candidates negotiating without publicly available data are at a disadvantage. If a company does not disclose salary, use the $135K market median as your anchor point for initial discussions.</p>
+
+                <h2>Methodology</h2>
+
+                <p>Salary figures drawn from 111 of 134 active FDE postings that disclosed compensation ranges as of April 30, 2026. All values represent annual base compensation. Equity, sign-on bonuses, commissions, OTE, and benefits are excluded. Metro grouping uses the primary city in the posted location. Remote postings are classified separately regardless of listed location. Median is the statistical median of all disclosed values in each category.</p>
+            </div>
+
+            
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/insights/fde-hiring-trends-2026/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Forward Deployed Engineer Hiring Trends 2026</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">30 Companies Hiring Forward Deployed Engineers Right Now</a></li>
+<li><a href="/insights/fde-skills-tools/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">What Skills Do Forward Deployed Engineers Need?</a></li>
+<li><a href="/insights/fde-locations/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Where Forward Deployed Engineers Are Hiring</a></li>
+
+        </ul>
+    </div>
+
+            
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
