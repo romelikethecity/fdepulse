@@ -76,7 +76,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forward Deployed Engineer Salaries 2026 | FDE Pulse</title>
-    <meta name="description" content="FDE salary data from real job postings. Base pay $150K-$300K+ by company, seniority, and location. OpenAI, Palantir, Salesforce, Ramp benchmarks.">
+    <meta name="description" content="FDE salary data from 111 real job postings. Median $135K, range $167K-$307K. By seniority, metro, and remote vs on-site.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://fdepulse.com/salaries/">
 
@@ -84,13 +84,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fdepulse.com/salaries/">
     <meta property="og:title" content="Forward Deployed Engineer Salaries 2026 | FDE Pulse">
-    <meta property="og:description" content="FDE salary data from real job postings. Base pay $150K-$300K+ by company, seniority, and location. OpenAI, Palantir, Salesforce, Ramp benchmarks.">
+    <meta property="og:description" content="FDE salary data from 111 real job postings. Median $135K, range $167K-$307K. By seniority, metro, and remote vs on-site.">
     <meta property="og:site_name" content="FDE Pulse">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Forward Deployed Engineer Salaries 2026 | FDE Pulse">
-    <meta name="twitter:description" content="FDE salary data from real job postings. Base pay $150K-$300K+ by company, seniority, and location. OpenAI, Palantir, Salesforce, Ramp benchmarks.">
+    <meta name="twitter:description" content="FDE salary data from 111 real job postings. Median $135K, range $167K-$307K. By seniority, metro, and remote vs on-site.">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -107,6 +107,162 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+.page-header {
+    padding: 8rem 0 3rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+}
+.page-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.page-header__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+}
+.page-header__subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+.job-stats-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem var(--space-lg);
+}
+.job-stats-bar__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.job-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-stat-item strong {
+    color: var(--amber-light);
+    font-weight: 600;
+}
+.sal-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+.sal-section {
+    margin-bottom: 3rem;
+}
+.sal-section__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+.sal-section__note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+}
+.sal-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+.sal-table thead tr {
+    border-bottom: 1px solid var(--border);
+}
+.sal-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.sal-table tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background var(--transition-fast);
+}
+.sal-table tbody tr:last-child {
+    border-bottom: none;
+}
+.sal-table tbody tr:hover {
+    background: var(--bg-card-hover);
+}
+.sal-remote-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+.sal-remote-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    text-align: center;
+}
+.sal-remote-card__label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+.sal-remote-card__value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--amber-light);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+.sal-remote-card__sub {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+.sal-remote-card__meta {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+.sal-remote-card__range {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+.sal-prose {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+}
+.sal-prose h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 2.5rem 0 1rem;
+}
+.sal-prose p {
+    margin-bottom: 1.25rem;
+}
+@media (max-width: 768px) {
+    .page-header { padding: 6rem 0 2rem; }
+    .page-header__title { font-size: 2rem; }
+    .sal-remote-grid { grid-template-columns: 1fr; }
+    .job-stats-bar__inner { gap: 1rem; }
+}
+</style>
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -114,10 +270,10 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is the average Forward Deployed Engineer salary?",
+      "name": "What is the median Forward Deployed Engineer salary?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The average Forward Deployed Engineer salary is approximately $195,000 in base compensation across all companies and experience levels. Total compensation including equity and bonuses ranges from $150,000 for entry-level FDEs at smaller companies to $300,000+ for senior FDEs at companies like OpenAI, Palantir, and Databricks. These figures are based on disclosed salary ranges from job postings tracked by FDE Pulse."
+        "text": "Based on 111 of 134 active FDE postings that disclosed pay as of April 2026, the median base salary is $135,000 and the average is $139,470. The full salary range spans $49,920 to $365,000. These figures cover base compensation only. Equity, sign-on bonuses, and benefits are not included."
       }
     },
     {
@@ -125,7 +281,7 @@
       "name": "Do Forward Deployed Engineers earn more than regular software engineers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Forward Deployed Engineers typically earn 10-25% more than equivalent-seniority software engineers at the same company. The premium reflects the dual demand for strong engineering skills and customer-facing communication ability. FDEs also tend to work at well-funded enterprise companies that pay above-market rates. However, the gap narrows at staff and principal levels where individual contributor engineering compensation catches up."
+        "text": "FDE roles typically target engineers with 3 or more years of experience and strong customer-facing skills. The $135,000 median base reflects a market that skews mid-to-senior. At companies like Google, KPMG, and ServiceNow, senior FDE base salaries reach $200,000 to $365,000, which sits above most comparable software engineering bands at the same firms."
       }
     },
     {
@@ -133,23 +289,23 @@
       "name": "How does FDE pay vary by location?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "San Francisco and New York FDE roles pay the highest, with median base salaries around $195,000-$210,000. Remote FDE positions typically pay 5-15% below Bay Area rates, with median base salaries around $175,000-$190,000. Roles in secondary tech hubs like Austin, Seattle, and Denver fall between the two. Some companies like Palantir have location-based pay bands, while others like Salesforce pay the same rate regardless of location for remote FDE roles."
+        "text": "Based on 134 active postings, Seattle-area FDE roles show a median of $171,300 and New York roles show a median of $153,000. San Francisco and Austin are close behind at $160,000 and $141,000 respectively. Remote FDE roles show a median of $120,240, roughly 11% below the overall median, which reflects the geographic pay gap common in tech compensation."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the salary progression for Forward Deployed Engineers?",
+      "name": "Do remote FDE roles pay less than on-site?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Entry-level FDEs (0-2 years) earn $130,000-$165,000 base. Mid-level FDEs (3-5 years) earn $165,000-$210,000. Senior FDEs (5-8 years) earn $200,000-$260,000. Staff/Lead FDEs (8+ years) earn $240,000-$300,000+. These ranges represent base salary; total compensation with equity can be 20-50% higher at pre-IPO companies. Progression typically takes 6-8 years from entry to staff level."
+        "text": "Yes. Based on 134 active postings, on-site FDE roles show a median base of $140,000 versus $120,240 for fully remote roles. That is an 14% gap. However, remote roles carry no cost-of-living burden and eliminate commute costs, which narrows the effective gap for engineers outside major metro areas."
       }
     },
     {
       "@type": "Question",
-      "name": "Do Forward Deployed Engineers get equity compensation?",
+      "name": "What are the top paying Forward Deployed Engineer roles right now?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most FDE roles at venture-backed companies include equity as a significant portion of total compensation. At pre-IPO companies, equity can represent 20-40% of total comp. Palantir, OpenAI, Databricks, and Scale AI all include RSUs or stock options in FDE compensation packages. At public companies like Salesforce, FDE equity grants follow standard engineering equity bands. Consulting firm FDE roles (PwC, Deloitte) typically do not include equity."
+        "text": "The highest disclosed FDE salary range in the current dataset is $262,000 to $365,000 for a Senior Staff Forward Deployed Developer at Google Cloud. KPMG, ServiceNow, and Vista Equity Partners also list roles with max salaries above $300,000. These are senior-level positions in major metro markets with significant experience requirements."
       }
     }
   ]
@@ -179,13 +335,14 @@
 {
   "@context": "https://schema.org",
   "@type": "Dataset",
-  "name": "Forward Deployed Engineer Salary Data",
-  "description": "Compensation benchmarks for Forward Deployed Engineers across 50+ companies",
+  "name": "Forward Deployed Engineer Salary Data 2026",
+  "description": "Compensation benchmarks for Forward Deployed Engineers from 111 active job postings",
   "url": "https://fdepulse.com/salaries/",
   "creator": {
     "@type": "Organization",
     "name": "FDE Pulse"
-  }
+  },
+  "dateModified": "2026-04-30"
 }
     </script>
 </head>
@@ -229,126 +386,296 @@
 
     <main>
 
-        <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Forward Deployed Engineer Salaries</h1>
-            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.7;">Compensation data from real FDE job postings. Base salary, equity, and total comp benchmarks by company, seniority, and location.</p>
 
-            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 0 0 1.25rem;">FDE Salary Ranges by Company</h2>
+    <div class="job-stats-bar">
+        <div class="job-stats-bar__inner">
+            <span class="job-stat-item"><strong>$135K</strong> median base</span>
+            <span class="job-stat-item"><strong>$139K</strong> average base</span>
+            <span class="job-stat-item"><strong>$50K&ndash;$365K</strong> full range</span>
+            <span class="job-stat-item"><strong>83%</strong> disclosure rate (111 of 134 roles)</span>
+        </div>
+    </div>
 
-            <div style="overflow-x: auto; margin-bottom: 2.5rem;">
-                <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden;">
+        <div class="page-header">
+            <div class="page-header__inner">
+                <h1 class="page-header__title">Forward Deployed Engineer Salaries</h1>
+                <p class="page-header__subtitle">Compensation data drawn from real FDE job postings. Base salary benchmarks by seniority, metro, and remote status.</p>
+            </div>
+        </div>
+
+        <div class="sal-body">
+
+        <div class="sal-section">
+            <h2 class="sal-section__title">Salary by Seniority</h2>
+            <p class="sal-section__note">Seniority derived from job title analysis of all 134 active postings. Most postings do not explicitly label a seniority tier.</p>
+            <div style="overflow-x: auto;">
+                <table class="sal-table">
                     <thead>
-                        <tr style="border-bottom: 1px solid var(--border);">
-                            <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Company</th>
-                            <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Salary Range</th>
-                            <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Level</th>
-                            <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Location</th>
+                        <tr>
+                            <th>Level</th>
+                            <th style="text-align:center;">Active Roles</th>
+                            <th>Median Base</th>
+                            <th>Range</th>
                         </tr>
                     </thead>
                     <tbody>
-
                 <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">OpenAI</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$185,000 - $285,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Mid-Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">San Francisco</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Senior+</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">27</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$178K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$50K &ndash; $365K</td>
                 </tr>
                 <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Palantir</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$135,000 - $250,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">All levels</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">NYC / DC / Palo Alto</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Manager / Lead</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">18</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$219K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$131K &ndash; $357K</td>
                 </tr>
                 <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Salesforce</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$170,000 - $240,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Mid-Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Remote / SF / NYC</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Mid-level</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">88</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$153K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$64K &ndash; $352K</td>
                 </tr>
                 <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Ramp</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$160,000 - $220,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Mid-Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">New York</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Databricks</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$175,000 - $260,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">SF / Remote</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Scale AI</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$165,000 - $245,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Mid-Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">San Francisco</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Rippling</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$155,000 - $230,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Mid-Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">SF / NYC</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">Cohere</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--amber-light); font-weight: 500;">$160,000 - $235,000</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Mid-Senior</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Remote / Toronto</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Junior</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">1</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">N/A</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">N/A</td>
                 </tr>
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2.5rem;">Salary data compiled from job postings tracked by FDE Pulse. Ranges represent base compensation. Total comp including equity may be 20-50% higher at pre-IPO companies. Updated weekly.</p>
+        <div class="sal-section">
+            <h2 class="sal-section__title">Salary by Metro</h2>
+            <p class="sal-section__note">Based on postings with a disclosed location. 57 postings listed no specific metro.</p>
+            <div style="overflow-x: auto;">
+                <table class="sal-table">
+                    <thead>
+                        <tr>
+                            <th>Metro</th>
+                            <th style="text-align:center;">Roles</th>
+                            <th>Median Base</th>
+                            <th>Avg Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Seattle</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">3</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$171K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$166K &ndash; $236K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">San Francisco</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">3</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$160K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$159K &ndash; $194K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">New York</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">32</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$153K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$152K &ndash; $224K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Washington DC</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">3</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$149K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$131K &ndash; $219K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Los Angeles</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">5</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$143K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$146K &ndash; $225K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Austin</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">3</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$141K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$160K &ndash; $227K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Chicago</td>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-secondary);">4</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600;">$87K</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">$82K &ndash; $223K</td>
+                </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-            <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">FDE Compensation: What the Numbers Tell Us</h2>
+        <div class="sal-section">
+            <h2 class="sal-section__title">Remote vs. On-Site Compensation</h2>
+            <div class="sal-remote-grid">
+                <div class="sal-remote-card">
+                    <div class="sal-remote-card__label">On-Site</div>
+                    <div class="sal-remote-card__value">$140K</div>
+                    <div class="sal-remote-card__sub">median base</div>
+                    <div class="sal-remote-card__meta">88 active roles</div>
+                    <div class="sal-remote-card__range">$141K &ndash; $226K avg range</div>
+                </div>
+                <div class="sal-remote-card">
+                    <div class="sal-remote-card__label">Remote</div>
+                    <div class="sal-remote-card__value">$120K</div>
+                    <div class="sal-remote-card__sub">median base</div>
+                    <div class="sal-remote-card__meta">12 active roles</div>
+                    <div class="sal-remote-card__range">$120K &ndash; $158K avg range</div>
+                </div>
+            </div>
+            <p class="sal-section__note" style="margin-top: 1rem;">Remote FDE roles pay roughly 14% less at the median than on-site positions. Most remote FDE postings require periodic travel to customer sites.</p>
+        </div>
 
-                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineers command premium compensation because the role requires a rare skill combination. You need the technical depth of a mid-to-senior software engineer plus the communication skills of a solutions architect plus the customer empathy of a customer success manager. Companies pay for that intersection because it's hard to hire for.</p>
+        <div class="sal-section">
+            <h2 class="sal-section__title">Top 10 Paying FDE Roles (Active Postings)</h2>
+            <p class="sal-section__note">Ranked by maximum disclosed salary. All roles are currently active postings as of April 30, 2026.</p>
+            <div style="overflow-x: auto;">
+                <table class="sal-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">#</th>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Salary Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">1</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Senior Staff Forward Deployed Developer, Google Cloud</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Google</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$262K &ndash; $365K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">2</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Director/Senior Director, Technical Lead Forward Deployed Engineering</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">KPMG</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$171K &ndash; $357K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">3</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Forward Deployed Solution Engineer- Applied AI</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">ServiceNow</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$201K &ndash; $352K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">4</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Manager, Forward Deployed Engineering, Generative AI, Google Cloud</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Google</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$234K &ndash; $325K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">5</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Forward Deployed Engineering Manager, GenAI, Google Cloud</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Google</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$234K &ndash; $325K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">6</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Senior Forward Deployed Engineer</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Vista Equity Partners Management</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$200K &ndash; $315K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">7</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Forward Deployed AI Product Manager</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Talkdesk</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$187K &ndash; $312K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">8</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Senior Forward Deployed Engineer - Snowflake</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Deloitte</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$167K &ndash; $308K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">9</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Lead Forward Deployed Engineer - AWS</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Deloitte</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$167K &ndash; $308K</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.85rem 1rem; text-align: center; color: var(--text-muted); font-weight: 600;">10</td>
+                    <td style="padding: 0.85rem 1rem; font-weight: 600; color: var(--text-primary);">Lead Forward Deployed Engineer - Databricks</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--text-secondary);">Deloitte</td>
+                    <td style="padding: 0.85rem 1rem; color: var(--amber-light); font-weight: 600; white-space: nowrap;">$167K &ndash; $308K</td>
+                </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                <p style="margin-bottom: 1.25rem;">The median FDE base salary across all tracked postings is $195,000. That's roughly 15% above the median software engineer salary at equivalent companies. The premium is consistent across company stages: startups, growth-stage companies, and public enterprises all pay FDEs above their standard engineering bands.</p>
+        <div class="sal-prose">
+            <h2>How FDE Compensation Works</h2>
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Salary by Seniority</h2>
+            <p>Forward Deployed Engineers command premium compensation because the role demands a skill set most engineers don't have: production-grade software engineering plus the ability to run customer engagements independently. Companies pay for that combination because it's difficult to recruit for.</p>
 
-                <p style="margin-bottom: 1.25rem;">The FDE career ladder typically maps to four levels. Entry-level FDEs (sometimes called "Associate FDE" or "FDE I") earn $130,000-$165,000 and usually have 1-3 years of software engineering experience. These roles exist primarily at larger companies like Salesforce and Palantir that have structured FDE programs with mentorship.</p>
+            <p>The $135,000 median base across all 134 active postings reflects a market skewed toward mid-to-senior engineers. Most FDE job descriptions list three to seven years of software engineering experience as a baseline. Junior-level FDE roles exist primarily at large, structured FDE programs like Google Cloud, Deloitte, and Salesforce, which can afford the training investment.</p>
 
-                <p style="margin-bottom: 1.25rem;">Mid-level FDEs earn $165,000-$210,000 and form the bulk of FDE hiring. Most job postings target this band, looking for engineers with 3-5 years of experience who can work independently with customers. This is where the market is hottest and where salary growth has been strongest year-over-year.</p>
+            <h2>Why the Salary Range Is So Wide</h2>
 
-                <p style="margin-bottom: 1.25rem;">Senior FDEs earn $200,000-$260,000 and typically lead customer engagements or manage a portfolio of accounts. They're expected to mentor junior FDEs, contribute to product strategy, and handle the most complex technical integrations. At companies like OpenAI, senior FDEs work directly with enterprise customers deploying GPT-4 and custom models.</p>
+            <p>The $50K-to-$365K range in the current dataset reflects genuine market variation, not data error. At the low end, roles like technical implementation contractors and junior field engineers at smaller regional firms sit well below the median. At the top, Staff and Director-level FDE roles at Google, KPMG, and ServiceNow carry total compensation structures that push the maximum well past $300,000.</p>
 
-                <p style="margin-bottom: 1.25rem;">Staff and Lead FDEs earn $240,000-$300,000+ and are relatively rare. These roles exist at companies with mature FDE organizations (Palantir, Salesforce) and involve defining the FDE function, building tooling and processes, and working cross-functionally with product and engineering leadership.</p>
+            <p>Company stage matters more than seniority for determining compensation ceiling. A senior FDE at a Series B startup typically earns less in cash than a mid-level FDE at Google Cloud, though startup equity may offset the gap if the company grows. The 82% disclosure rate in the current dataset means the true market range may be wider than what's visible here.</p>
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Remote vs. On-Site Compensation</h2>
+            <h2>Equity and Total Compensation</h2>
 
-                <p style="margin-bottom: 1.25rem;">About 62% of FDE postings offer remote or hybrid work. Fully remote FDE roles pay 5-15% below equivalent Bay Area on-site positions. However, some companies (notably Salesforce for their Agentforce FDE team) pay location-agnostic salaries for remote roles, making them effectively the highest-paying FDE positions when adjusted for cost of living.</p>
+            <p>Base salary is only part of FDE compensation. Based on the current postings, 0 of 134 active FDE roles (0%) mention equity as part of the compensation package. At pre-IPO companies, equity grants can represent 20 to 50 percent of total annual compensation. At public companies, RSU grants vest over four years and carry predictable value.</p>
 
-                <p style="margin-bottom: 1.25rem;">The trade-off for remote FDE work is travel. Most remote FDE positions require 20-40% travel to customer sites. Some companies frame this as a benefit (travel stipend, business class flights) while others list it as a requirement. Fully remote with zero travel FDE roles exist but represent less than 15% of postings.</p>
+            <p>3 postings mention on-target earnings (OTE), which typically applies to pre-sales FDE roles where the engineer participates in deal closure and earns commission. 3 postings mention uncapped commission structures. These roles often carry the highest potential total compensation but come with variable income.</p>
 
-                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            <h2>Salary Trends to Watch</h2>
 
-                
+            <p>The FDE salary market is actively moving upward. Three factors are driving this:</p>
+
+            <p>First, Salesforce's commitment to hiring 1,000 FDEs for Agentforce is creating a floor for the role. When the largest enterprise software company in the world offers $170,000 to $240,000 for FDE roles, that sets a reference point that other companies compete against.</p>
+
+            <p>Second, AI companies are pulling experienced engineers out of traditional SaaS companies with compensation packages that include significant equity upside. Google Cloud, ServiceNow, and Deloitte are counter-offering to retain FDE talent, which compresses the gap between startup and enterprise FDE compensation.</p>
+
+            <p>Third, the skill requirements are rising. Two years ago, an FDE with strong Python and API integration skills was the standard profile. Today, postings increasingly require RAG architecture, LLM evaluation, and AI safety knowledge. That specialization commands higher compensation.</p>
+
+            <h2>Frequently Asked Questions</h2>
+            
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What is the average Forward Deployed Engineer salary?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">The average Forward Deployed Engineer salary is approximately $195,000 in base compensation across all companies and experience levels. Total compensation including equity and bonuses ranges from $150,000 for entry-level FDEs at smaller companies to $300,000+ for senior FDEs at companies like OpenAI, Palantir, and Databricks. These figures are based on disclosed salary ranges from job postings tracked by FDE Pulse.</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What is the median Forward Deployed Engineer salary?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">Based on 111 of 134 active FDE postings that disclosed pay as of April 2026, the median base salary is $135,000 and the average is $139,470. The full salary range spans $49,920 to $365,000. These figures cover base compensation only. Equity, sign-on bonuses, and benefits are not included.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
                 <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do Forward Deployed Engineers earn more than regular software engineers?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Forward Deployed Engineers typically earn 10-25% more than equivalent-seniority software engineers at the same company. The premium reflects the dual demand for strong engineering skills and customer-facing communication ability. FDEs also tend to work at well-funded enterprise companies that pay above-market rates. However, the gap narrows at staff and principal levels where individual contributor engineering compensation catches up.</p>
+                <p style="color: var(--text-secondary); line-height: 1.7;">FDE roles typically target engineers with 3 or more years of experience and strong customer-facing skills. The $135,000 median base reflects a market that skews mid-to-senior. At companies like Google, KPMG, and ServiceNow, senior FDE base salaries reach $200,000 to $365,000, which sits above most comparable software engineering bands at the same firms.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
                 <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does FDE pay vary by location?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">San Francisco and New York FDE roles pay the highest, with median base salaries around $195,000-$210,000. Remote FDE positions typically pay 5-15% below Bay Area rates, with median base salaries around $175,000-$190,000. Roles in secondary tech hubs like Austin, Seattle, and Denver fall between the two. Some companies like Palantir have location-based pay bands, while others like Salesforce pay the same rate regardless of location for remote FDE roles.</p>
+                <p style="color: var(--text-secondary); line-height: 1.7;">Based on 134 active postings, Seattle-area FDE roles show a median of $171,300 and New York roles show a median of $153,000. San Francisco and Austin are close behind at $160,000 and $141,000 respectively. Remote FDE roles show a median of $120,240, roughly 11% below the overall median, which reflects the geographic pay gap common in tech compensation.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What is the salary progression for Forward Deployed Engineers?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Entry-level FDEs (0-2 years) earn $130,000-$165,000 base. Mid-level FDEs (3-5 years) earn $165,000-$210,000. Senior FDEs (5-8 years) earn $200,000-$260,000. Staff/Lead FDEs (8+ years) earn $240,000-$300,000+. These ranges represent base salary; total compensation with equity can be 20-50% higher at pre-IPO companies. Progression typically takes 6-8 years from entry to staff level.</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do remote FDE roles pay less than on-site?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">Yes. Based on 134 active postings, on-site FDE roles show a median base of $140,000 versus $120,240 for fully remote roles. That is an 14% gap. However, remote roles carry no cost-of-living burden and eliminate commute costs, which narrows the effective gap for engineers outside major metro areas.</p>
             </div>
             <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do Forward Deployed Engineers get equity compensation?</h3>
-                <p style="color: var(--text-secondary); line-height: 1.7;">Most FDE roles at venture-backed companies include equity as a significant portion of total compensation. At pre-IPO companies, equity can represent 20-40% of total comp. Palantir, OpenAI, Databricks, and Scale AI all include RSUs or stock options in FDE compensation packages. At public companies like Salesforce, FDE equity grants follow standard engineering equity bands. Consulting firm FDE roles (PwC, Deloitte) typically do not include equity.</p>
+                <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What are the top paying Forward Deployed Engineer roles right now?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.7;">The highest disclosed FDE salary range in the current dataset is $262,000 to $365,000 for a Senior Staff Forward Deployed Developer at Google Cloud. KPMG, ServiceNow, and Vista Equity Partners also list roles with max salaries above $300,000. These are senior-level positions in major metro markets with significant experience requirements.</p>
             </div>
-            </div>
+        </div>
 
+
+        <div class="sal-section" style="margin-top: 0;">
+            <h2 class="sal-section__title">Methodology</h2>
+            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+                Compensation data drawn from 111 of 134 active FDE postings that disclosed pay as of April 30, 2026.
+                Salary figures represent base compensation only. Equity, sign-on bonuses, benefits, and variable pay (OTE, commission) are not included.
+                Median and average figures exclude postings with no disclosed compensation.
+                Seniority buckets are derived from job title analysis because most postings (81 of 111) do not explicitly label a tier.
+                Metro grouping uses the primary city in the posted location. Remote postings are classified separately regardless of listed location.
+                Data is updated weekly as new postings are added and closed roles are removed.
+            </p>
+        </div>
+
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 1.5rem;">
             
     <div class="cta-box" id="subscribe">
         <h3>Get the FDE Pulse Brief</h3>
@@ -361,8 +688,8 @@
         <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
     </div>
 
-        </section>
-
+        </div>
+    
     </main>
 
     <footer class="footer">
