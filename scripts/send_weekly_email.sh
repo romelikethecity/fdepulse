@@ -45,6 +45,10 @@ git pull --rebase --autostash 2>/dev/null || true
 echo "[$(date)] Sending weekly email..."
 $PYTHON scripts/generate_weekly_email.py --send
 
+# Generate LinkedIn carousel
+echo "[$(date)] Generating LinkedIn carousel..."
+$PYTHON scripts/generate_linkedin_carousel.py --pdf || true
+
 # Push updated snapshot so git reset --hard doesn't lose it
 if [ -f "data/previous_market_snapshot.json" ]; then
     git add data/previous_market_snapshot.json
