@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineering Lead - Data Sc... | FDE Pulse</title>
+    <meta name="description" content="Forward Deployed Engineering Lead - Data Science & Integration at Salesforce. $172K - $260K. Washington, VA, US. View role details, requirements, and apply.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/salesforce-forward-deployed-engineering-lead-data-science-integration-d4c2ff/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/salesforce-forward-deployed-engineering-lead-data-science-integration-d4c2ff/">
+    <meta property="og:title" content="Forward Deployed Engineering Lead - Data Sc... | FDE Pulse">
+    <meta property="og:description" content="Forward Deployed Engineering Lead - Data Science & Integration at Salesforce. $172K - $260K. Washington, VA, US. View role details, requirements, and apply.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineering Lead - Data Sc... | FDE Pulse">
+    <meta name="twitter:description" content="Forward Deployed Engineering Lead - Data Science & Integration at Salesforce. $172K - $260K. Washington, VA, US. View role details, requirements, and apply.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Forward Deployed Engineering Lead - Data Science & Integration", "description": "*To get the best candidate experience, please consider applying for a maximum of 3 roles within 12 months to ensure you are not duplicating efforts.*\n\nJob Category\n\n\nSoftware Engineering\nJob Details\n\n\nAbout Salesforce\n\nSalesforce is the \\1 AI CRM, where humans with agents drive customer success together. Here, ambition meets action. Tech meets trust. And innovation isn\u2019t a buzzword \u2014 it\u2019s a way of life. The world of work as we know it is changing and we're looking for Trailblazers who are p", "datePosted": "2026-05-03", "hiringOrganization": {"@type": "Organization", "name": "Salesforce"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Washington", "addressRegion": "VA", "addressCountry": "US"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/salesforce-forward-deployed-engineering-lead-data-science-integration-d4c2ff/", "baseSalary": {"@type": "MonetaryAmount", "currency": "USD", "value": {"@type": "QuantitativeValue", "minValue": 172500, "maxValue": 260100, "unitText": "YEAR"}}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Forward Deployed Engineering Lead - Data Scienc...", "item": "https://fdepulse.com/jobs/salesforce-forward-deployed-engineering-lead-data-science-integration-d4c2ff/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Salesforce?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Salesforce are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Forward Deployed Engineering Lead - Data Science & Integration role?", "acceptedAnswer": {"@type": "Answer", "text": "The Forward Deployed Engineering Lead - Data Science & Integration role at Salesforce typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Salesforce remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Salesforce FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Salesforce</span>
+                </nav>
+                    
+                    <div class="job-header__company">Salesforce</div>
+                    <h1 class="job-header__title">Forward Deployed Engineering Lead - Data Science &amp; Integration</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag job-header__tag--salary">$172K - $260K</span>
+                        <span class="job-header__tag">Washington, VA, US</span>
+                        <span class="job-header__tag job-header__tag--seniority">Senior</span>
+                        <span class="job-header__tag">Posted May 03, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://www.indeed.com/viewjob?jk=e15830d43ba9e25b" target="_blank" rel="noopener" class="btn btn--primary">Apply on Indeed</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <p>*To get the best candidate experience, please consider applying for a maximum of 3 roles within 12 months to ensure you are not duplicating efforts.*</p>
+<p>Job Category</p>
+<p>Software Engineering Job Details</p>
+<p><strong>About Salesforce</strong></p>
+<p>Salesforce is the #1 AI CRM, where humans with agents drive customer success together. Here, ambition meets action. Tech meets trust. And innovation isn’t a buzzword — it’s a way of life. The world of work as we know it is changing and we're looking for Trailblazers who are passionate about bettering business and the world through AI, driving innovation, and keeping Salesforce's core values at the heart of it all.</p>
+<p>Ready to level-up your career at the company leading workforce transformation in the agentic era? You’re in the right place! Agentforce is the future of AI, and you are the future of Salesforce.</p>
+<p><strong>*Must be a U.S. citizen (U.S. born or naturalized) living on U.S. soil who does not hold dual citizenship with the ability to meet customer and government screening standards applicable to this role.</strong>**</p>
+<p><strong>**Candidates interested in the Hawaii location must be based in Oahu or DC, Northern VA, WMATA.</strong>**</p>
+<p><strong>PLEASE NOTE: Qualification for this job is contingent upon acceptable results from a background investigation as well as your having and maintaining the specific level of U.S. government background investigation and clearance required for this role.</strong> -</p>
+<p><strong>About the Role</strong></p>
+<p>We believe technology should serve the greater good—powering mission outcomes, stewarding taxpayer resources, and enabling innovation at speed and scale. We are seeking a highly accomplished and senior-level <strong>Forward Deployed Engineer (FDE)</strong> to join our elite Public Sector team. This is a unique and high-impact position, blending the roles of a hands-on data scientist, integration architect, and strategic partner embedded directly with customers.</p>
+<p>In this role, you will be the primary driver for bringing cutting-edge data science pipelines, intelligent automation, and enterprise integration solutions to life for mission-critical work across the U.S. Department of Defense, Intelligence Community (IC), and Aerospace & Allied Nations.</p>
+<p>This role demands a seasoned technologist who thrives working forward-deployed at customer sites, building bespoke solutions leveraging enterprise workflow orchestration platforms such as <strong>Regrello</strong> and API-led connectivity platforms such as <strong>MuleSoft,</strong> while also designing and delivering advanced AI/ML systems. Candidates with equivalent experience in comparable platforms are strongly encouraged to apply; direct experience with these specific tools is a plus. You will work directly with mission owners and internal teams—from initial concept through deployment and ongoing optimization—to solve the most complex data and integration challenges in national security environments. -</p>
+<p><strong>Mission Impact</strong></p>
+<ul><li><strong>Deploy Cutting-Edge Data Science & Integration Innovation</strong> —from API-led integration ecosystems to orchestrated operational workflows to advanced ML pipelines—directly at customer sites in defense, intelligence, and aerospace environments, accelerating mission transformation. Experience with platforms such as <strong>MuleSoft</strong> and <strong>Regrello,</strong> or comparable tools, is leveraged to deliver these outcomes.</li></ul>
+<ul><li><strong>Become a Trusted Partner Embedded with Mission Owners</strong> , working in classified and unclassified environments to deeply understand operational challenges and translate them into end-to-end data science and integration solutions using best-fit tooling.</li></ul>
+<ul><li><strong>Drive Innovation at the Front Lines</strong> by serving as the connective bridge between customer missions and internal engineering teams, gathering frontline feedback to help co-design integration patterns, workflow templates, and data science capabilities that strengthen national security outcomes.</li></ul>
+<ul><li><strong>Improve Efficiency, Mission-Readiness, and Trust</strong> by helping the U.S. and allied governments deploy integrated data technology stacks that deliver faster response times, better personnel utilization, and more effective logistics and asset management.</li></ul>
+<ul><li><strong>Drive Tangible Outcomes through Hands-On Implementation</strong> , taking responsibility for end-to-end technical delivery of complex data pipelines, integration flows, and predictive models—personally writing critical code, configuring systems, and troubleshooting issues in the field while guiding junior team members.</li></ul>
+<ul><li><strong>Build Transformative Data Science Solutions</strong> by taking primary ownership of designing, developing, and implementing high-quality, scalable production ML and analytics systems, including predictive models, intelligent automation pipelines, and LLM-augmented workflows.</li></ul>
+<ul><li><strong>Engineer Bespoke Integration Architectures</strong> , designing and building custom API-led integrations using enterprise integration platforms—such as <strong>MuleSoft Anypoint Platform</strong> or equivalent middleware solutions—to ensure seamless connectivity across enterprise data sources, operational systems, and cloud environments in highly regulated settings. Demonstrated experience with comparable iPaaS or API management platforms (e.g., Dell Boomi, Azure API Management, Apigee, AWS API Gateway) is strongly considered; direct MuleSoft experience is a plus.</li></ul>
+<ul><li><strong>Orchestrate Complex Workflows</strong> , leveraging modern workflow automation and process orchestration platforms—such as <strong>Regrello</strong> or equivalent solutions—to model, automate, and optimize multi-stakeholder operational processes in manufacturing, logistics, supply chain, and mission operations contexts. Candidates with hands-on experience in comparable platforms (e.g., Temporal, Prefect, Apache Airflow, ServiceNow) are strongly encouraged to apply; direct Regrello experience is a plus.</li></ul>
+<ul><li><strong>Own the Entire Data Lifecycle-</strong> on-site with customers—from strategic data modeling to hands-on ETL/ELT pipeline construction, feature engineering, and integration strategy—ensuring data is always ready, optimized, and secure for advanced analytics and AI applications.</li></ul>
+<p>- <strong>Lead Rapid Prototyping and Iteration,</strong> developing proofs-of-concept and MVPs side-by-side with customer teams to demonstrate data science and integration capabilities and set the pace for rapid, mission-aligned delivery. -</p>
+<p><strong>Mission Responsibilities</strong></p>
+<ul><li>Serve as the forward-deployed technical lead on high-profile customer engagements—designing, building, and deploying tailored data science and integration solutions for defense, intelligence, and aerospace missions on-site.</li></ul>
+<ul><li>Architect and implement enterprise integration solutions—using platforms such as <strong>MuleSoft Anypoint Platform</strong> or equivalent iPaaS tooling—including API design, development, and management across REST, SOAP, and event-driven integration patterns within secure customer environments.</li></ul>
+<ul><li>Design and deploy workflow automation solutions—leveraging platforms such as <strong>Regrello</strong> or equivalent orchestration tooling—to model complex operational processes, coordinate cross-functional teams, and surface data-driven insights at key mission decision points.</li></ul>
+<ul><li>Lead integration of AI/ML models, custom data pipelines, and automation flows that enable predictive maintenance, personnel planning, and mission-critical logistics decisions.</li></ul>
+<ul><li>Work with customer IT and security teams to accelerate Authority to Operate (ATO) and production go-lives per DoD IL5/IL6 and applicable regulatory frameworks.</li></ul>
+<ul><li>Partner with internal product and engineering teams to co-develop integration patterns and data science capabilities informed by frontline customer feedback.</li></ul>
+<ul><li>Enable customers to adopt modern data platforms and integration middleware for field operations, asset visibility, command center analytics, and secure operational workflows.</li></ul>
+<ul><li>Mentor junior FDEs and share lessons learned with the broader engineering community to shape playbooks, integration templates, and reusable data science assets for government innovation.</li></ul>
+<p>- Translate mission priorities into actionable data and integration roadmaps aligned with agency strategy, presenting findings and recommendations to senior stakeholders. -</p>
+<p><strong>What We're Looking For</strong></p>
+<p>We're looking for a builder, a problem solver, and a mission-first leader who thrives in forward-deployed environments. The ideal candidate brings:</p>
+<ul><li>8+ years of experience in a hands-on, end-to-end delivery role for high-quality, scalable production solutions, ideally in customer-facing or field-deployed settings.</li></ul>
+<ul><li>Strong background in Computer Science, Data Science, or a related engineering discipline.</li></ul>
+<ul><li>Expert-level proficiency in one or more programming languages (e.g., Python, Java, SQL).</li></ul>
+<ul><li>Extensive hands-on experience building and deploying AI/ML solutions, including model development, MLOps pipelines, LLM integration, prompt engineering, and agentic frameworks (e.g., LangChain, LlamaIndex).</li></ul>
+<ul><li>Demonstrated expertise in enterprise integration platforms and API-led connectivity design, with experience in tools such as <strong>MuleSoft Anypoint Platform</strong> , Dell Boomi, Apigee, Azure API Management, or equivalent; direct MuleSoft experience is a plus.</li></ul>
+<ul><li>Demonstrated expertise in workflow orchestration and process automation platforms, with experience in tools such as <strong>Regrello</strong> , Temporal, Prefect, Apache Airflow, or equivalent; direct Regrello experience is a plus.</li></ul>
+<ul><li>Deep expertise in data modeling, processing, and analytics with demonstrable proficiency in enterprise data platforms (e.g., Snowflake, Databricks, BigQuery, Redshift).</li></ul>
+<ul><li>A "get-things-done" attitude with a proven ability to deliver fast and impactfully in ambiguous, customer-site environments.</li></ul>
+<ul><li>Exceptional communication and presentation skills—able to articulate complex data science and integration concepts to both technical and non-technical mission stakeholders.</li></ul>
+<ul><li>Proven ability to lead technical engagements, mentor junior FDEs, and own technical delivery end-to-end.</li></ul>
+<p><strong>- </strong>Ability to travel 50-75% of the time to customer sites, including classified facilities.****</p>
+<p><strong>- </strong>Must be a U.S. citizen (U.S. born or naturalized) living on U.S. soil who does not hold dual citizenship.****</p>
+<p><strong>- </strong>Eligible for and willing to obtain a U.S. Security Clearance.****-</p>
+<p><strong>Preferred Qualifications</strong></p>
+<ul><li>Prior experience in a forward-deployed, field engineer, or embedded technical advisor role with direct customer engagement.</li></ul>
+<ul><li>Experience supporting U.S. Department of Defense (DoD), Intelligence Community (IC), or Federal Civilian agencies.</li></ul>
+<ul><li>Background in defense, aerospace, or military logistics operations.</li></ul>
+<ul><li>Familiarity with IL5/IL6/CNSS #1253 requirements or deployment to classified environments.</li></ul>
+<ul><li>Direct hands-on experience with <strong>MuleSoft Anypoint Platform</strong> , including advanced DataWeave and Runtime Fabric deployments.</li></ul>
+<ul><li>Direct hands-on experience with <strong>Regrello</strong> for operational workflow orchestration in manufacturing, supply chain, or logistics domains.</li></ul>
+<ul><li>Expert-level Python and/or Java proficiency in a professional data science or integration engineering setting.</li></ul>
+<ul><li>Experience developing and deploying LLM-augmented solutions within highly regulated or classified industries.</li></ul>
+<ul><li>Relevant platform certifications such as:</li></ul>
+<ul><li>MuleSoft Certified Developer / Architect</li></ul>
+<ul><li>Databricks Certified Associate/Professional</li></ul>
+<ul><li>AWS/GCP/Azure Data or ML Engineer certifications</li></ul>
+<ul><li>Data Science and Analysis Certifications or relevant experience</li></ul>
+<ul><li>Experience with event-driven architectures, messaging systems (e.g., Kafka, RabbitMQ), and streaming data pipelines.</li></ul>
+<ul><li>Familiarity with CI/CD pipelines, containerization (Docker/Kubernetes), and DevSecOps practices in regulated environments.</li></ul>
+<p>This position requires a USA TS/SCI security access level. Unleash Your Potential</p>
+<p>When you join Salesforce, you’ll be limitless in all areas of your life. Our benefits and resources support you to find balance and *be your best* , and our AI agents accelerate your impact so you can *do your best* . Together, we’ll bring the power of Agentforce to organizations of all sizes and deliver amazing experiences that customers love. Apply today to not only shape the future — but to redefine what’s possible — for yourself, for AI, and the world.</p>
+<p>Accommodations</p>
+<p>If you need a reasonable accommodation during the application or the recruiting process, please submit a request via this Accommodations Request Form .</p>
+<p>Please note that Salesforce uses artificial intelligence (AI) tools to help our recruiters assess and evaluate candidates’ resumes and qualifications throughout the recruiting process. Humans will always make any candidate selection and hiring decisions. Please see our Candidate Privacy Statement for more information about how we use your personal data and your rights, including with regard to use of AI tools and opt out options.</p>
+<p>Posting Statement</p>
+<p>Salesforce is an equal opportunity employer and maintains a policy of non-discrimination with all employees and applicants for employment. What does that mean exactly? It means that at Salesforce, we believe in equality for all. And we believe we can lead the path to equality in part by creating a workplace that’s inclusive, and free from discrimination. Know your rights: workplace discrimination is illegal. Any employee or potential employee will be assessed on the basis of merit, competence and qualifications – without regard to race, religion, color, national origin, sex, sexual orientation, gender expression or identity, transgender status, age, disability, veteran or marital status, political viewpoint, or other classifications protected by law. This policy applies to current and prospective employees, no matter where they are in their Salesforce employment journey. It also applies to recruiting, hiring, job assignment, compensation, promotion, benefits, training, assessment of job performance, discipline, termination, and everything in between. Recruiting, hiring, and promotion decisions at Salesforce are fair and based on merit. The same goes for compensation, benefits, promotions, transfers, reduction in workforce, recall, training, and education.</p>
+<p>In the United States, compensation offered will be determined by factors such as location, job level, job-related knowledge, skills, and experience. Certain roles may be eligible for incentive compensation, equity, and benefits. Salesforce offers a variety of benefits to help you live well including: time off programs, medical, dental, vision, mental health support, paid parental leave, life and disability insurance, 401(k), and an employee stock purchasing program. More details about company benefits can be found at the following link: https://www.salesforcebenefits.com. At Salesforce, we believe in equitable compensation practices that reflect the dynamic nature of labor markets across various regions.&#xa;&#xa;The typical base salary range for this position is $172,500 - $260,100 annually. &#xa;&#xa;The range represents base salary only, and does not include company bonus, incentive for sales roles, equity or benefits, as applicable.</p>
+                        </div>
+                    </div>
+                    
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/deloitte-lead-snowflake-forward-deployed-engineer-gps-cfc581/" class="similar-job">
+                    <div class="similar-job__company">Deloitte</div>
+                    <div class="similar-job__title">Lead Snowflake Forward Deployed Engineer - GPS</div>
+                    
+                </a>
+                <a href="/jobs/deloitte-lead-aws-forward-deployed-engineer-gps-eb2484/" class="similar-job">
+                    <div class="similar-job__company">Deloitte</div>
+                    <div class="similar-job__title">Lead AWS Forward Deployed Engineer - GPS</div>
+                    
+                </a>
+                <a href="/jobs/deloitte-lead-openai-forward-deployed-engineer-gps-6f6561/" class="similar-job">
+                    <div class="similar-job__company">Deloitte</div>
+                    <div class="similar-job__title">Lead OpenAI Forward Deployed Engineer - GPS</div>
+                    
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Salesforce</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">Washington, VA, US</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Level</span>
+                        <span class="sidebar-card__value">Senior</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Salary</span>
+                        <span class="sidebar-card__value"><span class="sidebar-card__value--salary">$172K - $260K</span></span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">May 03, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Indeed</span>
+                    </div>
+                    </div>
+                    <a href="https://www.indeed.com/viewjob?jk=e15830d43ba9e25b" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Indeed
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
