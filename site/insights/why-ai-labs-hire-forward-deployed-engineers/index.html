@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why AI Labs Are Hiring Forward Deployed | FDE Pulse</title>
+    <meta name="description" content="Why OpenAI, Anthropic, Cohere, and other AI labs are building large FDE teams in 2026. The strategic driver behind the hiring surge and what it means for the role.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/why-ai-labs-hire-forward-deployed-engineers/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/why-ai-labs-hire-forward-deployed-engineers/">
+    <meta property="og:title" content="Why AI Labs Are Hiring Forward Deployed | FDE Pulse">
+    <meta property="og:description" content="Why OpenAI, Anthropic, Cohere, and other AI labs are building large FDE teams in 2026. The strategic driver behind the hiring surge and what it means for the role.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Why AI Labs Are Hiring Forward Deployed | FDE Pulse">
+    <meta name="twitter:description" content="Why OpenAI, Anthropic, Cohere, and other AI labs are building large FDE teams in 2026. The strategic driver behind the hiring surge and what it means for the role.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is FDE hiring at AI labs slowing down?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not as of early 2026, based on public job postings and company communications. OpenAI, Anthropic, Cohere, Databricks, and Scale AI all show active FDE hiring with growing target headcounts. The pace of hiring may moderate as the initial team builds complete, but the trend lines suggest continued growth through 2027 as enterprise AI revenue scales. Engineers considering the move should evaluate based on multi-year career fit, not short-term hiring cycle timing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do AI lab FDEs have research engineering opportunities?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Some companies offer rotations between FDE work and research engineering or applied research roles. Anthropic and OpenAI both have internal mobility programs that let FDEs spend 6-12 months in research-adjacent work before returning to FDE or transitioning permanently. The opportunity exists but isn't guaranteed; candidates interested in this should ask about internal mobility during interviews and confirm specific examples of FDEs who have made the move."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the failure mode for AI lab FDE roles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common failure mode is engineers who can build excellent prototypes but struggle with the customer-engineering communication and stakeholder management required to ship the prototypes to production. The second most common is engineers who handle customer communication well but lack the engineering depth to build sophisticated AI applications. Both failure modes manifest in the first 6-12 months. Companies hiring for AI FDE roles look hard for evidence that candidates have both capabilities before offers go out."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are AI lab FDE teams hiring internationally?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with growing geographic spread. OpenAI has FDE roles in San Francisco, New York, London, Dublin, Tokyo, and Singapore. Anthropic has roles in San Francisco, New York, and London. Cohere has roles in Toronto, New York, San Francisco, and London. The international expansion reflects enterprise customer locations, especially in regulated industries where customer data needs to stay in specific jurisdictions for compliance reasons."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I evaluate which AI lab to target for FDE roles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Four factors matter most. First, customer base: which industries does the lab serve, and do those match your interests? Second, product depth: do you prefer working on API/platform work, enterprise SaaS products, or custom model work? Third, compensation philosophy: equity-heavy at top AI labs versus more cash-heavy at established companies. Fourth, organizational culture: every lab has a different operating tempo and team culture. Talk to current FDEs at each lab through warm introductions before applying to confirm the practical match."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Why AI Labs Are Hiring Forward Deployed Engineers in 2026",
+      "item": "https://fdepulse.com/insights/why-ai-labs-hire-forward-deployed-engineers/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Why AI Labs Are Hiring Forward Deployed Engineers in 2026", "description": "Why OpenAI, Anthropic, Cohere, and other AI labs are building large FDE teams in 2026. The strategic driver behind the hiring surge and what it means for the role.", "url": "https://fdepulse.com/insights/why-ai-labs-hire-forward-deployed-engineers/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/why-ai-labs-hire-forward-deployed-engineers/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Why AI Labs Are Hiring Forward Deployed Engineers in 2026</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">The Strategic Driver</h2>
+                <p style="margin-bottom: 1.25rem;">AI labs have collectively hired thousands of Forward Deployed Engineers in the last 36 months. OpenAI's FDE team has grown from under 50 in 2023 to 200+ in 2026. Anthropic, Cohere, Scale AI, and Databricks have built FDE functions from scratch in the same window. The hiring surge isn't accidental. It reflects a specific strategic reality about how AI capabilities translate into enterprise revenue.</p>
+
+<p style="margin-bottom: 1.25rem;">The core insight: top-tier AI capabilities don't sell themselves to enterprises. A model that can write code, analyze documents, or generate marketing content needs to be integrated into specific customer workflows, customer data systems, and customer governance requirements before it produces business value. The integration work is too technical for traditional sales engineers and too customer-specific for product engineering teams. FDEs fill the gap.</p>
+
+<p style="margin-bottom: 1.25rem;">Enterprise AI deployment also has a unique structural problem: the gap between "the model can do this in a demo" and "the model produces reliable business outcomes in our production environment" is wider than for most other software categories. RAG architecture, eval frameworks, prompt engineering, data integration, fine-tuning, and governance controls all need customer-specific work. FDEs are the engineers who do that work and ship customer deployments to production.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What's Different About AI FDE Work</h2>
+                <p style="margin-bottom: 1.25rem;">FDE work at AI labs differs from FDE work at traditional enterprise SaaS in three structural ways. First, the technical surface area is wider. AI deployments involve data engineering (preparing customer data for retrieval or fine-tuning), ML system design (RAG architectures, eval frameworks), prompt engineering (which is closer to specification work than coding), and integration engineering (the traditional FDE scope). Engineers who can operate across all four areas command premium compensation.</p>
+
+<p style="margin-bottom: 1.25rem;">Second, the rate of capability change is faster. Model upgrades happen every 3-6 months at major AI labs. Each upgrade can change which prompts work, which RAG architectures perform best, which fine-tuning approaches are necessary. FDEs at AI labs spend meaningful time updating customer deployments to take advantage of new capabilities or to migrate away from deprecated approaches. This adds maintenance overhead but also creates ongoing expansion opportunities with existing customers.</p>
+
+<p style="margin-bottom: 1.25rem;">Third, governance and safety considerations are larger than in most traditional FDE work. Enterprise AI deployments involve questions about data handling (does customer data flow back to model training?), output monitoring (how do we detect when the model produces harmful or incorrect outputs?), and audit logging (can we reconstruct what the model did and why for compliance?). FDEs at AI labs need fluency in these dimensions because customer engineering teams ask about them in every deployment.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">How AI Lab FDE Teams Are Structured</h2>
+                <p style="margin-bottom: 1.25rem;">Most AI lab FDE teams in 2026 are structured around three axes: industry vertical, product specialization, and customer tier. OpenAI's FDE team includes specialists for healthcare, financial services, government, and other regulated verticals. Anthropic's FDE team is similarly organized by industry and use case (developer tools, knowledge work, customer support automation).</p>
+
+<p style="margin-bottom: 1.25rem;">Product specialization splits along major capability lines. API-focused FDEs work with customer engineering teams building applications on top of model APIs. Enterprise platform FDEs work on ChatGPT Enterprise, Claude for Work, and similar managed offerings. Custom model FDEs handle fine-tuning and bespoke model work for high-value customers willing to invest in specialized capabilities.</p>
+
+<p style="margin-bottom: 1.25rem;">Customer tier determines engagement intensity. Top-tier customers (typically $1M+ ACV) get dedicated FDE pods of 2-4 engineers for the duration of major engagements. Mid-tier customers ($100K-$1M ACV) get scoped FDE engagements with clear deliverables and exit criteria. Self-service customers don't get FDE engagement directly but benefit from the patterns and tools that FDE teams build for higher-tier customers and then productize for broader use.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Implications for Engineers Considering AI Lab FDE Roles</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">The career compounding is real.</strong> Engineers who join AI lab FDE teams in 2024-2026 are building the deployment playbook for enterprise AI in real time. The work produces deep expertise in patterns that will define enterprise AI for the next decade. Engineers who do this work well become highly recruitable across the industry, both for FDE roles at other AI companies and for technical leadership roles at enterprise companies adopting AI.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">The compensation is exceptional but volatile.</strong> AI lab FDE compensation at the senior level approaches and sometimes exceeds top SWE compensation at the most established tech companies. The volatility comes from equity components tied to private company valuations that can move significantly between funding rounds. Engineers optimizing for guaranteed cash should weight base salaries more heavily; engineers comfortable with valuation risk can capture meaningful upside through equity.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">The work demands matching pace.</strong> AI lab FDE roles are intense. Customer engagements move fast. Model capabilities change underneath you. Customer expectations are high because of the perceived strategic value of AI capabilities. Engineers who thrive in this environment tend to be comfortable with ambiguity, fast at learning new technology categories, and willing to manage customer pressure while making technical trade-off decisions under time constraints.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">The exit options are diverse.</strong> Two to four years at an AI lab FDE team opens up paths into AI startups (as a founding engineer or technical leader), into enterprise companies adopting AI (as a Head of AI Engineering or similar role), into product engineering at AI labs (transitioning internally), or into consulting and independent work serving enterprise AI deployment needs. The optionality is one of the most attractive parts of the role for engineers thinking about long-term career flexibility.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What This Means for the Broader FDE Role</h2>
+                <p style="margin-bottom: 1.25rem;">AI lab hiring is reshaping the FDE role across the industry. Three effects are visible. First, the technical bar for FDE roles is rising. Companies that previously hired FDEs with light technical depth are increasingly requiring senior engineering skills because AI capabilities demand more sophisticated integration work. Second, FDE compensation across the industry is increasing as AI labs set new benchmarks. Third, the role is becoming more recognizable to senior engineers as a legitimate path, which expands the talent pool but also intensifies competition for senior roles.</p>
+
+<p style="margin-bottom: 1.25rem;">The convergence between AI lab FDE work and traditional enterprise SaaS FDE work will likely continue. Enterprise SaaS companies are adding AI capabilities to their products, which means FDE teams at those companies need AI fluency. AI labs are productizing more of their offerings, which means FDE teams there need traditional product engineering skills alongside their AI specialization. The two roles will look more similar in 2028 than they do in 2026.</p>
+
+<p style="margin-bottom: 1.25rem;">For engineers thinking about FDE careers, the takeaway is that AI fluency is no longer optional. Building production experience with LLM applications, RAG architectures, and eval frameworks is the highest-ROI skill investment for FDE candidates in 2026. The investment pays off whether you target AI labs, enterprise SaaS, or hybrid companies expanding into AI offerings.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is FDE hiring at AI labs slowing down?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Not as of early 2026, based on public job postings and company communications. OpenAI, Anthropic, Cohere, Databricks, and Scale AI all show active FDE hiring with growing target headcounts. The pace of hiring may moderate as the initial team builds complete, but the trend lines suggest continued growth through 2027 as enterprise AI revenue scales. Engineers considering the move should evaluate based on multi-year career fit, not short-term hiring cycle timing.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do AI lab FDEs have research engineering opportunities?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Some companies offer rotations between FDE work and research engineering or applied research roles. Anthropic and OpenAI both have internal mobility programs that let FDEs spend 6-12 months in research-adjacent work before returning to FDE or transitioning permanently. The opportunity exists but isn't guaranteed; candidates interested in this should ask about internal mobility during interviews and confirm specific examples of FDEs who have made the move.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the failure mode for AI lab FDE roles?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">The most common failure mode is engineers who can build excellent prototypes but struggle with the customer-engineering communication and stakeholder management required to ship the prototypes to production. The second most common is engineers who handle customer communication well but lack the engineering depth to build sophisticated AI applications. Both failure modes manifest in the first 6-12 months. Companies hiring for AI FDE roles look hard for evidence that candidates have both capabilities before offers go out.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Are AI lab FDE teams hiring internationally?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes, with growing geographic spread. OpenAI has FDE roles in San Francisco, New York, London, Dublin, Tokyo, and Singapore. Anthropic has roles in San Francisco, New York, and London. Cohere has roles in Toronto, New York, San Francisco, and London. The international expansion reflects enterprise customer locations, especially in regulated industries where customer data needs to stay in specific jurisdictions for compliance reasons.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How do I evaluate which AI lab to target for FDE roles?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Four factors matter most. First, customer base: which industries does the lab serve, and do those match your interests? Second, product depth: do you prefer working on API/platform work, enterprise SaaS products, or custom model work? Third, compensation philosophy: equity-heavy at top AI labs versus more cash-heavy at established companies. Fourth, organizational culture: every lab has a different operating tempo and team culture. Talk to current FDEs at each lab through warm introductions before applying to confirm the practical match.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-solutions-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Solutions Engineer</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-software-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Software Engineer</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Top Companies Hiring FDEs</a></li>
+<li><a href="/career/how-to-become-a-forward-deployed-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">How to Become an FDE</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

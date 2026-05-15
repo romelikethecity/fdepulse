@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer at OpenAI: Inside | FDE Pulse</title>
+    <meta name="description" content="What FDE work looks like at OpenAI in 2026. Customer deployments, technical scope, compensation, hiring process, and how the role compares to other AI labs.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/career/forward-deployed-engineer-at-openai/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/career/forward-deployed-engineer-at-openai/">
+    <meta property="og:title" content="Forward Deployed Engineer at OpenAI: Inside | FDE Pulse">
+    <meta property="og:description" content="What FDE work looks like at OpenAI in 2026. Customer deployments, technical scope, compensation, hiring process, and how the role compares to other AI labs.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer at OpenAI: Inside | FDE Pulse">
+    <meta name="twitter:description" content="What FDE work looks like at OpenAI in 2026. Customer deployments, technical scope, compensation, hiring process, and how the role compares to other AI labs.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does OpenAI hire remote FDEs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "OpenAI's FDE hiring leans toward hybrid in SF Bay Area for most roles, with some fully remote positions available for senior or specialized hires. Customer-site travel is part of most FDE roles regardless of remote status, with typical travel running 20-40% of work time. Fully remote candidates should expect to fly to SF for quarterly team gatherings and customer onsite work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the day-to-day for an OpenAI FDE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Roughly: 30-40% direct customer engagement (working with customer engineering teams, prompt iteration, integration work), 20-30% internal engineering on tooling and reference implementations, 10-15% customer travel for onsite deployments, 10-15% internal coordination (architecture reviews, customer success collaboration), and 5-10% on-call or production support for live deployments. The mix varies by customer phase and individual engagement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does OpenAI evaluate FDE candidates without prior LLM experience?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "OpenAI considers candidates without specific LLM experience, but the bar is higher on demonstrating fast learning of new technology categories. Candidates without LLM backgrounds need clear evidence of having moved into new technical domains quickly in past roles. The interview will probe how candidates approach learning a new architecture, how they evaluate trade-offs in unfamiliar systems, and how they avoid common pitfalls when working with new technology in production customer contexts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is OpenAI FDE work sustainable for 4+ years?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Some FDEs find the customer-engagement pace intense enough that they rotate into internal product engineering or research engineering roles after 2-3 years. OpenAI has clear paths for FDEs to move into adjacent technical roles or into FDE leadership tracks. Burnout risk is real for FDEs who don't manage customer-engagement load and travel intensity. Engineers who succeed long-term in FDE roles set clear boundaries on travel and customer responsiveness expectations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the headcount target for OpenAI's FDE team?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Public reporting suggests OpenAI's FDE team has grown from under 50 in 2023 to 200+ in 2026, with plans to scale further as enterprise revenue grows. The team is one of the fastest-growing engineering functions at OpenAI, reflecting the company's emphasis on enterprise revenue alongside the consumer ChatGPT business. New FDE roles are posted regularly across multiple specializations: industry verticals (healthcare, financial services), product areas (Enterprise, API, custom GPTs), and geographies."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Career",
+      "item": "https://fdepulse.com/career/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Forward Deployed Engineer at OpenAI: Inside the Role",
+      "item": "https://fdepulse.com/career/forward-deployed-engineer-at-openai/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Forward Deployed Engineer at OpenAI: Inside the Role", "description": "What FDE work looks like at OpenAI in 2026. Customer deployments, technical scope, compensation, hiring process, and how the role compares to other AI labs.", "url": "https://fdepulse.com/career/forward-deployed-engineer-at-openai/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/career/forward-deployed-engineer-at-openai/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer at OpenAI: Inside the Role</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDEs Do at OpenAI</h2>
+                <p style="margin-bottom: 1.25rem;">OpenAI's Forward Deployed Engineering team works with enterprise customers to deploy ChatGPT Enterprise, the OpenAI API, and custom GPT applications into production environments. The role sits at the intersection of customer engineering, ML deployment, and product development. FDEs are technical operators who work directly with customer engineering teams to integrate OpenAI's capabilities into customer-specific workflows.</p>
+
+<p style="margin-bottom: 1.25rem;">A typical customer engagement starts with a discovery phase where the FDE maps the customer's existing systems, data flows, and use cases. The output is a deployment architecture that integrates OpenAI's models with the customer's data and operational tools. The FDE then builds reference implementations, helps the customer's engineering team productionize the integration, and supports the rollout through training, monitoring setup, and iteration on prompts and configurations.</p>
+
+<p style="margin-bottom: 1.25rem;">The technical scope is wide. RAG architecture for grounding model responses in customer-specific data. Prompt engineering and eval frameworks for measuring output quality. Fine-tuning workflows when needed. Integration with customer authentication, data governance, and audit logging requirements. Performance tuning for latency-sensitive use cases. Cost optimization through prompt design and model routing. Most engagements touch 5-8 of these areas before they go to production.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Who OpenAI Hires for FDE Roles</h2>
+                <p style="margin-bottom: 1.25rem;">OpenAI's FDE hiring bar combines three components. First, strong engineering ability at the senior level, comparable to mid-level SWE interviews at top tech companies. Most successful candidates have 5-10 years of professional engineering experience before applying. Second, customer-facing technical experience, either through prior FDE roles, solutions engineering, technical consulting, or developer relations. Third, AI/ML fluency, especially with LLM applications. Candidates don't need to have trained models, but they need to have built non-trivial applications using LLM APIs.</p>
+
+<p style="margin-bottom: 1.25rem;">The candidate profiles that succeed most often: senior software engineers with 1-2 years of customer-facing work (often through technical account management or solutions engineering moves), former Palantir FDEs, machine learning engineers with customer-deployment experience, and consultants from McKinsey QuantumBlack, BCG GAMMA, or Bain Vector who have built ML applications in customer settings.</p>
+
+<p style="margin-bottom: 1.25rem;">What gets candidates rejected: pure research backgrounds without production deployment experience, pure consulting backgrounds without engineering depth, SWE backgrounds without any customer interaction history, and candidates who can't articulate concrete LLM application architecture decisions in interviews. The bar is high on all three components rather than allowing exceptional performance on one to compensate for weakness on another.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation at OpenAI</h2>
+                <p style="margin-bottom: 1.25rem;">OpenAI FDE compensation lands at the top of the AI lab range. Mid-level FDE total comp runs $300K-$380K. Senior FDE total comp runs $430K-$580K. Staff FDE total comp runs $600K-$800K+. The package mix is roughly 35-45% base salary, 5-10% bonus or sign-on, and 50-60% equity through Profit Participation Units (PPUs).</p>
+
+<p style="margin-bottom: 1.25rem;">OpenAI's PPU structure is different from traditional RSUs. PPUs grant the holder a share of OpenAI's future profits, with valuations tied to internal tender events where OpenAI buys back PPUs from employees at periodic intervals. The structure has created meaningful liquidity for OpenAI employees at multi-billion-dollar valuations, but the long-term value depends on OpenAI's profit growth and the continuation of tender events.</p>
+
+<p style="margin-bottom: 1.25rem;">Total comp grew significantly between 2023 and 2026 as OpenAI's valuation increased through funding rounds and tenders. Engineers who joined in 2022-2023 with smaller initial grants have seen those grants appreciate dramatically. New hires today get smaller PPU grants in unit terms but at higher current valuations, so the dollar-denominated comp remains competitive with the highest-paying tech roles available.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Hiring Process at OpenAI</h2>
+                <p style="margin-bottom: 1.25rem;">OpenAI's FDE interview process runs 4-6 rounds over 2-4 weeks. The components vary based on the specific team but generally include: recruiter screen, technical phone interview, system design round focused on AI applications, customer scenario interview, behavioral round, and sometimes a hiring manager final.</p>
+
+<p style="margin-bottom: 1.25rem;">The customer scenario round is the highest-variance round for most candidates. The interviewer plays the role of an enterprise customer with a specific business problem. The candidate must elicit requirements, propose an architecture, anticipate objections, and explain technical trade-offs in plain English. Candidates who default to technical depth without customer-conscious framing struggle in this round. Candidates who can balance technical specificity with stakeholder communication tend to succeed.</p>
+
+<p style="margin-bottom: 1.25rem;">The system design round focuses on practical AI applications: design a RAG pipeline for a customer with 100M documents, design a multi-tenant fine-tuning workflow, design an eval framework for measuring output quality in a regulated industry. Generic distributed systems design knowledge is necessary but insufficient. Candidates need to demonstrate they understand the specific architectural patterns that work for LLM-based applications, including latency considerations, cost economics, and data governance.</p>
+
+<p style="margin-bottom: 1.25rem;">Behavioral rounds often probe customer scenarios from past work: tell me about a time you disagreed with a customer's technical approach, walk me through a deployment that didn't go as expected, describe how you handled scope changes mid-project. Successful candidates have 5-7 specific stories ready that demonstrate engineering judgment, customer empathy, and learning from failures.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Comparing OpenAI FDE to Other AI Labs</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">vs Anthropic FDE:</strong> Anthropic's FDE team is smaller and more selective. Engagement depth tends to run longer (6-12 months on a single customer is common). Total compensation is comparable to OpenAI. Hiring bar is similar. The cultural difference: Anthropic's customer engagement work emphasizes safety, evaluation, and longer-term partnership; OpenAI's emphasis is on speed-to-value and breadth of customer coverage.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">vs Scale AI FDE:</strong> Scale AI's FDE team focuses more on data labeling, custom dataset creation, and supervised learning workflows. Total comp is slightly below OpenAI and Anthropic. The work is more vertical-specific (defense, autonomous vehicles, healthcare imaging). Strong fit for engineers with ML data pipeline backgrounds.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">vs Cohere FDE:</strong> Cohere's enterprise focus produces more traditional B2B SaaS FDE work. Total comp is 15-25% below OpenAI and Anthropic. The engagement model is closer to ServiceNow or Salesforce FDE work than to top-lab AI deployment. Strong choice for engineers who want enterprise FDE work with AI-product depth.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">vs Databricks FDE:</strong> Databricks's FDE roles (sometimes called Solutions Architect or Resident Solutions Architect) emphasize data infrastructure and analytics rather than LLM applications, though that's shifting in 2026. Total comp is competitive with OpenAI for senior roles, slightly lower for mid-level. Strong fit for engineers with data platform backgrounds who want to participate in AI deployment work.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Does OpenAI hire remote FDEs?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">OpenAI's FDE hiring leans toward hybrid in SF Bay Area for most roles, with some fully remote positions available for senior or specialized hires. Customer-site travel is part of most FDE roles regardless of remote status, with typical travel running 20-40% of work time. Fully remote candidates should expect to fly to SF for quarterly team gatherings and customer onsite work.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the day-to-day for an OpenAI FDE?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Roughly: 30-40% direct customer engagement (working with customer engineering teams, prompt iteration, integration work), 20-30% internal engineering on tooling and reference implementations, 10-15% customer travel for onsite deployments, 10-15% internal coordination (architecture reviews, customer success collaboration), and 5-10% on-call or production support for live deployments. The mix varies by customer phase and individual engagement.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does OpenAI evaluate FDE candidates without prior LLM experience?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">OpenAI considers candidates without specific LLM experience, but the bar is higher on demonstrating fast learning of new technology categories. Candidates without LLM backgrounds need clear evidence of having moved into new technical domains quickly in past roles. The interview will probe how candidates approach learning a new architecture, how they evaluate trade-offs in unfamiliar systems, and how they avoid common pitfalls when working with new technology in production customer contexts.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is OpenAI FDE work sustainable for 4+ years?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Some FDEs find the customer-engagement pace intense enough that they rotate into internal product engineering or research engineering roles after 2-3 years. OpenAI has clear paths for FDEs to move into adjacent technical roles or into FDE leadership tracks. Burnout risk is real for FDEs who don't manage customer-engagement load and travel intensity. Engineers who succeed long-term in FDE roles set clear boundaries on travel and customer responsiveness expectations.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the headcount target for OpenAI's FDE team?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Public reporting suggests OpenAI's FDE team has grown from under 50 in 2023 to 200+ in 2026, with plans to scale further as enterprise revenue grows. The team is one of the fastest-growing engineering functions at OpenAI, reflecting the company's emphasis on enterprise revenue alongside the consumer ChatGPT business. New FDE roles are posted regularly across multiple specializations: industry verticals (healthcare, financial services), product areas (Enterprise, API, custom GPTs), and geographies.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/forward-deployed-engineer-levels/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Levels</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

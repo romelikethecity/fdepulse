@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer vs Technical | FDE Pulse</title>
+    <meta name="description" content="FDE vs Technical Account Manager roles compared. Day-to-day work, compensation, hiring profile, customer scope, and which path fits your strengths.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/forward-deployed-engineer-vs-technical-account-manager/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/forward-deployed-engineer-vs-technical-account-manager/">
+    <meta property="og:title" content="Forward Deployed Engineer vs Technical | FDE Pulse">
+    <meta property="og:description" content="FDE vs Technical Account Manager roles compared. Day-to-day work, compensation, hiring profile, customer scope, and which path fits your strengths.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer vs Technical | FDE Pulse">
+    <meta name="twitter:description" content="FDE vs Technical Account Manager roles compared. Day-to-day work, compensation, hiring profile, customer scope, and which path fits your strengths.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can a TAM transition into an FDE role?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Possible but requires deliberate engineering skill building. Most successful TAM\u2192FDE transitions happen at the same company, where the candidate proves engineering depth through technical project leadership before making the title change. External TAM\u2192FDE moves are harder because hiring teams default to candidates with engineering backgrounds. TAMs who want this transition should start with 1-2 production engineering projects, build a small portfolio, and target FDE roles at their current employer or at companies that have explicit TAM-to-FDE career paths."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is TAM a step toward management more than FDE is?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both roles can lead to management, but the paths differ. TAM management roles (Manager of TAM, Director of Customer Success, VP Customer Success) are common at most B2B SaaS companies. FDE management roles (Manager of FDE, Director of Forward Deployed Engineering, VP Customer Engineering) are less common but growing as FDE teams scale at AI labs and enterprise SaaS companies. The TAM management path is more standardized industry-wide; the FDE management path is newer and varies more by company."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which role has more job security in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both roles are growing, but FDE growth is faster as AI companies scale their enterprise revenue. TAM roles are well-established and stable across B2B SaaS. The risk profile is different: FDE compensation depends heavily on AI industry growth and customer expansion economics, while TAM compensation depends on the broader SaaS retention market. Engineers concerned about AI bubble risk may find TAM roles more stable; engineers betting on AI industry growth may find FDE roles produce better outcomes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do FDEs report to TAMs or vice versa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Neither, typically. Both roles report into separate organizational structures. FDEs usually report into Engineering or a Customer Engineering function. TAMs usually report into Customer Success or Post-Sales. The two roles collaborate on shared customer accounts, with the TAM owning the relationship and the FDE owning the technical delivery. Companies that put FDE under TAM management often struggle because the engineering decisions get filtered through non-engineers. Companies that put TAM under FDE management lose customer relationship continuity."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which role has clearer success metrics?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TAM has clearer industry-standard metrics: net revenue retention, gross retention, customer satisfaction, expansion bookings. FDE metrics vary by company but typically include deployment timeline, customer technical health, and pipeline expansion attributed to FDE engagement. TAM metrics are more comparable across companies because they're standardized. FDE metrics are more impactful per individual contribution but harder to benchmark externally."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Forward Deployed Engineer vs Technical Account Manager: 2026 Compared",
+      "item": "https://fdepulse.com/insights/forward-deployed-engineer-vs-technical-account-manager/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Forward Deployed Engineer vs Technical Account Manager: 2026 Compared", "description": "FDE vs Technical Account Manager roles compared. Day-to-day work, compensation, hiring profile, customer scope, and which path fits your strengths.", "url": "https://fdepulse.com/insights/forward-deployed-engineer-vs-technical-account-manager/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/forward-deployed-engineer-vs-technical-account-manager/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer vs Technical Account Manager: 2026 Compared</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">How These Roles Overlap and Differ</h2>
+                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineer and Technical Account Manager are both customer-facing technical roles. Both require technical depth, customer communication, and the ability to manage long-running engagements. The roles overlap enough that candidates regularly confuse them and companies sometimes use the titles interchangeably. The practical work is different in scope, technical depth, and career trajectory.</p>
+
+<p style="margin-bottom: 1.25rem;">The core distinction: FDEs build software during customer engagements. TAMs manage customer relationships and orchestrate the company's resources to deliver customer success. FDEs are engineers who happen to work with customers. TAMs are technical operators who happen to manage accounts. The difference shows up in how each role spends time, what they're measured on, and what career paths they lead to.</p>
+
+<p style="margin-bottom: 1.25rem;">This comparison breaks down both roles across day-to-day work, compensation, hiring profile, customer scope, success metrics, and career trajectory. The goal is to help candidates choose between the two paths based on their actual strengths and preferences, not the way each company markets the role internally.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Day-to-Day Work Comparison</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">FDE typical day:</strong> 4-5 hours of building things (writing code, designing systems, debugging integrations) and 3-4 hours of customer interaction (meetings, slack, customer pair programming sessions). The week's mix shifts toward more customer interaction during active deployment phases and toward more building during planning and design phases.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">TAM typical day:</strong> 5-6 hours of customer interaction (status calls, escalations, executive briefings, planning sessions) and 2-3 hours of internal coordination (working with sales, engineering, support, and product teams on customer issues). TAMs typically don't write production code, though they may write small scripts, dashboards, or analyses to support customer engagement.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer account scope:</strong> FDEs typically deploy at 1-3 customers at a time, with each engagement lasting 3-12 months of deep technical work. TAMs typically manage 5-15 customer accounts simultaneously, with each relationship lasting 1-3 years or longer in steady-state mode. The ratio of "depth per customer" is roughly inverted between the two roles.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Type of customer problems handled:</strong> FDEs handle technical implementation problems: how do we integrate your product with our data warehouse, how do we scale this LLM workload to 10M queries per day, how do we validate the output quality of this model in our regulated environment. TAMs handle relationship and strategic problems: when will the new feature ship, how do we expand our usage of the platform, why isn't our team adopting the product fast enough, how do we structure the next contract renewal.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Travel intensity:</strong> Both roles involve customer-facing travel. FDE travel runs 20-40% on average, concentrated during deployment phases. TAM travel runs 15-30% on average, spread across quarterly business reviews, executive sponsor meetings, and customer events. The travel pattern is different but the total time on planes is broadly similar.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation Comparison</h2>
+                <p style="margin-bottom: 1.25rem;">FDE compensation runs notably higher than TAM compensation at most companies. The differential reflects the engineering depth required for FDE work. Mid-level FDE total comp $230K-$310K. Mid-level TAM total comp $130K-$190K. Senior FDE total comp $310K-$450K. Senior TAM total comp $200K-$280K. Staff/Principal FDE total comp $450K-$700K. Senior Manager TAM total comp $280K-$380K.</p>
+
+<p style="margin-bottom: 1.25rem;">The compensation pattern also differs structurally. FDE comp is heavily equity-weighted at AI labs and high-growth startups, with 40-55% of total comp coming from RSUs, PPUs, or options. TAM comp is more cash-weighted, with 70-85% base salary plus a modest variable component tied to customer retention or expansion metrics. TAMs at customer-success-focused companies sometimes have meaningful variable comp tied to account growth, but the absolute dollar amounts rarely match FDE equity upside.</p>
+
+<p style="margin-bottom: 1.25rem;">Career compensation growth differs too. FDE comp grows quickly with promotion and equity refresh at AI labs and high-growth companies, with senior-level engineers regularly seeing total comp rise 30-50% in 2-3 years. TAM comp grows more steadily, with senior TAM and TAM management roles reaching $250K-$400K total but requiring 5-8 years of progression. The TAM ceiling at most companies is lower than the FDE ceiling because the role doesn't compound technical depth the same way.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Hiring Profile Comparison</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">What FDE hiring teams look for:</strong> Senior software engineering ability (most candidates have 5-10+ years of pure engineering experience), customer-facing experience (1-3+ years preferred), AI/ML fluency for AI-company roles, communication skills strong enough to work directly with customer engineering and executive stakeholders. The engineering bar is non-negotiable. Communication skills can be developed, but engineering depth is required upfront.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">What TAM hiring teams look for:</strong> Customer relationship management experience (most candidates have 3-8+ years of customer-facing roles), enough technical fluency to handle the product depth (often a CS or engineering background, but not always recent hands-on engineering), strong communication and stakeholder management skills, ability to orchestrate across multiple internal teams. The customer skills are non-negotiable. Technical depth can be developed within reason, but customer-facing operating skills are required upfront.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Transitions between the roles:</strong> Engineers can move from FDE to TAM if they prefer the relationship work over the building work. TAMs can move to FDE roles if they have or develop sufficient engineering depth, but this transition is rarer. The technical depth gap is the limiting factor. TAMs who want to make this transition typically need 1-2 years of dedicated engineering work (often through technical project leadership) to close the gap before FDE roles open up.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Which Role Fits Which Candidate</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pick FDE if:</strong> You're an engineer who wants customer exposure without leaving the engineering craft. You enjoy building things in customer environments. You want maximum total compensation among customer-facing roles. You want to keep engineering depth as a core part of your career trajectory. You're comfortable with the unpredictability of customer-engagement-driven schedules.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pick TAM if:</strong> You enjoy managing relationships and orchestrating across teams more than building software directly. You're stronger at communication and stakeholder management than at hands-on engineering. You want longer customer relationships (years rather than months). You value the customer success career path, which has more senior roles industry-wide than FDE management does in 2026. You prefer steadier work patterns than FDE's deployment-driven peaks.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pick neither, consider both alternatives:</strong> Solutions Engineer (more pre-sales focused, less long-term customer engagement). Implementation Engineer (more configuration than building from scratch). Customer Engineer at Google or similar (closer to FDE but with more deeply scoped products). Customer Success Engineer (a hybrid role at some PLG companies). The customer-facing technical role market has grown in 2026, and the optimal role often depends on company stage and product type more than title alone.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Can a TAM transition into an FDE role?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Possible but requires deliberate engineering skill building. Most successful TAM→FDE transitions happen at the same company, where the candidate proves engineering depth through technical project leadership before making the title change. External TAM→FDE moves are harder because hiring teams default to candidates with engineering backgrounds. TAMs who want this transition should start with 1-2 production engineering projects, build a small portfolio, and target FDE roles at their current employer or at companies that have explicit TAM-to-FDE career paths.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is TAM a step toward management more than FDE is?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Both roles can lead to management, but the paths differ. TAM management roles (Manager of TAM, Director of Customer Success, VP Customer Success) are common at most B2B SaaS companies. FDE management roles (Manager of FDE, Director of Forward Deployed Engineering, VP Customer Engineering) are less common but growing as FDE teams scale at AI labs and enterprise SaaS companies. The TAM management path is more standardized industry-wide; the FDE management path is newer and varies more by company.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which role has more job security in 2026?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Both roles are growing, but FDE growth is faster as AI companies scale their enterprise revenue. TAM roles are well-established and stable across B2B SaaS. The risk profile is different: FDE compensation depends heavily on AI industry growth and customer expansion economics, while TAM compensation depends on the broader SaaS retention market. Engineers concerned about AI bubble risk may find TAM roles more stable; engineers betting on AI industry growth may find FDE roles produce better outcomes.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do FDEs report to TAMs or vice versa?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Neither, typically. Both roles report into separate organizational structures. FDEs usually report into Engineering or a Customer Engineering function. TAMs usually report into Customer Success or Post-Sales. The two roles collaborate on shared customer accounts, with the TAM owning the relationship and the FDE owning the technical delivery. Companies that put FDE under TAM management often struggle because the engineering decisions get filtered through non-engineers. Companies that put TAM under FDE management lose customer relationship continuity.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which role has clearer success metrics?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">TAM has clearer industry-standard metrics: net revenue retention, gross retention, customer satisfaction, expansion bookings. FDE metrics vary by company but typically include deployment timeline, customer technical health, and pipeline expansion attributed to FDE engagement. TAM metrics are more comparable across companies because they're standardized. FDE metrics are more impactful per individual contribution but harder to benchmark externally.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-solutions-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Solutions Engineer</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-software-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Software Engineer</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Top Companies Hiring FDEs</a></li>
+<li><a href="/career/how-to-become-a-forward-deployed-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">How to Become an FDE</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

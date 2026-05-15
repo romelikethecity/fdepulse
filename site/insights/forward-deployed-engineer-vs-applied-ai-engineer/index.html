@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer vs Applied AI | FDE Pulse</title>
+    <meta name="description" content="FDE vs Applied AI Engineer roles compared. Day-to-day work, compensation, hiring profile, and which path fits your career goals at AI companies.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/forward-deployed-engineer-vs-applied-ai-engineer/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/forward-deployed-engineer-vs-applied-ai-engineer/">
+    <meta property="og:title" content="Forward Deployed Engineer vs Applied AI | FDE Pulse">
+    <meta property="og:description" content="FDE vs Applied AI Engineer roles compared. Day-to-day work, compensation, hiring profile, and which path fits your career goals at AI companies.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer vs Applied AI | FDE Pulse">
+    <meta name="twitter:description" content="FDE vs Applied AI Engineer roles compared. Day-to-day work, compensation, hiring profile, and which path fits your career goals at AI companies.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are AI company FDE and Applied AI Engineer roles becoming more similar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Somewhat, but the core distinction remains. As AI products mature and become more configurable by customer engineering teams, FDE work increasingly involves productized deployment work alongside customization. As AI companies sell to more customers, Applied AI Engineers need to consider customer use cases more seriously. The roles are converging at the edges but the core difference (external vs internal focus) persists."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I be both an FDE and an Applied AI Engineer at the same company?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Some companies have hybrid roles, but they're less common than dedicated tracks. The practical issue is that 30-50% customer-facing work and full product engineering scope are difficult to balance. Engineers who try to be both usually end up doing each at 60-70% effectiveness rather than excellent at one. If you want exposure to both, look for companies that allow internal rotation between teams every 18-24 months."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which role has better work-life balance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Applied AI Engineer typically has better work-life balance because of more predictable schedules, less travel, and clearer separation between work and personal time. FDE roles can have intense periods during customer deployments followed by quieter periods, but the unpredictability and travel make total balance harder to control. Engineers who value strong work-life boundaries often prefer Applied AI Engineer roles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do the interview processes differ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both processes test engineering depth and AI fluency. FDE interviews add customer scenario rounds that test communication, requirements elicitation, and stakeholder management. Applied AI Engineer interviews emphasize product engineering depth, system design at scale, and team collaboration. FDE interviews are harder to prepare for because the customer scenario rounds depend on judgment that comes from experience rather than studyable knowledge."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do these roles exist at non-AI companies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes for FDE. Most major SaaS companies now have FDE or FDE-equivalent roles (Salesforce, ServiceNow, Rippling, Ramp). Applied AI Engineer as a specific role title is more concentrated at AI-native companies. Non-AI companies often blend the work into broader Machine Learning Engineer or AI Engineer roles. If you want pure Applied AI Engineer work, AI-native companies offer the cleanest fit. If you want FDE work at non-AI companies, options are widely available."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Forward Deployed Engineer vs Applied AI Engineer: The 2026 Comparison",
+      "item": "https://fdepulse.com/insights/forward-deployed-engineer-vs-applied-ai-engineer/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Forward Deployed Engineer vs Applied AI Engineer: The 2026 Comparison", "description": "FDE vs Applied AI Engineer roles compared. Day-to-day work, compensation, hiring profile, and which path fits your career goals at AI companies.", "url": "https://fdepulse.com/insights/forward-deployed-engineer-vs-applied-ai-engineer/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/forward-deployed-engineer-vs-applied-ai-engineer/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer vs Applied AI Engineer: The 2026 Comparison</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">How These Two Roles Diverged</h2>
+                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineer and Applied AI Engineer are two of the fastest-growing technical roles at AI companies in 2026. Both work on real-world AI applications. Both require strong engineering skills plus AI/ML fluency. Both pay competitively. The roles overlap enough that candidates regularly ask which path to pursue and what the practical differences mean for career trajectory and day-to-day work.</p>
+
+<p style="margin-bottom: 1.25rem;">The simplest distinction: Forward Deployed Engineers work at customer sites deploying AI capabilities into customer-specific environments. Applied AI Engineers work internally building AI products that scale to many customers. FDEs go outward toward the customer. Applied AI Engineers go inward toward the product. The technical skill overlap is substantial but the work pattern, customer exposure, and travel intensity differ meaningfully.</p>
+
+<p style="margin-bottom: 1.25rem;">The roles emerged at different points and from different problems. The FDE role traces back to Palantir's pioneering customer-deployment model in the 2000s, then spread broadly across AI labs starting in 2022. The Applied AI Engineer role emerged later, around 2023-2024, as companies like OpenAI, Anthropic, and Cohere needed engineers who could ship AI features in their core products without the customer-engagement scope of an FDE.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Day-to-Day Work Comparison</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">FDE typical week:</strong> 2-3 days working with customer engineering teams (in person, video, or async), 1 day building reference implementations or integration code, 1 day on internal coordination (architecture reviews, customer success handoffs), with periodic customer travel for onsite deployments or training. Sprint cadence varies by customer phase, with intense periods during initial deployment and steadier pacing during long-term partnerships.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Applied AI Engineer typical week:</strong> 3-4 days on product feature development (writing code, reviewing pull requests, debugging production issues), 1 day on experimentation (testing new model versions, prompt optimization, eval framework work), with periodic cross-functional planning meetings and design reviews. The pacing follows the company's product engineering sprint cadence rather than customer engagement phases.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer exposure:</strong> FDEs spend 30-50% of their time in direct customer contact. Applied AI Engineers spend 5-15% of their time in customer contact, usually as subject matter experts supporting other teams (customer success, sales engineering, FDE). For engineers who get energized by external interaction, FDE wins. For engineers who prefer deep focus on internal work, Applied AI Engineer wins.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Travel intensity:</strong> FDE roles at AI labs typically involve 20-40% travel for customer onsite work. Applied AI Engineer roles typically involve 5-10% travel, mostly for team gatherings and conferences. The travel question is one of the largest practical differences between the two roles and should factor heavily into career decisions, especially for engineers with family or personal constraints on time away from home.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Decision authority:</strong> FDEs have significant authority over technical decisions within their customer engagements. Applied AI Engineers operate within a larger product engineering team with more shared decision-making. FDEs are usually accountable to one customer outcome at a time. Applied AI Engineers are accountable to a product roadmap that spans many customers.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation Comparison</h2>
+                <p style="margin-bottom: 1.25rem;">At AI labs in 2026, FDE and Applied AI Engineer compensation lands in similar ranges, with FDE slightly higher on average. Mid-level total comp at top AI labs: FDE $280K-$360K, Applied AI Engineer $260K-$340K. Senior total comp: FDE $430K-$580K, Applied AI Engineer $400K-$550K. Staff total comp: FDE $600K-$800K, Applied AI Engineer $570K-$760K.</p>
+
+<p style="margin-bottom: 1.25rem;">The FDE premium of 5-10% reflects three factors. First, customer-facing work commands a premium for the additional communication and travel demands. Second, FDE talent supply is narrower than Applied AI Engineer talent supply. Third, FDE work has more direct revenue impact through customer expansion and retention, which makes the compensation ROI math straightforward for company leadership.</p>
+
+<p style="margin-bottom: 1.25rem;">Compensation growth patterns differ. FDE compensation can grow faster than Applied AI Engineer compensation if you move into FDE leadership tracks (Senior FDE → Lead FDE → Director of FDE) because the team scope expands directly with the customer-facing motion's growth. Applied AI Engineer compensation grows through product-engineering leadership paths that are common across the industry, which makes external comparison easier but creates more competition for senior roles.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Career Trajectory Comparison</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">FDE career options after 3-5 years:</strong> Continue as IC FDE at higher levels (Staff, Principal). Move into FDE leadership (Lead FDE, Director of FDE Engineering, VP). Move into product engineering (transition to Applied AI Engineer or PM role internally). Move into customer-facing leadership (Head of Customer Engineering, VP Customer Success at AI companies). Start a consulting practice serving similar customers independently.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Applied AI Engineer career options after 3-5 years:</strong> Continue as IC AI Engineer at higher levels. Move into engineering leadership (Tech Lead, Engineering Manager, Director). Move into research-adjacent roles (research engineer, applied research scientist). Move into product management for AI features. Start companies in the AI application space (this path has produced many founders since 2023).</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Skill compounding:</strong> FDE work compounds customer-facing engineering skills, business communication, and broad product application knowledge across industries. Applied AI Engineer work compounds deep technical AI skills, large-system engineering, and product engineering at scale. Both compound, but in different directions. Five years as an FDE produces a different engineer than five years as an Applied AI Engineer.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Transition between roles:</strong> Moving from Applied AI Engineer to FDE is harder than the reverse. The customer-facing skills FDEs build are difficult to develop without doing the work. The technical skills Applied AI Engineers build are accessible to FDEs who choose to deepen them through deliberate practice and internal rotation. If you're early-career and undecided, starting in FDE preserves more optionality than starting in Applied AI Engineer.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Which Role Fits Which Candidate</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pick FDE if:</strong> You get energy from customer interaction. You prefer variety across industries over depth in one product. You're comfortable with travel and unpredictable schedules. You want to learn how AI capabilities translate into specific business outcomes. You value autonomy over coordinating with large internal teams. You want a clear path into customer-facing leadership.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pick Applied AI Engineer if:</strong> You prefer deep focus on internal work. You want to build products that scale to many customers rather than custom deployments for individual customers. You prefer predictable schedules with minimal travel. You want to deepen specific technical AI skills over time. You enjoy coordinating with larger product engineering teams. You want a path into engineering leadership or research-engineering work.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pick either, with intent to switch later:</strong> Both roles produce great technical operators with strong AI fluency. Many engineers move between the two during their careers. If you're choosing your first role, optimize for the work environment that energizes you in years 1-3 rather than trying to forecast your year-10 preferences. The transition between the two roles is feasible, and the AI industry has enough company demand that internal moves are usually possible at the same employer.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Are AI company FDE and Applied AI Engineer roles becoming more similar?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Somewhat, but the core distinction remains. As AI products mature and become more configurable by customer engineering teams, FDE work increasingly involves productized deployment work alongside customization. As AI companies sell to more customers, Applied AI Engineers need to consider customer use cases more seriously. The roles are converging at the edges but the core difference (external vs internal focus) persists.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Can I be both an FDE and an Applied AI Engineer at the same company?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Some companies have hybrid roles, but they're less common than dedicated tracks. The practical issue is that 30-50% customer-facing work and full product engineering scope are difficult to balance. Engineers who try to be both usually end up doing each at 60-70% effectiveness rather than excellent at one. If you want exposure to both, look for companies that allow internal rotation between teams every 18-24 months.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which role has better work-life balance?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Applied AI Engineer typically has better work-life balance because of more predictable schedules, less travel, and clearer separation between work and personal time. FDE roles can have intense periods during customer deployments followed by quieter periods, but the unpredictability and travel make total balance harder to control. Engineers who value strong work-life boundaries often prefer Applied AI Engineer roles.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How do the interview processes differ?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Both processes test engineering depth and AI fluency. FDE interviews add customer scenario rounds that test communication, requirements elicitation, and stakeholder management. Applied AI Engineer interviews emphasize product engineering depth, system design at scale, and team collaboration. FDE interviews are harder to prepare for because the customer scenario rounds depend on judgment that comes from experience rather than studyable knowledge.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do these roles exist at non-AI companies?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes for FDE. Most major SaaS companies now have FDE or FDE-equivalent roles (Salesforce, ServiceNow, Rippling, Ramp). Applied AI Engineer as a specific role title is more concentrated at AI-native companies. Non-AI companies often blend the work into broader Machine Learning Engineer or AI Engineer roles. If you want pure Applied AI Engineer work, AI-native companies offer the cleanest fit. If you want FDE work at non-AI companies, options are widely available.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-solutions-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Solutions Engineer</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-software-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Software Engineer</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Top Companies Hiring FDEs</a></li>
+<li><a href="/career/how-to-become-a-forward-deployed-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">How to Become an FDE</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

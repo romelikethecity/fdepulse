@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer Compensation: Base, | FDE Pulse</title>
+    <meta name="description" content="FDE compensation breakdown by level. Base salary, bonus targets, equity grants, and total comp at OpenAI, Palantir, Salesforce, Ramp, and 50+ companies.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/career/forward-deployed-engineer-compensation/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/career/forward-deployed-engineer-compensation/">
+    <meta property="og:title" content="Forward Deployed Engineer Compensation: Base, | FDE Pulse">
+    <meta property="og:description" content="FDE compensation breakdown by level. Base salary, bonus targets, equity grants, and total comp at OpenAI, Palantir, Salesforce, Ramp, and 50+ companies.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer Compensation: Base, | FDE Pulse">
+    <meta name="twitter:description" content="FDE compensation breakdown by level. Base salary, bonus targets, equity grants, and total comp at OpenAI, Palantir, Salesforce, Ramp, and 50+ companies.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the highest FDE compensation reported in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Public reporting via Levels.fyi and shared offer letters places top Staff FDE total compensation at OpenAI and Anthropic around $700K-$850K total comp, with Principal-equivalent roles approaching $1M-$1.2M. These outlier packages reflect equity refresh stacking and tender liquidity at the highest valuations. Most senior FDEs at these companies land $400K-$550K total."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do FDE roles include on-call or production support compensation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Some FDE roles include on-call rotation for production-deployed customer systems. Compensation varies. Some companies pay flat on-call stipends ($500-$2,000 per week of rotation). Others build on-call expectation into the base. AI labs typically don't have traditional on-call rotations because customer deployments use dedicated infrastructure teams. Enterprise SaaS FDE roles more commonly include on-call expectations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does FDE compensation compare to Solutions Engineer or Sales Engineer roles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FDE compensation runs 15-30% above comparable Solutions Engineer or Sales Engineer roles at the same company. The premium reflects the deeper engineering scope (FDEs build production code, not just demos) and the longer customer engagement (FDEs deploy systems for 3-12 months versus SE pre-sales cycles of 1-3 months). The gap was smaller pre-2023 and has widened as the FDE role has differentiated from adjacent customer-facing engineering roles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I expect a relocation package for FDE roles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, most large companies offer relocation packages of $10K-$25K for FDE moves to SF, NYC, Seattle, or Austin. Startups offer smaller packages ($5K-$10K) or none. Remote-friendly companies often offer one-time home office stipends ($1K-$3K) in lieu of relocation. Negotiate this as a separate line item, not as part of total comp."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How fast does FDE compensation grow within a company?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mid-level to senior promotion typically takes 18-30 months of strong performance and adds $40K-$80K in total comp. Senior to staff takes 24-42 months and adds $80K-$150K. Staff to principal is rarer and takes 36-60 months, with $150K-$300K compensation jumps. The compounding effect of internal promotion plus equity refresh usually beats external job changes after year 3 at a high-quality company."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Career",
+      "item": "https://fdepulse.com/career/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Forward Deployed Engineer Compensation: Base, Bonus, Equity by Level",
+      "item": "https://fdepulse.com/career/forward-deployed-engineer-compensation/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Forward Deployed Engineer Compensation: Base, Bonus, Equity by Level", "description": "FDE compensation breakdown by level. Base salary, bonus targets, equity grants, and total comp at OpenAI, Palantir, Salesforce, Ramp, and 50+ companies.", "url": "https://fdepulse.com/career/forward-deployed-engineer-compensation/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/career/forward-deployed-engineer-compensation/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer Compensation: Base, Bonus, Equity by Level</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">FDE Compensation Overview in 2026</h2>
+                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineer compensation has grown faster than software engineering compensation since 2023. Total comp at top AI companies for senior FDEs now exceeds $500K. Median total comp at mid-market SaaS companies has crossed $250K. The premium over standard SWE roles at the same company runs 10-25% for comparable seniority, reflecting the customer-facing scope and revenue impact of the role.</p>
+
+<p style="margin-bottom: 1.25rem;">Three forces are driving the comp inflation. First, AI labs have entered the FDE hiring market at high prices, pulling up benchmarks. Second, the FDE talent pool stays narrow because the role requires both engineering skill and customer-facing experience, which rarely overlap in candidates with 5+ years of pure SWE backgrounds. Third, FDE work ties directly to revenue retention and expansion, which makes the ROI math straightforward for compensation committees willing to pay up for proven operators.</p>
+
+<p style="margin-bottom: 1.25rem;">This guide breaks down compensation by level (IC1 through Staff/Principal), by company type (AI lab, enterprise SaaS, mid-market SaaS, startup), and by component (base, target bonus, equity grant). The numbers reflect offers and offer-letter data shared by FDEs across 50+ hiring companies in late 2025 through early 2026.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation by Level</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">IC1 / Entry FDE (0-2 years experience as FDE, often 3+ as SWE):</strong> $145K-$175K base, 10-15% target bonus, equity grant $50K-$120K/year vested over 4. Total comp $175K-$220K at most companies. Palantir FDSE new grad track lands around $160K base, $200K total. Salesforce Agentforce comes in slightly lower at $140K-$160K base. AI labs at this level are rare since they typically hire IC3+ for FDE roles.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">IC2 / Mid-level FDE (2-4 years FDE, 5-7 years total engineering):</strong> $175K-$215K base, 12-18% target bonus, equity grant $80K-$200K/year. Total comp $230K-$310K. This is the largest hiring band by volume. Salesforce, ServiceNow, Rippling, and Ramp pay $200K-$260K total. AI companies in this range pay $280K-$340K total comp, with the gap concentrated in equity.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">IC3 / Senior FDE (4-7 years FDE, 8-10 years total):</strong> $215K-$260K base, 15-20% target bonus, equity grant $150K-$400K/year. Total comp $310K-$450K. At this level, the gap between AI labs and traditional SaaS opens up. OpenAI senior FDE total comp lands $400K-$550K. Anthropic similar. Mid-market SaaS senior FDE lands $290K-$360K. Startups at Series B/C with frothy valuations can match AI labs through equity weight.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">IC4 / Staff FDE (7-10 years FDE, 12+ total):</strong> $260K-$320K base, 18-25% target bonus, equity grant $300K-$700K/year. Total comp $450K-$700K at AI labs and high-growth startups. Traditional SaaS lands $380K-$500K. At this level, the role often expands into FDE technical leadership, with responsibilities for FDE team hiring, customer engagement playbooks, and cross-team coordination.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">IC5 / Principal or Lead FDE (10+ years, recognized expertise):</strong> $300K-$380K base, 20-30% target bonus, equity grant $500K-$1.2M/year. Total comp $600K-$1.2M+ at top AI labs and pre-IPO companies. Few companies have established this level yet. Most Principal FDE roles in 2026 exist at companies with 5+ years of FDE team history (Palantir, Salesforce). AI labs are creating these levels now as their FDE teams mature.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation by Company Type</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">AI Labs (OpenAI, Anthropic, Cohere, Scale AI, Databricks):</strong> Highest total comp, equity-heavy. Mid-level FDE total $280K-$360K. Senior FDE total $400K-$550K. Staff FDE total $550K-$750K. Equity component is 40-55% of total comp through PPUs (profit participation units) or RSUs at the latest tender valuation. Base salaries are competitive but not the highest; the equity carries the package.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Enterprise SaaS (Salesforce, ServiceNow, UiPath, Workday):</strong> Strong base, modest equity, predictable bonus. Mid-level FDE total $220K-$280K. Senior FDE total $290K-$370K. Staff FDE total $380K-$480K. Equity is 15-25% of total comp through public-company RSUs. Salaries are higher than mid-market but the equity upside is limited compared to AI labs or startups.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">High-Growth Private SaaS (Rippling, Ramp, Notion, Linear, Vercel):</strong> Moderate base, significant equity, variable bonus. Mid-level FDE total $230K-$300K. Senior FDE total $310K-$400K. Staff FDE total $420K-$580K. Equity component is 30-45% of total, with significant upside if the company goes public at expected valuation. Downside risk if private valuations correct.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Series B/C Startups (PostHog, Watershed, Onyx, Commure):</strong> Lower cash, high equity stake. Mid-level FDE total $200K-$260K cash + 0.10-0.30% equity. Senior FDE total $260K-$330K cash + 0.20-0.50% equity. Staff FDE total $320K-$420K cash + 0.40-0.80% equity. Total comp depends heavily on exit outcome. Expected value at strike calculation can match or beat AI labs if you bet right on the company.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Consulting (PwC, Deloitte, Accenture FDE-equivalent roles):</strong> Stable base, modest bonus, no equity. Mid-level FDE total $160K-$200K. Senior FDE total $210K-$270K. Manager FDE total $280K-$350K. The trade-off is stability and clear promotion paths versus capped upside. Good entry point for engineers transitioning from pure consulting into product-deployed engineering work.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What Drives FDE Compensation Higher</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">AI/ML deployment experience:</strong> The single highest-impact skill in 2026 FDE compensation negotiations. Engineers who have deployed LLM applications to production customers command 15-25% premiums over otherwise-comparable candidates. Specific skills: RAG architecture, prompt engineering at scale, fine-tuning workflows, eval frameworks. This will likely commoditize over the next 24 months, but the premium is real today.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer-facing track record:</strong> Documented experience leading customer deployments with measurable outcomes (deployed to 10+ enterprise customers, reduced time-to-value from 6 months to 6 weeks, closed $5M+ in expansion revenue tied to FDE work) drives offers up. Pure SWE candidates without this experience get FDE offers but typically at the lower end of band.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Specific company experience:</strong> Engineers who have worked at Palantir, prior FDE programs at top AI labs, or specific Salesforce Agentforce/ServiceNow Now Engineering experience can command premiums of $30K-$80K in offers from other companies in the space. The signaling value is high because these programs are known to filter for the right skill mix.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Vertical industry depth:</strong> Healthcare, financial services, defense, and pharma FDE work command 5-15% premiums due to regulatory and security complexity. Engineers with HIPAA, FedRAMP, SOC 2 Type II, or PCI-DSS deployment experience are scarcer than the demand suggests, especially at AI companies expanding into regulated verticals.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Location and remote flexibility:</strong> SF Bay Area and NYC remain top-paying markets, with 5-10% premiums over Austin, Seattle, or remote. Fully remote roles at AI labs typically pay the same as in-office equivalents, which is unusual for the broader tech market. Some enterprise SaaS companies still discount remote offers 5-8%.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Negotiating Your FDE Offer</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Get to two offers minimum.</strong> Companies tend to match competing offers up to a certain ceiling. Without a real competing offer, you have very little negotiating room. Most candidates undervalue this point and accept first offers that leave 10-20% on the table.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Negotiate equity, not just base.</strong> Base salary increases compound through your career. Equity grants compound through company valuation. At AI labs and high-growth startups, equity often dominates total comp by year 3 of vesting. Push hard on RSU grant size or option strike pricing.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Ask about refresh cadence.</strong> Initial equity grants vest over 4 years. The replacement question is what your year-5 compensation looks like. Companies that refresh annually with substantial grants (Anthropic, OpenAI, Stripe) keep total comp growing. Companies that don't refresh aggressively (some traditional SaaS) see compensation flatten or decline as initial grants exhaust.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Document the bonus mechanism.</strong> Target bonus percentages mean different things at different companies. Some pay out at 95-105% of target consistently. Others pay 60-85% in average years. Get the historical average payout percentage in writing before accepting any role where the bonus is more than 15% of total comp.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Consider the role scope, not just the package.</strong> A senior FDE role with a path to lead a 3-5 person FDE pod beats a senior FDE role at higher comp with no team-growth opportunity. The career compounding effect is bigger than the year-1 cash gap.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the highest FDE compensation reported in 2026?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Public reporting via Levels.fyi and shared offer letters places top Staff FDE total compensation at OpenAI and Anthropic around $700K-$850K total comp, with Principal-equivalent roles approaching $1M-$1.2M. These outlier packages reflect equity refresh stacking and tender liquidity at the highest valuations. Most senior FDEs at these companies land $400K-$550K total.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do FDE roles include on-call or production support compensation?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Some FDE roles include on-call rotation for production-deployed customer systems. Compensation varies. Some companies pay flat on-call stipends ($500-$2,000 per week of rotation). Others build on-call expectation into the base. AI labs typically don't have traditional on-call rotations because customer deployments use dedicated infrastructure teams. Enterprise SaaS FDE roles more commonly include on-call expectations.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does FDE compensation compare to Solutions Engineer or Sales Engineer roles?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">FDE compensation runs 15-30% above comparable Solutions Engineer or Sales Engineer roles at the same company. The premium reflects the deeper engineering scope (FDEs build production code, not just demos) and the longer customer engagement (FDEs deploy systems for 3-12 months versus SE pre-sales cycles of 1-3 months). The gap was smaller pre-2023 and has widened as the FDE role has differentiated from adjacent customer-facing engineering roles.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Should I expect a relocation package for FDE roles?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes, most large companies offer relocation packages of $10K-$25K for FDE moves to SF, NYC, Seattle, or Austin. Startups offer smaller packages ($5K-$10K) or none. Remote-friendly companies often offer one-time home office stipends ($1K-$3K) in lieu of relocation. Negotiate this as a separate line item, not as part of total comp.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How fast does FDE compensation grow within a company?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Mid-level to senior promotion typically takes 18-30 months of strong performance and adds $40K-$80K in total comp. Senior to staff takes 24-42 months and adds $80K-$150K. Staff to principal is rarer and takes 36-60 months, with $150K-$300K compensation jumps. The compounding effect of internal promotion plus equity refresh usually beats external job changes after year 3 at a high-quality company.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/forward-deployed-engineer-levels/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Levels</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

@@ -78,6 +78,9 @@ python3 scripts/generate_more_locations.py || true
 echo "  Generating topical pages..."
 python3 scripts/generate_topical_pages.py || true
 
+echo "  Generating overnight pages..."
+python3 scripts/generate_overnight_pages.py || true
+
 echo "  Generating top voices page..."
 python3 scripts/generate_top_voices.py || true
 
