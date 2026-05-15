@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Architecture for Forward Deployed Engineers | FDE Pulse</title>
+    <meta name="description" content="What FDEs need to know about RAG architecture in 2026. Document chunking, embedding strategies, vector databases, retrieval patterns, and production deployment.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/career/rag-architecture-for-forward-deployed-engineers/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/career/rag-architecture-for-forward-deployed-engineers/">
+    <meta property="og:title" content="RAG Architecture for Forward Deployed Engineers | FDE Pulse">
+    <meta property="og:description" content="What FDEs need to know about RAG architecture in 2026. Document chunking, embedding strategies, vector databases, retrieval patterns, and production deployment.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RAG Architecture for Forward Deployed Engineers | FDE Pulse">
+    <meta name="twitter:description" content="What FDEs need to know about RAG architecture in 2026. Document chunking, embedding strategies, vector databases, retrieval patterns, and production deployment.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do FDEs need to build RAG from scratch or use frameworks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Production FDE work typically combines direct SDK usage for core flows with selective use of frameworks like LangChain or LlamaIndex for specific patterns. Pure framework usage often produces brittle production code with opaque error modes. Pure from-scratch implementation often re-invents patterns that the frameworks have already debugged. The pragmatic pattern: use frameworks where they cleanly solve a problem (document loading, common chunking strategies), use direct SDK access where you need control (retrieval, prompt construction, generation), and document the architecture decision in customer-facing handoff materials."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the minimum corpus size for RAG to make sense?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Variable, but rough heuristics: under 50 documents (a few hundred chunks), traditional search or even putting everything in the prompt context can outperform RAG. 50-5,000 documents is the sweet spot for typical FDE RAG deployments. Above 5,000 documents, RAG is almost always the right pattern. Above 100,000 documents, you'll need to think carefully about retrieval quality, infrastructure costs, and re-indexing pipelines, but the basic pattern still applies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I use OpenAI's embeddings or Cohere or Voyage AI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All three produce production-quality embeddings in 2026. Specific use cases benefit from specific choices: multilingual content benefits from Cohere's multilingual models, code retrieval benefits from Voyage AI's code-specific embeddings, general English benefits from any of the three with OpenAI being the safest default. Cost varies; embedding-3-small is the most economical for high-volume work. For most FDE engagements, default to OpenAI's text-embedding-3-large and switch only when you have specific reasons."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I evaluate RAG quality without ground truth data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Several patterns work even without curated test sets. First, generate a synthetic test set: use an LLM to produce question-answer pairs from your document corpus, then evaluate the RAG system against those. Second, use LLM-as-judge patterns: have a separate LLM evaluate whether RAG responses are grounded in the retrieved context. Third, capture user feedback in production: thumbs-up/thumbs-down signals on real responses provide ongoing eval data. The combination of synthetic eval and production feedback gives most of the value of a curated test set without the upfront effort."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is RAG getting replaced by long-context models?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not in 2026. Long-context models (1M+ token context windows) help for some use cases but don't replace RAG for most production scenarios. Cost and latency at long contexts remain prohibitive for many applications. Retrieval quality often beats putting everything in context, because focused context produces better LLM responses than diluted context. The hybrid pattern is what most production systems use: RAG for filtering and focusing, with sufficient context to give the LLM what it needs. The long-context-replaces-RAG argument keeps being made and keeps being wrong for production work."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Career",
+      "item": "https://fdepulse.com/career/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "RAG Architecture for Forward Deployed Engineers",
+      "item": "https://fdepulse.com/career/rag-architecture-for-forward-deployed-engineers/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "RAG Architecture for Forward Deployed Engineers", "description": "What FDEs need to know about RAG architecture in 2026. Document chunking, embedding strategies, vector databases, retrieval patterns, and production deployment.", "url": "https://fdepulse.com/career/rag-architecture-for-forward-deployed-engineers/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/career/rag-architecture-for-forward-deployed-engineers/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">RAG Architecture for Forward Deployed Engineers</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Why RAG Is the Single Most Important AI Skill for FDEs</h2>
+                <p style="margin-bottom: 1.25rem;">Retrieval-Augmented Generation (RAG) is the architectural pattern that turns generic LLM capabilities into customer-specific AI applications. Without RAG, an LLM only knows what it learned during training. With RAG, the LLM retrieves customer-specific context (documents, database records, code, conversation history) and grounds its responses in that context. For FDEs building AI applications in customer environments, RAG is the difference between toy demos and production-deployed systems.</p>
+
+<p style="margin-bottom: 1.25rem;">FDE Pulse analysis of 200+ AI-company FDE job postings shows 78% explicitly mention RAG, vector databases, or retrieval as required skills. The remaining 22% mention LLM applications without specific RAG terminology, but production AI work almost always uses RAG patterns regardless of how postings describe it. Building proficiency with RAG architecture is the highest-impact AI skill investment FDEs can make in 2026.</p>
+
+<p style="margin-bottom: 1.25rem;">This guide covers what FDEs need to know about RAG architecture at three levels: the conceptual model that every FDE should understand, the implementation patterns that production engagements require, and the operational depth that senior FDE roles expect. The goal is to give you enough depth to make architectural decisions in customer engagements, not to make you a RAG researcher.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">The Conceptual Model: Six Steps from Documents to Response</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 1: Document ingestion.</strong> You start with customer-specific source documents: PDFs, HTML pages, Confluence wiki entries, code repositories, support tickets, contract files. The ingestion pipeline parses these into a normalized text representation, preserving metadata (source URL, document title, author, date, access permissions) that you'll need later.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 2: Chunking.</strong> Documents are split into smaller pieces (typically 200-1,000 tokens each) called chunks. Chunking strategies vary: fixed-size chunks (simple, often produces awkward splits), semantic chunks (splits on paragraph or section boundaries, more natural), recursive chunks (hierarchical splitting that adapts to document structure). The chunking strategy matters more than most teams realize; bad chunking destroys retrieval quality regardless of how good the rest of the pipeline is.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 3: Embedding.</strong> Each chunk is converted into a high-dimensional vector representation using an embedding model (OpenAI's text-embedding-3-large, Cohere's embed-multilingual-v3, Voyage AI's models, or open-source alternatives). The vector captures the semantic meaning of the chunk in a way that lets you find similar chunks through vector similarity search.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 4: Vector storage.</strong> Embeddings are stored in a vector database optimized for similarity search. Popular options: Pinecone (managed service), Weaviate (open-source with managed cloud), Qdrant (open-source, cloud or self-hosted), pgvector (Postgres extension), Chroma (lightweight, often used for prototyping). The choice depends on scale requirements, operational preferences, and whether the customer already has Postgres infrastructure to extend.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 5: Retrieval.</strong> When a user query comes in, it's embedded using the same model used for chunks, then similarity search retrieves the top-K most-similar chunks from the vector database. K typically ranges from 3 to 20 depending on use case. Modern retrieval often combines vector similarity with other signals (BM25 keyword search, metadata filters, recency boosts) in a hybrid retrieval approach that outperforms pure vector search.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 6: Generation.</strong> The retrieved chunks are inserted into the LLM's prompt as context, alongside the user's query and instructions. The LLM generates a response grounded in the retrieved context. The prompt structure (how chunks are formatted, what instructions guide the LLM, how to handle insufficient context) is critical for production-quality output.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Production-Grade RAG: Beyond the Basic Pattern</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Hybrid retrieval.</strong> Pure vector similarity search misses queries where exact keyword matches matter (product codes, specific names, technical IDs). Combining vector search with BM25 keyword search and reranking the combined results outperforms either approach alone. Implementation: use the vector database's hybrid search if supported (Weaviate, Qdrant), or run vector and BM25 searches separately and combine results with reciprocal rank fusion.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Reranking.</strong> Initial retrieval returns the top-K most-similar chunks based on coarse similarity. A reranker (typically a cross-encoder model like Cohere Rerank or BAAI's bge-reranker) re-scores the top-K candidates with a more expensive but more accurate scoring function. Reranking typically improves retrieval quality 10-30% on real customer use cases, at the cost of additional latency and compute.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Query transformation.</strong> User queries are often imprecise, ambiguous, or formatted differently from how relevant chunks are written. Query transformation rewrites the user query before retrieval. Patterns: HyDE (Hypothetical Document Embedding) generates a hypothetical answer first, then embeds that for retrieval; multi-query rewrites the query into 3-5 variations and retrieves against each; query decomposition breaks complex queries into sub-queries with separate retrieval.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Metadata filtering.</strong> Production RAG systems rarely search the entire document corpus. Filtering by metadata (document source, date range, access permissions, document type) before vector search dramatically improves both relevance and security. For customer-specific deployments, metadata-based access control is often the most important production consideration; you do not want one customer's RAG system to return another customer's documents.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Evaluation pipelines.</strong> The biggest difference between toy RAG demos and production-deployed RAG systems is evaluation infrastructure. Production systems include: a golden test set of representative queries and expected responses, automated evaluation runs that score retrieval quality (recall, precision, hit rate) and generation quality (faithfulness, answer relevance), continuous monitoring of production query quality, and feedback loops that incorporate user thumbs-up/thumbs-down signals into model improvements. Without eval pipelines, you have no way to know when your RAG system regresses or when it's ready for production.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Vector Database Selection for FDE Engagements</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pinecone:</strong> The most-used managed vector database in 2026. Strong performance, good developer experience, simple operational model. Pricing is per-pod or serverless usage-based, with serverless typically more economical for variable workloads. Best for: teams that want managed infrastructure without operational overhead, customers with cloud-native preferences, deployments where the additional vendor relationship is acceptable.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Weaviate:</strong> Open-source with strong managed cloud option. Notable for first-class hybrid search support and a flexible schema model that handles complex metadata well. Best for: teams that want open-source escape hatch with the option of managed convenience, deployments requiring hybrid search, customers with complex document metadata structures.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Qdrant:</strong> Open-source vector database with strong performance and an emerging managed cloud offering. Lighter weight than Weaviate, often faster for pure vector workloads. Best for: teams with infrastructure preferences toward self-hosting, deployments where vector search performance is the primary criterion, customers comfortable operating Qdrant clusters.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">pgvector:</strong> Postgres extension that adds vector search to existing Postgres deployments. Slower than dedicated vector databases at large scale but often the right choice when the customer already has Postgres infrastructure and operations expertise. Best for: deployments under 10M vectors, customers with strong Postgres operations, scenarios where avoiding new infrastructure dependencies is worth performance tradeoffs.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Chroma:</strong> Lightweight vector database often used for prototyping and small-scale deployments. Single-process design makes it unsuitable for production at scale, but the simplicity makes it ideal for the first 1-2 weeks of an FDE engagement where you're proving the concept before committing to production infrastructure.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Selection heuristic:</strong> Start with Pinecone serverless for prototypes that need to scale. Switch to Weaviate or Qdrant if open-source matters or hybrid search is critical. Use pgvector when the customer's existing Postgres infrastructure makes the trade-off worthwhile. Avoid making the decision feel binding before you have production usage data; vector database migration is feasible if early choices don't fit.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Common RAG Failure Modes and How to Debug Them</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Failure: Retrieval returns irrelevant chunks.</strong> Most common cause: poor chunking strategy. Chunks that are too long dilute the embedding signal; chunks that are too short lose semantic context. Diagnostic: examine the top-K retrieved chunks for representative queries. If chunks are off-topic, revisit chunking. If chunks are on-topic but generation is wrong, the problem is in prompting or model selection, not retrieval.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Failure: LLM hallucinates despite RAG.</strong> Most common causes: chunks don't actually contain the answer (retrieval miss), instructions don't tell the LLM to ground responses in context, or the LLM has competing knowledge from training that overrides context. Diagnostic: add explicit instructions like "if the answer is not in the provided context, say so." Run retrieval-only tests to verify the right chunks are being retrieved. Use a more capable model if smaller models can't follow grounding instructions reliably.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Failure: Latency exceeds customer requirements.</strong> Most common causes: synchronous reranking adds 1-3 seconds, multi-query approaches multiply embedding latency, slow LLM generation at large context sizes. Diagnostic: profile end-to-end latency by component. Optimize the slowest component first. Cache embeddings for repeated queries. Consider faster embedding models for query-time work even if you use a slower model for document ingestion.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Failure: Quality degrades over time.</strong> Most common cause: source documents have changed but the vector store hasn't been updated. Production RAG systems need re-indexing pipelines that detect document changes and update embeddings without manual intervention. Implementation: track document hashes or last-modified timestamps, re-embed changed documents, run periodic full re-indexing for systems where staleness produces serious quality regression.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Failure: Costs balloon unexpectedly.</strong> Most common cause: high query volume against expensive embedding models and large vector indexes. Diagnostic: log embedding API costs per query, monitor vector database costs by index size and query volume, cache where possible. Consider smaller embedding models (text-embedding-3-small versus text-embedding-3-large) when the quality difference doesn't justify the cost. The economics matter at production scale; a customer running 10K queries per day against premium models can rack up significant monthly bills.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do FDEs need to build RAG from scratch or use frameworks?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Production FDE work typically combines direct SDK usage for core flows with selective use of frameworks like LangChain or LlamaIndex for specific patterns. Pure framework usage often produces brittle production code with opaque error modes. Pure from-scratch implementation often re-invents patterns that the frameworks have already debugged. The pragmatic pattern: use frameworks where they cleanly solve a problem (document loading, common chunking strategies), use direct SDK access where you need control (retrieval, prompt construction, generation), and document the architecture decision in customer-facing handoff materials.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the minimum corpus size for RAG to make sense?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Variable, but rough heuristics: under 50 documents (a few hundred chunks), traditional search or even putting everything in the prompt context can outperform RAG. 50-5,000 documents is the sweet spot for typical FDE RAG deployments. Above 5,000 documents, RAG is almost always the right pattern. Above 100,000 documents, you'll need to think carefully about retrieval quality, infrastructure costs, and re-indexing pipelines, but the basic pattern still applies.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Should I use OpenAI's embeddings or Cohere or Voyage AI?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">All three produce production-quality embeddings in 2026. Specific use cases benefit from specific choices: multilingual content benefits from Cohere's multilingual models, code retrieval benefits from Voyage AI's code-specific embeddings, general English benefits from any of the three with OpenAI being the safest default. Cost varies; embedding-3-small is the most economical for high-volume work. For most FDE engagements, default to OpenAI's text-embedding-3-large and switch only when you have specific reasons.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How do I evaluate RAG quality without ground truth data?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Several patterns work even without curated test sets. First, generate a synthetic test set: use an LLM to produce question-answer pairs from your document corpus, then evaluate the RAG system against those. Second, use LLM-as-judge patterns: have a separate LLM evaluate whether RAG responses are grounded in the retrieved context. Third, capture user feedback in production: thumbs-up/thumbs-down signals on real responses provide ongoing eval data. The combination of synthetic eval and production feedback gives most of the value of a curated test set without the upfront effort.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is RAG getting replaced by long-context models?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Not in 2026. Long-context models (1M+ token context windows) help for some use cases but don't replace RAG for most production scenarios. Cost and latency at long contexts remain prohibitive for many applications. Retrieval quality often beats putting everything in context, because focused context produces better LLM responses than diluted context. The hybrid pattern is what most production systems use: RAG for filtering and focusing, with sufficient context to give the LLM what it needs. The long-context-replaces-RAG argument keeps being made and keeps being wrong for production work.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/forward-deployed-engineer-levels/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Levels</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

@@ -31,7 +31,19 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://fdepulse.com/career/forward-deployed-engineer-at-anthropic/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://fdepulse.com/career/forward-deployed-engineer-at-openai/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/career/forward-deployed-engineer-at-palantir-today/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -86,6 +98,18 @@
   </url>
   <url>
     <loc>https://fdepulse.com/career/python-for-forward-deployed-engineers/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/career/rag-architecture-for-forward-deployed-engineers/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/career/sql-for-forward-deployed-engineers/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1045,6 +1069,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://fdepulse.com/insights/forward-deployed-engineer-compensation-inflation-2024-2026/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://fdepulse.com/insights/forward-deployed-engineer-tech-stack/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
@@ -1064,6 +1094,12 @@
   </url>
   <url>
     <loc>https://fdepulse.com/insights/forward-deployed-engineer-vs-customer-engineer/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/insights/forward-deployed-engineer-vs-developer-advocate/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1118,6 +1154,12 @@
   </url>
   <url>
     <loc>https://fdepulse.com/insights/top-fde-companies/</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fdepulse.com/insights/where-forward-deployed-engineers-get-hired/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

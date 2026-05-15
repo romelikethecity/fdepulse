@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where Forward Deployed Engineers Get Hired in | FDE Pulse</title>
+    <meta name="description" content="Geographic breakdown of FDE hiring in 2026. San Francisco, NYC, Seattle, Austin, London, Toronto, Singapore. Compensation, company concentration, role density.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/where-forward-deployed-engineers-get-hired/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/where-forward-deployed-engineers-get-hired/">
+    <meta property="og:title" content="Where Forward Deployed Engineers Get Hired in | FDE Pulse">
+    <meta property="og:description" content="Geographic breakdown of FDE hiring in 2026. San Francisco, NYC, Seattle, Austin, London, Toronto, Singapore. Compensation, company concentration, role density.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Where Forward Deployed Engineers Get Hired in | FDE Pulse">
+    <meta name="twitter:description" content="Geographic breakdown of FDE hiring in 2026. San Francisco, NYC, Seattle, Austin, London, Toronto, Singapore. Compensation, company concentration, role density.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which city has the best FDE compensation when adjusted for cost of living?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Austin and Toronto produce the best real-dollar outcomes after cost-of-living adjustment for engineers willing to work outside the top US markets. Austin's combination of competitive nominal comp and lower housing costs produces strong real income. Toronto's Canadian healthcare benefits and lower housing costs offset the nominal compensation gap versus SF. Singapore is competitive after tax considerations. The headline comp in SF is highest, but real-income comparisons across markets favor secondary hubs more than candidates typically expect."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the SF Bay Area still worth it for FDE careers in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most engineers focused on AI-company FDE careers, yes. The concentration of AI labs, the volume of competing opportunities, and the depth of AI-industry conversation all compound through your career. The trade-off is cost of living and the specific cultural intensity of the Bay Area tech industry. Engineers who can tolerate (or enjoy) the Bay Area pattern typically do better long-term than engineers who could move to SF but stay in lower-opportunity markets. Engineers who actively dislike the Bay Area culture should optimize for other markets even at modest comp cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does FDE travel work for remote engineers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Patterns vary by employer and engagement. Most remote FDEs travel 30-50% for customer onsite work, quarterly team gatherings, and conferences. Some senior remote FDEs negotiate travel maximums (no more than X trips per quarter) into their offers. Travel logistics (corporate credit cards, lodging policies, time-zone management for international customer work) require explicit conversations during offer negotiation; assumptions often don't match reality."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are there fully-remote FDE roles for engineers who don't want to travel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Few. Most FDE roles involve some travel because customer engineering teams expect occasional in-person collaboration during critical deployment phases. Engineers who refuse travel entirely should look at adjacent roles (Solutions Engineer, Product Engineer, Customer Engineering for cloud-only deployments) rather than pure FDE roles. The travel expectation is structurally tied to the role's customer-facing nature."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will FDE hiring continue concentrating in the same cities through 2027?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most signals suggest yes. AI lab geography concentrates engineering investment in SF, NYC, London, and a few other hubs. Enterprise customer geography concentrates FDE customer work in major business centers. The forces driving concentration (AI lab gravity, enterprise customer density, cultural concentration of technical talent) all reinforce existing patterns. Some growth in secondary markets is likely, but the top hubs will remain dominant through at least 2027."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Where Forward Deployed Engineers Get Hired in 2026: City-by-City Breakdown",
+      "item": "https://fdepulse.com/insights/where-forward-deployed-engineers-get-hired/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Where Forward Deployed Engineers Get Hired in 2026: City-by-City Breakdown", "description": "Geographic breakdown of FDE hiring in 2026. San Francisco, NYC, Seattle, Austin, London, Toronto, Singapore. Compensation, company concentration, role density.", "url": "https://fdepulse.com/insights/where-forward-deployed-engineers-get-hired/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/where-forward-deployed-engineers-get-hired/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Where Forward Deployed Engineers Get Hired in 2026: City-by-City Breakdown</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">FDE Hiring Has Concentrated in 8 Cities</h2>
+                <p style="margin-bottom: 1.25rem;">FDE Pulse analysis of 200+ active FDE job postings in early 2026 shows hiring concentrated in eight cities globally. San Francisco leads by a wide margin (40% of postings), followed by New York (15%), Seattle (8%), Austin (7%), London (6%), Toronto (5%), Boston (4%), and Singapore (3%). The remaining 12% spread across smaller hubs (Denver, Los Angeles, Dublin, Tokyo, Tel Aviv, plus a long tail of fully-remote roles tied to specific company headquarters).</p>
+
+<p style="margin-bottom: 1.25rem;">The concentration reflects both customer location and AI lab geography. San Francisco dominates because OpenAI, Anthropic, Scale AI, Cohere (also in Toronto), and most AI-focused startups have FDE teams in the Bay Area. New York has grown rapidly as financial services, media, and regulated-industry FDE customer work has scaled. Seattle reflects both Microsoft and AWS FDE-equivalent roles plus growing AI lab presence. The other cities each have specific reasons for FDE concentration tied to either enterprise customer geography or specific company headquarters decisions.</p>
+
+<p style="margin-bottom: 1.25rem;">This guide breaks down each city: which companies hire FDEs there, what compensation looks like, what the customer-engagement geography means for travel, and what the local FDE talent market looks like for candidates considering specific moves.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">San Francisco: The FDE Capital</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Company concentration:</strong> OpenAI, Anthropic, Scale AI, Cohere (San Francisco office in addition to Toronto HQ), Databricks, Salesforce Agentforce, Ramp, Rippling, Notion, PostHog, Watershed, Onyx (YC), Commure, and a long tail of AI-focused startups. Most VC-backed AI companies with FDE functions have at least a partial San Francisco presence.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Compensation:</strong> Top of the market. Mid-level FDE total comp $280K-$360K, senior $430K-$580K, staff $600K-$800K. Cost of living offsets some of the comp premium versus other markets, but San Francisco FDE compensation typically lands 10-20% above equivalent roles in other US cities.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer geography:</strong> Mixed. Some customer work happens with Bay Area companies (Salesforce, ServiceNow, mid-market SaaS in SF). Significant travel to enterprise customers in financial services (NY), pharma (East Coast), defense (DC, San Diego), and international customers (Europe, Asia). Engineers should expect 25-40% travel even with a Bay Area home base.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Local talent market:</strong> Most competitive FDE hiring market in the world. AI labs poach aggressively from one another. Compensation negotiations are intense because candidates routinely have multiple competing offers. The best engineers see comp packages move 20-40% across the negotiation process, which means staying on top of market data matters more here than in lower-competition markets.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Cultural factors:</strong> AI-industry concentration produces a specific cultural tempo. Engineers who get energy from the density of AI-industry conversation thrive in SF. Engineers who find the constant industry talk exhausting often prefer markets where AI is one industry among many rather than the dominant cultural force.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">New York: Enterprise FDE Center</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Company concentration:</strong> OpenAI NYC, Anthropic NYC, Ramp, Plaid, Hex, plus enterprise SaaS FDE teams at companies with significant New York presence. Financial services, media, and regulated-industry customer concentration drives meaningful FDE hiring beyond AI lab headcount.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Compensation:</strong> Comparable to San Francisco within 5-10%. Mid-level FDE total comp $270K-$350K, senior $410K-$560K, staff $580K-$760K. Cost of living slightly lower than San Francisco for housing (depending on neighborhood) but higher for general expenses. Net financial position roughly equivalent to SF for most engineers.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer geography:</strong> Enterprise-heavy. Major customer clusters in financial services (Wall Street banks, hedge funds, fintech), media and publishing (NYC HQ companies), pharma (NJ corridor), and consulting firms based in New York. Travel intensity often lower than SF FDE roles because customers cluster in the same metro area.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Local talent market:</strong> Growing rapidly but still less competitive than SF. AI lab NYC offices are smaller, which means fewer competing offers but also fewer opportunities at any given moment. Engineers willing to commit to NYC often see strong offers from companies hiring against limited local talent supply.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Cultural factors:</strong> More industry diversity than SF. Engineers can engage with finance, media, consulting, and tech industries in the same week, which suits some career interests and not others. NYC's general cultural density produces different work-life patterns than SF's tech-dominant geography.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Other Major Hubs at a Glance</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Seattle:</strong> Microsoft's growing FDE-equivalent function, AWS Solutions Architecture teams (FDE-adjacent), AI lab satellite offices, and enterprise SaaS FDE teams. Compensation 5-10% below SF and NYC. Strong talent pool from local big tech but smaller AI startup ecosystem. Customer travel often Pacific Northwest and West Coast focused.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Austin:</strong> Salesforce, Indeed, Atlassian, and growing AI startup presence. OpenAI has an Austin office. Compensation 10-15% below SF, with significantly lower cost of living producing strong real income. Customer geography mixed with both Texas-based customers and broader US enterprise travel. Local AI scene growing but smaller than SF or NYC.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">London:</strong> OpenAI London, Anthropic London, Cohere London, plus European enterprise customer work. Compensation 20-30% below SF in raw dollars, with offsetting cost-of-living differences making real comp roughly comparable to second-tier US markets. Visa and work authorization questions matter more for international engineers considering London moves.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Toronto:</strong> Cohere HQ, Shopify, ML-research-heavy local talent pool, growing enterprise FDE customer base. Compensation typically 25-35% below SF in dollars, but Canadian healthcare and lower cost of living narrow the gap meaningfully. Strong AI research culture from University of Toronto and Vector Institute alumni.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Boston:</strong> Pharma, life sciences, biotech FDE work. AI lab presence growing (Anthropic and OpenAI both have Boston engineers). Compensation 5-15% below SF. Cambridge concentration produces strong technical talent pool. Customer travel often within northeast corridor.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Singapore:</strong> Asia-Pacific FDE hub for OpenAI, Anthropic, and enterprise SaaS companies expanding into APAC. Compensation lands at Singapore tech-industry rates, typically 30-40% below SF in dollars but with offsetting tax advantages. Customer geography covers Southeast Asia and increasingly North Asia. Strong English-speaking technical talent pool.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Remote FDE Hiring in 2026</h2>
+                <p style="margin-bottom: 1.25rem;">Roughly 25% of FDE postings in 2026 explicitly support remote work, with another 15% supporting hybrid arrangements that allow significant remote time. The remote FDE pattern varies meaningfully by company. AI labs increasingly support remote senior FDE hires while preferring in-office mid-level hires. Enterprise SaaS companies often offer fully remote roles tied to specific time zones. Startups vary widely with no consistent pattern.</p>
+
+<p style="margin-bottom: 1.25rem;">Compensation for remote roles typically matches in-office compensation at AI labs (which has been a competitive advantage for AI labs recruiting). Enterprise SaaS companies sometimes discount remote compensation 5-10% relative to in-office equivalents, though this practice is becoming less common as remote work has normalized. Engineers negotiating remote FDE offers should explicitly ask about location-based compensation policies before accepting.</p>
+
+<p style="margin-bottom: 1.25rem;">The trade-off for remote FDEs is travel intensity. Companies hiring remote FDEs typically expect more customer-onsite travel to compensate for less in-office presence. A remote FDE might travel 40-50% for customer visits versus a 25-35% travel expectation for in-office FDEs. Engineers considering remote roles should evaluate the total travel burden rather than just the location flexibility.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What This Means for Job Search</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">If you're location-flexible:</strong> San Francisco offers the most opportunities and the highest compensation, with the trade-off of intense competition and Bay Area cost of living. New York offers comparable comp with different cultural texture. London, Toronto, and Singapore offer international experience at compensation that's competitive locally but lower in dollar terms than US markets.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">If you're tied to a specific location:</strong> Check whether your city has 5+ active FDE postings before concluding the local market supports the move. Smaller markets (Denver, Portland, Atlanta, smaller European cities) may have 1-3 FDE roles open at any given moment, which means your timing matters enormously. Remote-friendly companies expand your options significantly if your city isn't a major FDE hub.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">If you're considering relocation:</strong> Move to where the customers are, not just where the companies are. An FDE based in San Francisco who serves financial services customers will spend most of their time on flights to New York. An FDE based in New York serving the same customers spends evenings at home. The customer geography decision compounds over years.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">International candidates targeting US FDE roles:</strong> Visa sponsorship is available at most major US-based AI labs for senior FDE candidates. The process typically takes 3-6 months and may delay start dates. Engineers should raise visa requirements in early recruiter conversations to avoid pursuing roles where sponsorship isn't supported. London, Dublin, Singapore, and Toronto offer alternatives for international engineers who can't or don't want to navigate US visa processes.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Which city has the best FDE compensation when adjusted for cost of living?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Austin and Toronto produce the best real-dollar outcomes after cost-of-living adjustment for engineers willing to work outside the top US markets. Austin's combination of competitive nominal comp and lower housing costs produces strong real income. Toronto's Canadian healthcare benefits and lower housing costs offset the nominal compensation gap versus SF. Singapore is competitive after tax considerations. The headline comp in SF is highest, but real-income comparisons across markets favor secondary hubs more than candidates typically expect.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is the SF Bay Area still worth it for FDE careers in 2026?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">For most engineers focused on AI-company FDE careers, yes. The concentration of AI labs, the volume of competing opportunities, and the depth of AI-industry conversation all compound through your career. The trade-off is cost of living and the specific cultural intensity of the Bay Area tech industry. Engineers who can tolerate (or enjoy) the Bay Area pattern typically do better long-term than engineers who could move to SF but stay in lower-opportunity markets. Engineers who actively dislike the Bay Area culture should optimize for other markets even at modest comp cost.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does FDE travel work for remote engineers?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Patterns vary by employer and engagement. Most remote FDEs travel 30-50% for customer onsite work, quarterly team gatherings, and conferences. Some senior remote FDEs negotiate travel maximums (no more than X trips per quarter) into their offers. Travel logistics (corporate credit cards, lodging policies, time-zone management for international customer work) require explicit conversations during offer negotiation; assumptions often don't match reality.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Are there fully-remote FDE roles for engineers who don't want to travel?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Few. Most FDE roles involve some travel because customer engineering teams expect occasional in-person collaboration during critical deployment phases. Engineers who refuse travel entirely should look at adjacent roles (Solutions Engineer, Product Engineer, Customer Engineering for cloud-only deployments) rather than pure FDE roles. The travel expectation is structurally tied to the role's customer-facing nature.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Will FDE hiring continue concentrating in the same cities through 2027?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Most signals suggest yes. AI lab geography concentrates engineering investment in SF, NYC, London, and a few other hubs. Enterprise customer geography concentrates FDE customer work in major business centers. The forces driving concentration (AI lab gravity, enterprise customer density, cultural concentration of technical talent) all reinforce existing patterns. Some growth in secondary markets is likely, but the top hubs will remain dominant through at least 2027.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-solutions-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Solutions Engineer</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-software-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Software Engineer</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Top Companies Hiring FDEs</a></li>
+<li><a href="/career/how-to-become-a-forward-deployed-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">How to Become an FDE</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

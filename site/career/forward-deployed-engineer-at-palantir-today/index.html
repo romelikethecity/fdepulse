@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer at Palantir Today: | FDE Pulse</title>
+    <meta name="description" content="Palantir's FDE role 22 years in. What FDE work looks like at Palantir in 2026, how it differs from AI lab FDE roles, and why Palantir alumni are in demand.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/career/forward-deployed-engineer-at-palantir-today/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/career/forward-deployed-engineer-at-palantir-today/">
+    <meta property="og:title" content="Forward Deployed Engineer at Palantir Today: | FDE Pulse">
+    <meta property="og:description" content="Palantir's FDE role 22 years in. What FDE work looks like at Palantir in 2026, how it differs from AI lab FDE roles, and why Palantir alumni are in demand.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer at Palantir Today: | FDE Pulse">
+    <meta name="twitter:description" content="Palantir's FDE role 22 years in. What FDE work looks like at Palantir in 2026, how it differs from AI lab FDE roles, and why Palantir alumni are in demand.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does Palantir's FDSE new-grad program work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FDSE (Forward Deployed Software Engineer) is Palantir's entry-level FDE track. New grads enter the program through a structured onboarding period (typically 4-8 weeks) covering Palantir's platforms, customer-engineering practices, and team norms. Engineers then deploy on customer engagements with senior-FDE mentorship. The program is selective; offer yield rates at Palantir are high partly because the program's reputation attracts candidates who specifically want this career path."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do all Palantir FDEs need security clearances?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. FDEs working on commercial engagements (Foundry deployments at non-government customers) don't typically need clearances. FDEs working with defense or intelligence customers need clearances, with the level varying by customer. Palantir typically sponsors clearance processes for engineers entering classified engagements. Engineers with existing clearances command modest compensation premiums for the recruiting value the clearance provides."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long do Palantir FDEs typically stay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Average tenure has historically been 3-5 years before engineers move to other companies or other roles within Palantir. The current AI lab hiring market may shorten this average as Palantir alumni are aggressively recruited at significant compensation premiums. Engineers who stay 5+ years often move into FDE leadership tracks (Lead FDE, Principal FDE, Head of FDE) within Palantir or into engineering leadership roles in other functions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Palantir AIP changing what FDEs work on?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. AIP (Palantir's AI Platform) has shifted FDE engagements toward more AI integration work over 2024-2026. Engineers deploying Foundry now frequently also deploy AIP capabilities into the same customer environments. This shift makes Palantir FDEs more directly comparable to AI lab FDEs than they were 2-3 years ago, which is part of why AI labs are aggressively recruiting from Palantir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the work-life balance like at Palantir FDE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Variable by engagement phase. Active deployment phases can be intense (50-60 hour weeks, travel demands, on-call expectations for production-deployed customer systems). Steady-state phases between major deployments are more sustainable. The cultural expectation is that FDEs prioritize customer success during critical engagement phases and recover during quieter periods. Engineers expecting consistent 40-hour weeks throughout the year typically find Palantir FDE work hard to sustain."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Career",
+      "item": "https://fdepulse.com/career/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Forward Deployed Engineer at Palantir Today: The Original Role in 2026",
+      "item": "https://fdepulse.com/career/forward-deployed-engineer-at-palantir-today/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Forward Deployed Engineer at Palantir Today: The Original Role in 2026", "description": "Palantir's FDE role 22 years in. What FDE work looks like at Palantir in 2026, how it differs from AI lab FDE roles, and why Palantir alumni are in demand.", "url": "https://fdepulse.com/career/forward-deployed-engineer-at-palantir-today/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/career/forward-deployed-engineer-at-palantir-today/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer at Palantir Today: The Original Role in 2026</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Palantir Created the FDE Role</h2>
+                <p style="margin-bottom: 1.25rem;">Palantir originated the Forward Deployed Engineer role in 2003-2005, embedding engineers directly with customers to build custom solutions on Palantir's data platforms. The pattern that's now standard across AI labs and enterprise SaaS, where technical operators live inside customer environments deploying software into specific operational realities, was Palantir's invention. Two decades later, Palantir's FDE program remains one of the most distinctive technical career paths in the industry.</p>
+
+<p style="margin-bottom: 1.25rem;">In 2026, Palantir's FDE function has matured into multiple specialized tracks. Forward Deployed Software Engineer (FDSE) is the entry-level engineering track, often hiring new grads and engineers with 1-3 years of experience. Forward Deployed Engineer is the mid-level role typically requiring 3-8 years of experience. Lead and Principal FDE roles handle the most complex customer engagements and team-level technical leadership. The career ladder has clearer rungs than at most companies that have added FDE functions more recently.</p>
+
+<p style="margin-bottom: 1.25rem;">Palantir's customer base spans defense, intelligence, healthcare, financial services, energy, and manufacturing. FDE engagements involve deploying Foundry (the data integration platform), Gotham (the intelligence-focused platform), and increasingly AIP (the AI Platform) into customer environments with significant security, compliance, and operational complexity. The work is technically demanding and frequently classified or otherwise sensitive, which shapes both the day-to-day experience and the long-term career arc.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDE Work Actually Looks Like in 2026</h2>
+                <p style="margin-bottom: 1.25rem;">A typical Palantir FDE engagement involves multi-month deployment cycles where the engineer becomes embedded with the customer team. Customer environments range from defense agency offices requiring on-site work in SCIFs (Sensitive Compartmented Information Facilities) to commercial customer offices in major cities to fully remote engagements for less-sensitive deployments. The travel intensity varies by customer profile: defense FDEs travel less but live in specific customer locations; commercial FDEs travel 30-60% to multiple customer sites.</p>
+
+<p style="margin-bottom: 1.25rem;">The technical scope at Palantir is broader than at most AI labs. FDEs work across the full data pipeline: ingestion from customer source systems, transformation in Foundry, modeling for analytics and decision support, application building (often using Palantir's Workshop or similar tooling), and increasingly AI/ML deployment through AIP. Engineers shift between data engineering, application development, and now AI integration depending on customer needs. The breadth of technical work is one reason Palantir alumni are sought after; the role builds T-shaped engineers.</p>
+
+<p style="margin-bottom: 1.25rem;">The customer-facing scope is also broader. Palantir FDEs work directly with customer executives, operational leaders, and end users. The same engineer might brief a customer CTO in the morning, write production code in the afternoon, and train customer analysts on the deployed system in the evening. This multi-modal work pattern doesn't suit everyone; engineers who prefer pure technical depth often find the stakeholder breadth exhausting. Engineers who get energy from the variety usually thrive in the Palantir model.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation at Palantir in 2026</h2>
+                <p style="margin-bottom: 1.25rem;">Palantir compensation has shifted with the company's public market trajectory since the 2020 direct listing. Mid-level FDE total comp runs $200K-$280K. Senior FDE total comp runs $290K-$400K. Staff FDE total comp runs $400K-$580K. Principal and Lead FDE roles at the most senior levels can exceed $600K total comp.</p>
+
+<p style="margin-bottom: 1.25rem;">The compensation mix at Palantir is roughly 55-65% base salary, 10-15% bonus, and 25-35% equity through public-company RSUs. The equity component is more liquid than at private AI labs (you can sell public stock after vest), but the upside is smaller than at high-growth private companies where valuations compound through funding rounds. Engineers optimizing for guaranteed compensation and liquidity often prefer Palantir's package structure; engineers optimizing for variance and upside often prefer AI labs.</p>
+
+<p style="margin-bottom: 1.25rem;">The compensation gap between Palantir and the top AI labs at the senior level is meaningful: typically $80K-$150K in annual total comp. The gap reflects both the equity structure differences and the fact that Palantir's public-company status caps some of the equity-driven upside that private labs offer. Some engineers accept the lower comp at Palantir in exchange for the work breadth, security clearance opportunities, and the prestige of Palantir's FDE program. Others move to AI labs specifically for the compensation premium.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Why Palantir Alumni Are in Demand</h2>
+                <p style="margin-bottom: 1.25rem;">Palantir's FDE program produces a distinctive engineer profile. Multi-year engagements teach deep customer-engineering skills that short-cycle work doesn't develop. Cross-functional scope produces engineers comfortable in technical, operational, and stakeholder-management contexts. Security clearance work (for FDEs in defense and intelligence engagements) produces engineers with credentials that few other companies can replicate.</p>
+
+<p style="margin-bottom: 1.25rem;">The result is that Palantir alumni are heavily recruited across the industry. AI labs (OpenAI, Anthropic, Scale AI) actively pursue former Palantir FDEs because the customer-engineering instincts transfer directly. Enterprise SaaS companies building FDE teams from scratch hire Palantir alumni to seed the new function. AI-focused startups recruit Palantir alumni as founding engineers or technical leaders. The premium on Palantir alumni in the 2026 hiring market is one of the most consistent signals in the FDE recruiting space.</p>
+
+<p style="margin-bottom: 1.25rem;">The trajectory from Palantir FDE to other senior roles typically follows three patterns. First, lateral moves to AI lab FDE teams at 30-50% compensation lifts. Second, moves to enterprise SaaS companies as VP of Customer Engineering, Head of Forward Deployed, or similar leadership roles. Third, moves into founding teams of AI-focused startups where Palantir's playbook for customer-deployed engineering work translates directly into the product. Each path has its own appeal and drawbacks; the existence of all three is what makes Palantir FDE such a desirable resume line.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Should You Start Your Career at Palantir?</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Pros:</strong> Palantir's FDSE new-grad program is one of the best entry points into the broader FDE career path. The training, the breadth of technical work, the customer exposure, and the alumni network are unmatched for new-grad engineers who want to build a career in customer-deployed engineering. The compensation isn't AI-lab tier but it's competitive with traditional tech new-grad offers and the career trajectory afterward justifies the early-career investment.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Cons:</strong> Palantir's culture is intense and not universally appealing. Long hours during customer deployments are common. Travel and on-site requirements at sensitive customer locations don't suit everyone. The mission-oriented framing (Palantir works heavily with defense and intelligence customers) creates ethical and personal-fit questions that some candidates struggle with. Engineers who get energy from working on what Palantir works on tend to thrive; engineers who don't tend to leave within 2-3 years.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">The right framing:</strong> Palantir is one of the highest-velocity skill development environments in the industry, with a clear path to senior FDE roles across the broader industry afterward. If you're early-career and considering the FDE path, Palantir is worth serious evaluation. If the mission focus or the cultural intensity is a real concern, AI lab FDE roles or enterprise SaaS FDE roles offer adjacent skill development at lower personal cost. The decision should be made on cultural fit and mission alignment, not just compensation comparison.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does Palantir's FDSE new-grad program work?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">FDSE (Forward Deployed Software Engineer) is Palantir's entry-level FDE track. New grads enter the program through a structured onboarding period (typically 4-8 weeks) covering Palantir's platforms, customer-engineering practices, and team norms. Engineers then deploy on customer engagements with senior-FDE mentorship. The program is selective; offer yield rates at Palantir are high partly because the program's reputation attracts candidates who specifically want this career path.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do all Palantir FDEs need security clearances?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">No. FDEs working on commercial engagements (Foundry deployments at non-government customers) don't typically need clearances. FDEs working with defense or intelligence customers need clearances, with the level varying by customer. Palantir typically sponsors clearance processes for engineers entering classified engagements. Engineers with existing clearances command modest compensation premiums for the recruiting value the clearance provides.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How long do Palantir FDEs typically stay?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Average tenure has historically been 3-5 years before engineers move to other companies or other roles within Palantir. The current AI lab hiring market may shorten this average as Palantir alumni are aggressively recruited at significant compensation premiums. Engineers who stay 5+ years often move into FDE leadership tracks (Lead FDE, Principal FDE, Head of FDE) within Palantir or into engineering leadership roles in other functions.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Is Palantir AIP changing what FDEs work on?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes. AIP (Palantir's AI Platform) has shifted FDE engagements toward more AI integration work over 2024-2026. Engineers deploying Foundry now frequently also deploy AIP capabilities into the same customer environments. This shift makes Palantir FDEs more directly comparable to AI lab FDEs than they were 2-3 years ago, which is part of why AI labs are aggressively recruiting from Palantir.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the work-life balance like at Palantir FDE?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Variable by engagement phase. Active deployment phases can be intense (50-60 hour weeks, travel demands, on-call expectations for production-deployed customer systems). Steady-state phases between major deployments are more sustainable. The cultural expectation is that FDEs prioritize customer success during critical engagement phases and recover during quieter periods. Engineers expecting consistent 40-hour weeks throughout the year typically find Palantir FDE work hard to sustain.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/forward-deployed-engineer-levels/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Levels</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

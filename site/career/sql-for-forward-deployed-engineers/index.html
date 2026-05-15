@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Skills for Forward Deployed Engineers: | FDE Pulse</title>
+    <meta name="description" content="SQL skills FDEs actually use in 2026. Customer data analysis, warehouse joins, performance optimization, common patterns, and what to learn versus what to skip.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/career/sql-for-forward-deployed-engineers/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/career/sql-for-forward-deployed-engineers/">
+    <meta property="og:title" content="SQL Skills for Forward Deployed Engineers: | FDE Pulse">
+    <meta property="og:description" content="SQL skills FDEs actually use in 2026. Customer data analysis, warehouse joins, performance optimization, common patterns, and what to learn versus what to skip.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SQL Skills for Forward Deployed Engineers: | FDE Pulse">
+    <meta name="twitter:description" content="SQL skills FDEs actually use in 2026. Customer data analysis, warehouse joins, performance optimization, common patterns, and what to learn versus what to skip.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the most efficient way to learn SQL for FDE work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Build something real. Set up a Postgres database locally, load a public dataset (data.gov, Kaggle, GitHub data via the GitHub API), and write 20-30 analytical queries against it. Real practice on real data builds the muscle memory and pattern recognition that textbooks don't. Then practice in different dialects (try the same dataset in BigQuery and Snowflake free tiers) to develop dialect flexibility."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much SQL performance tuning do FDEs need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enough to recognize when a query has performance problems and to fix common issues yourself. You don't need to be a DBA-level query optimization expert. The bar: read EXPLAIN output, identify obviously bad query plans, know when to add indexes versus restructure queries, understand the difference between sequential scans and index scans. Customer DBAs handle the deep tuning; FDEs handle the surface-level optimization work that comes up in normal engagement flow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I learn SQL or NoSQL for customer environments?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both, with SQL as the priority. Most customer data lives in relational databases; SQL is the universal access language. NoSQL skills (MongoDB, DynamoDB, key-value stores) come up in specific customer environments and are worth knowing but represent a smaller share of FDE work than SQL. If you only have time for one, SQL first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do FDEs handle SQL in production customer environments safely?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Several practices. First, always test queries on a development or staging environment before running against production. Second, use read-only connections when possible to prevent accidental writes. Third, add LIMIT clauses to test queries that could otherwise return huge result sets. Fourth, when modifying data, wrap in transactions and verify the row count before committing. Fifth, follow the customer's change-management process for any production-affecting work. Skipping these practices is how FDEs accidentally break customer systems."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What about dbt for FDEs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "dbt (data build tool) is the dominant transformation layer for modern data stacks. FDEs working with data-mature customers will encounter dbt projects regularly. Skills worth having: read dbt model definitions and lineage, understand dbt macros and how to write them, navigate dbt project structure, run dbt tests against customer data. You don't need to be a dbt expert to be an effective FDE, but dbt fluency comes up enough that the investment pays off for engineers working with modern data customers."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Career",
+      "item": "https://fdepulse.com/career/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "SQL Skills for Forward Deployed Engineers: What You Need",
+      "item": "https://fdepulse.com/career/sql-for-forward-deployed-engineers/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "SQL Skills for Forward Deployed Engineers: What You Need", "description": "SQL skills FDEs actually use in 2026. Customer data analysis, warehouse joins, performance optimization, common patterns, and what to learn versus what to skip.", "url": "https://fdepulse.com/career/sql-for-forward-deployed-engineers/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/career/sql-for-forward-deployed-engineers/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">SQL Skills for Forward Deployed Engineers: What You Need</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Why SQL Is the Quiet Second Skill After Python</h2>
+                <p style="margin-bottom: 1.25rem;">SQL appears in 65% of Forward Deployed Engineer job postings, second only to Python at 78%. The frequency understates the actual importance. Most FDE engagements involve significant customer data work: understanding existing data schemas, extracting test datasets for evaluation, joining data across customer systems, performance-tuning queries that customer teams will own after the engagement, and validating data quality in production environments. Most of this work happens in SQL.</p>
+
+<p style="margin-bottom: 1.25rem;">The SQL fluency FDEs need is different from data engineering SQL or analyst SQL. FDEs typically work in unfamiliar customer schemas with limited documentation, against databases they didn't design, in production environments where queries can affect customer operations. The skills that matter are different from the SQL skills emphasized in academic settings or in pure analytics roles.</p>
+
+<p style="margin-bottom: 1.25rem;">This guide covers what FDEs actually need in customer engagements: practical query patterns, performance considerations, customer-database navigation skills, and the specific dialects worth knowing depth on. The framing is "what produces good outcomes in real customer work" rather than "what shows up in interview questions."</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Core SQL Patterns Every FDE Should Know Cold</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Multi-table joins with appropriate join type selection.</strong> Customer schemas usually involve 5-15 tables related through foreign keys, and most queries require joining 3-7 of them. The skill is recognizing when to use INNER JOIN (only rows with matches in both tables), LEFT JOIN (all rows from left table plus matching right rows, NULL where no match), or FULL OUTER JOIN (all rows from both). Wrong join type produces wrong answers silently, which is the worst kind of bug.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Window functions for time-series and ranking patterns.</strong> ROW_NUMBER(), RANK(), DENSE_RANK(), LAG(), LEAD(), and aggregate functions over windows (SUM, AVG, COUNT) are essential for the analytical queries customer engagements typically require. Use case examples: deduplicate records keeping the most recent (ROW_NUMBER OVER PARTITION BY), compute running totals (SUM OVER ORDER BY), find top-N per group (RANK OVER PARTITION BY). Window functions distinguish FDE-grade SQL from basic SQL.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Common Table Expressions (CTEs) for readable complex queries.</strong> CTEs let you build complex queries as a sequence of named sub-queries rather than nested subqueries. A 200-line query expressed as 8 named CTEs is meaningfully more maintainable than the same query expressed as 5 levels of nested SELECT statements. Customer engineering teams will inherit your SQL after the engagement ends; CTE-structured queries get adopted and extended; nested-subquery queries get rewritten or replaced.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Aggregation with GROUP BY and HAVING.</strong> Basic aggregation appears in nearly every FDE query: count records by category, sum values by group, average metrics over time periods. HAVING filters aggregated results (versus WHERE which filters before aggregation). Confusion between WHERE and HAVING is one of the most common SQL mistakes; understanding when to use which is foundational.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Date and time functions across dialects.</strong> Different databases have different date functions (DATE_TRUNC in Postgres and Snowflake, TIMESTAMP_TRUNC in BigQuery, DATEADD in SQL Server). FDEs work in whatever dialect the customer uses, so flexibility across dialects matters more than depth in any single one. Common operations: truncate to month, add days, compute date differences, parse strings to dates, format dates as strings.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">CASE expressions for conditional logic.</strong> CASE WHEN ... THEN ... ELSE ... END is SQL's if-then-else. It appears in nearly every customer-engagement query for categorization, conditional aggregation, and data cleanup. Master nested CASE expressions and CASE with multiple conditions; they're how you express business logic in SQL.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Patterns That Distinguish Senior FDE SQL</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Query performance analysis using EXPLAIN.</strong> EXPLAIN (or EXPLAIN ANALYZE) shows the query plan the database will use. Senior FDEs read query plans to identify performance issues: sequential scans on large tables that should be index scans, hash joins that should be nested loop joins (or vice versa), expensive sorts that could be avoided. Reading query plans isn't intuitive at first, but it's the difference between SQL that runs in 100ms and SQL that runs in 10 minutes.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Index design and selection.</strong> Knowing which indexes exist on a table, which columns are indexed together (composite indexes), and which queries can use which indexes lets you write SQL that uses existing indexes efficiently or recommend new indexes to customer DBAs. Customer schemas often have indexes that aren't documented; understanding how to inspect them via the database catalog is a basic FDE skill.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Set operations: UNION, INTERSECT, EXCEPT.</strong> Less commonly used than joins but essential for specific patterns: combining results from similar queries (UNION), finding records present in both queries (INTERSECT), finding records in one query but not another (EXCEPT). Use cases: comparing customer data snapshots from two points in time, finding records that exist in one system but not another, building lookup tables from multiple sources.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Recursive CTEs for hierarchical data.</strong> WITH RECURSIVE handles tree-structured data: organizational hierarchies, comment threads, category trees, dependency graphs. Customer schemas with parent-child relationships almost always require recursive queries at some point. The pattern is harder than basic CTEs but worth knowing because nothing else in SQL handles tree traversal cleanly.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">JSON operations in modern dialects.</strong> Postgres, BigQuery, Snowflake, and most modern databases have JSON support that lets you query nested data structures within rows. Customer schemas increasingly include JSON columns for semi-structured data. Patterns: extract values from JSON, flatten arrays, filter by JSON properties, aggregate over JSON contents. The exact syntax varies across dialects, but the conceptual operations are similar.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Stored procedures and user-defined functions.</strong> Most FDE work doesn't require writing stored procedures, but understanding how to read existing customer stored procedures matters when you're navigating unfamiliar codebases. Customer systems often encapsulate business logic in stored procedures that the FDE needs to understand before designing changes.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Database Dialect Differences That Trip FDEs</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Postgres:</strong> The default for many modern applications and increasingly the default for analytics workloads. Strong JSON support, mature window functions, good performance for mid-scale analytics. FDEs working with Postgres customer environments have it easy: extensive documentation, predictable behavior, manageable performance characteristics.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">MySQL:</strong> Common in older customer applications. Weaker analytics features than Postgres, less consistent SQL standard compliance, but ubiquitous enough that FDEs encounter it regularly. Watch for: case sensitivity differences from Postgres, slightly different date function syntax, weaker CTE support in older versions, transaction isolation quirks.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">SQL Server:</strong> Common in enterprise customer environments. Strong analytics features including window functions and CTEs. Distinctive syntax for some operations (TOP versus LIMIT, GETDATE() versus CURRENT_TIMESTAMP, T-SQL extensions for procedural code). FDEs working with enterprise customers should have basic SQL Server fluency.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Snowflake:</strong> The dominant cloud data warehouse for customer analytics workloads. Excellent performance, strong window functions, native JSON support, distinctive features for time-travel queries and zero-copy cloning. FDE work with data-mature customers almost always involves Snowflake. Specific patterns worth knowing: VARIANT columns for semi-structured data, FLATTEN for unnesting arrays, time-travel syntax for historical queries.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">BigQuery:</strong> The dominant cloud data warehouse for Google-centric customer stacks. Distinctive syntax (STRUCT and ARRAY types, project.dataset.table naming, EXTRACT for date parts). Performance characteristics very different from row-oriented databases: full table scans on partitioned data are normal, indexes aren't user-controlled, cost is measured in bytes scanned per query.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Databricks SQL:</strong> Increasingly common in AI-focused customer environments. Based on Spark SQL with extensions. Similar conceptually to Snowflake and BigQuery but with specific patterns for handling Delta Lake tables and incremental processing. FDEs working with AI customer deployments often encounter Databricks alongside or instead of traditional warehouses.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">How to Operate in Unfamiliar Customer Schemas</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 1: Find the schema documentation.</strong> Customer databases sometimes have documentation; usually it's incomplete or outdated. Start by asking the customer team for any existing schema documentation, ER diagrams, or data dictionaries. Treat this as a starting point, not ground truth.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 2: Inspect the database catalog.</strong> Most databases have system tables that describe their own schema (INFORMATION_SCHEMA in standard SQL, pg_catalog in Postgres, sys tables in SQL Server). Query these to list tables, columns, data types, primary keys, foreign keys, and indexes. This gives you the actual schema as it exists, which often differs from documentation.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 3: Sample the data.</strong> Run SELECT * FROM each_table LIMIT 100 to see real data. Look for column-naming patterns, value distributions, obvious foreign keys (table_id columns), and data quality issues. Sampling reveals what the documentation usually doesn't: which columns are actually populated, which contain garbage, which represent the same concept under different names.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 4: Map relationships through sample joins.</strong> If you suspect two tables are related but the relationship isn't explicit in foreign keys, write a test query that joins them and check whether the result counts make sense. Cardinality checks (1-to-1, 1-to-many, many-to-many) reveal the structure even when documentation doesn't.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Step 5: Validate assumptions with the customer team.</strong> Once you have a working understanding of the schema, write it up and ask the customer engineering team to validate. Surface specific questions: "I'm assuming customer_id in this table maps to id in the customers table, is that right?" Customers often appreciate the structured questions because they reveal where their own documentation has gaps.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What's the most efficient way to learn SQL for FDE work?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Build something real. Set up a Postgres database locally, load a public dataset (data.gov, Kaggle, GitHub data via the GitHub API), and write 20-30 analytical queries against it. Real practice on real data builds the muscle memory and pattern recognition that textbooks don't. Then practice in different dialects (try the same dataset in BigQuery and Snowflake free tiers) to develop dialect flexibility.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How much SQL performance tuning do FDEs need?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Enough to recognize when a query has performance problems and to fix common issues yourself. You don't need to be a DBA-level query optimization expert. The bar: read EXPLAIN output, identify obviously bad query plans, know when to add indexes versus restructure queries, understand the difference between sequential scans and index scans. Customer DBAs handle the deep tuning; FDEs handle the surface-level optimization work that comes up in normal engagement flow.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Should I learn SQL or NoSQL for customer environments?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Both, with SQL as the priority. Most customer data lives in relational databases; SQL is the universal access language. NoSQL skills (MongoDB, DynamoDB, key-value stores) come up in specific customer environments and are worth knowing but represent a smaller share of FDE work than SQL. If you only have time for one, SQL first.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How do FDEs handle SQL in production customer environments safely?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Several practices. First, always test queries on a development or staging environment before running against production. Second, use read-only connections when possible to prevent accidental writes. Third, add LIMIT clauses to test queries that could otherwise return huge result sets. Fourth, when modifying data, wrap in transactions and verify the row count before committing. Fifth, follow the customer's change-management process for any production-affecting work. Skipping these practices is how FDEs accidentally break customer systems.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What about dbt for FDEs?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">dbt (data build tool) is the dominant transformation layer for modern data stacks. FDEs working with data-mature customers will encounter dbt projects regularly. Skills worth having: read dbt model definitions and lineage, understand dbt macros and how to write them, navigate dbt project structure, run dbt tests against customer data. You don't need to be a dbt expert to be an effective FDE, but dbt fluency comes up enough that the investment pays off for engineers working with modern data customers.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/forward-deployed-engineer-levels/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Levels</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer at Anthropic: | FDE Pulse</title>
+    <meta name="description" content="What FDE work looks like at Anthropic in 2026. Customer deployments, technical scope, compensation, hiring profile, and how the role differs from OpenAI.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/career/forward-deployed-engineer-at-anthropic/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/career/forward-deployed-engineer-at-anthropic/">
+    <meta property="og:title" content="Forward Deployed Engineer at Anthropic: | FDE Pulse">
+    <meta property="og:description" content="What FDE work looks like at Anthropic in 2026. Customer deployments, technical scope, compensation, hiring profile, and how the role differs from OpenAI.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer at Anthropic: | FDE Pulse">
+    <meta name="twitter:description" content="What FDE work looks like at Anthropic in 2026. Customer deployments, technical scope, compensation, hiring profile, and how the role differs from OpenAI.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Anthropic hire remote FDEs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anthropic's FDE hiring leans toward hybrid in San Francisco or New York, with some fully remote positions for senior or specialized hires. Customer-site travel is part of most FDE roles, with typical travel 20-35% of work time. Fully remote candidates should expect quarterly team gatherings and customer onsite work in major cities."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Anthropic evaluate candidates without LLM production experience?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anthropic considers candidates without LLM production experience but the bar is higher on demonstrating ability to build evaluation and safety infrastructure for new technology domains. Candidates without LLM backgrounds need clear evidence of having shipped production systems that include rigorous evaluation pipelines. The interview will probe how candidates think about measuring system behavior, detecting failures, and designing for safety in unfamiliar technical domains."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does day-to-day FDE work look like at Anthropic?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Roughly: 25-35% direct customer engagement (working with customer engineering teams on integration, prompt iteration, eval framework setup), 25-35% internal engineering on tooling and reference implementations, 15-25% customer travel for onsite deployments, 10-15% internal coordination (architecture reviews, safety reviews, customer success collaboration), and 5-10% on safety and evaluation work that benefits multiple customers. The mix varies by engagement phase."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How sustainable is Anthropic FDE work for long-term careers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anthropic's longer engagement model reduces some of the burnout drivers that affect FDE roles at faster-moving companies. The deeper customer relationships and slower context-switching pace make multi-year careers more viable. Engineers who succeed long-term at Anthropic typically rotate between customer-facing FDE work and internal projects (tooling, evaluation infrastructure, safety research engineering) to maintain variety without leaving the FDE function."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I move between Anthropic and OpenAI as an FDE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and several engineers have. The skill set is highly transferable: prompt engineering, RAG architecture, evaluation framework design, and customer-facing engineering all map directly between the two companies. The cultural adjustment is real but manageable. Engineers who switch typically cite specific reasons (preference for engagement model, team size, or cultural fit) rather than compensation, since the comp difference is modest."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Career",
+      "item": "https://fdepulse.com/career/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Forward Deployed Engineer at Anthropic: Inside the Role",
+      "item": "https://fdepulse.com/career/forward-deployed-engineer-at-anthropic/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Forward Deployed Engineer at Anthropic: Inside the Role", "description": "What FDE work looks like at Anthropic in 2026. Customer deployments, technical scope, compensation, hiring profile, and how the role differs from OpenAI.", "url": "https://fdepulse.com/career/forward-deployed-engineer-at-anthropic/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/career/forward-deployed-engineer-at-anthropic/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">Forward Deployed Engineer at Anthropic: Inside the Role</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">What FDEs Do at Anthropic</h2>
+                <p style="margin-bottom: 1.25rem;">Anthropic's Forward Deployed Engineering team works with enterprise customers to deploy Claude into production environments. The role spans technical implementation, prompt engineering, evaluation framework development, and customer engineering team enablement. FDEs typically own customer engagements end-to-end, from initial discovery through production deployment and ongoing optimization, with engagement durations frequently running 6-12 months on a single customer.</p>
+
+<p style="margin-bottom: 1.25rem;">A typical Anthropic customer engagement starts with discovery work mapping the customer's use case, data flows, and existing systems. The FDE designs a deployment architecture that integrates Claude with customer-specific data sources, governance requirements, and operational tools. Implementation work includes RAG architecture design, prompt engineering, eval framework setup, and customer engineering team training. The engagement continues through production rollout and into ongoing optimization as both customer use cases evolve and Claude capabilities advance.</p>
+
+<p style="margin-bottom: 1.25rem;">Anthropic's FDE work emphasizes safety and evaluation infrastructure more than other AI labs. Every customer deployment includes substantial work on output evaluation, failure mode analysis, and monitoring for unintended behaviors. The cultural emphasis on alignment and safety shapes how engagements are scoped and what success looks like. Customers buying into Anthropic's approach get this depth as part of the engagement rather than as an optional add-on.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Who Anthropic Hires for FDE Roles</h2>
+                <p style="margin-bottom: 1.25rem;">Anthropic's FDE hiring profile resembles OpenAI's at the top of the bar but skews slightly different in the soft skills weight. Strong senior engineering (5-10+ years), customer-facing technical experience (1-3+ years preferred), and LLM application fluency are all required. Anthropic also places more weight on safety mindset, evaluation discipline, and willingness to engage with long-cycle customer partnerships rather than fast-velocity short engagements.</p>
+
+<p style="margin-bottom: 1.25rem;">Candidate profiles that succeed at Anthropic: senior engineers with research-adjacent experience (ML engineering, applied research), former Palantir FDEs with the long-engagement instinct, consultants from Anthropic-adjacent firms (some of the boutique AI consultancies have produced strong Anthropic FDE candidates), and engineers from companies that emphasize evaluation discipline (Stripe, Datadog, Snowflake). The hiring bar weights "can you build evaluation infrastructure customers will trust" higher than other labs.</p>
+
+<p style="margin-bottom: 1.25rem;">What gets candidates rejected: candidates who optimize for speed-to-deployment without enough evaluation rigor, pure backend engineering backgrounds without applied AI work, candidates who can't articulate safety considerations in their proposed customer architectures, and candidates who treat the customer engagement as transactional rather than partnership-oriented. The Anthropic culture shows up in hiring filters more than candidates expect.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Compensation at Anthropic</h2>
+                <p style="margin-bottom: 1.25rem;">Anthropic FDE compensation lands at the top of the AI lab range, comparable to OpenAI within 5-10%. Mid-level FDE total comp runs $290K-$370K. Senior FDE total comp runs $420K-$570K. Staff FDE total comp runs $590K-$780K+. The package mix is roughly 35-45% base salary, 5-10% bonus or sign-on, and 50-60% equity through RSUs or equivalent instruments tied to recent funding valuations.</p>
+
+<p style="margin-bottom: 1.25rem;">Anthropic's equity has appreciated significantly through 2024-2026 as funding rounds have produced higher valuations. Engineers who joined in 2022-2023 with smaller initial grants have seen those grants compound through valuation lifts. New hires today get smaller equity grants in absolute share counts but at higher current valuations, so dollar-denominated comp stays competitive with the highest-paying tech roles in the market.</p>
+
+<p style="margin-bottom: 1.25rem;">The compensation gap between Anthropic and traditional enterprise SaaS for senior FDE roles is substantial: $100K-$200K in total comp per year at the senior level, with the gap widening at staff and principal levels. The premium reflects both the FDE category's general comp escalation and Anthropic's specific equity participation in a high-valuation private company.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Hiring Process at Anthropic</h2>
+                <p style="margin-bottom: 1.25rem;">Anthropic's FDE interview process runs 5-7 rounds over 3-5 weeks. The components: recruiter screen, technical phone interview, system design round, customer scenario interview, behavioral/values round, take-home or live-coding round, and hiring manager final. The process is more selective than most companies, with conversion rates from phone screen to offer typically under 5%.</p>
+
+<p style="margin-bottom: 1.25rem;">The system design round at Anthropic frequently focuses on evaluation and safety infrastructure rather than pure scalability. Expect questions like: design an evaluation framework for a customer deploying Claude in healthcare, design a monitoring system for detecting unintended outputs in production, design a multi-tenant fine-tuning pipeline with appropriate isolation guarantees. Candidates who default to traditional distributed-systems framing without addressing the AI-specific dimensions struggle.</p>
+
+<p style="margin-bottom: 1.25rem;">The values round is more substantive at Anthropic than at most companies. Interviewers probe candidate views on safety, on responsible deployment, on handling customer requests that conflict with usage policies, and on how candidates would approach engagements with customers operating in high-stakes domains (defense, healthcare, legal). The round isn't a hazing ritual; the answers shape hiring decisions. Candidates whose stated values don't match Anthropic's published positioning get filtered out regardless of technical strength.</p>
+
+<p style="margin-bottom: 1.25rem;">The customer scenario round mirrors OpenAI's in format but tilts toward longer-engagement framings. Expect scenarios that span 6-12 months of customer relationship rather than quick deployment work. Successful candidates demonstrate the patience and stakeholder-management instincts that long engagements require, not just the deployment speed that short engagements reward.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Anthropic vs OpenAI: The Real Differences</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Engagement depth and duration:</strong> Anthropic engagements average longer than OpenAI engagements. The cultural and operational pattern at Anthropic favors deep, multi-quarter partnerships with fewer customers. OpenAI's FDE team works with more customers in shorter engagement cycles. Engineers who prefer depth over variety lean Anthropic; engineers who prefer variety over depth lean OpenAI.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Team size and customer volume:</strong> OpenAI's FDE team is larger (200+ in 2026) and serves a broader customer base. Anthropic's FDE team is smaller (estimated 80-120 in 2026) and serves a more curated customer set. Both teams are growing, with OpenAI growing faster in absolute terms and Anthropic growing faster in proportional terms.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Safety and evaluation emphasis:</strong> Anthropic's culture infuses safety considerations into every customer engagement. OpenAI handles safety but with less explicit cultural weight in day-to-day FDE work. Engineers who get energy from working on alignment-adjacent problems often prefer Anthropic; engineers who want to focus more purely on shipping deployments often prefer OpenAI.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Customer mix:</strong> Both labs serve enterprise customers across industries. OpenAI tilts slightly toward consumer-facing AI applications and developer platform customers. Anthropic tilts slightly toward enterprise knowledge work, regulated industries, and customers prioritizing model behavior consistency. The lines aren't sharp, but the customer mix differences show up in the kinds of engagements each FDE team typically runs.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Compensation philosophy:</strong> Compensation is comparable between the two within 5-10%. Anthropic's equity instruments and OpenAI's PPUs both carry meaningful upside tied to private valuations. The marginal compensation difference is rarely the deciding factor for candidates choosing between the two; cultural and work-style fit dominates the decision.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Does Anthropic hire remote FDEs?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Anthropic's FDE hiring leans toward hybrid in San Francisco or New York, with some fully remote positions for senior or specialized hires. Customer-site travel is part of most FDE roles, with typical travel 20-35% of work time. Fully remote candidates should expect quarterly team gatherings and customer onsite work in major cities.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does Anthropic evaluate candidates without LLM production experience?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Anthropic considers candidates without LLM production experience but the bar is higher on demonstrating ability to build evaluation and safety infrastructure for new technology domains. Candidates without LLM backgrounds need clear evidence of having shipped production systems that include rigorous evaluation pipelines. The interview will probe how candidates think about measuring system behavior, detecting failures, and designing for safety in unfamiliar technical domains.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">What does day-to-day FDE work look like at Anthropic?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Roughly: 25-35% direct customer engagement (working with customer engineering teams on integration, prompt iteration, eval framework setup), 25-35% internal engineering on tooling and reference implementations, 15-25% customer travel for onsite deployments, 10-15% internal coordination (architecture reviews, safety reviews, customer success collaboration), and 5-10% on safety and evaluation work that benefits multiple customers. The mix varies by engagement phase.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How sustainable is Anthropic FDE work for long-term careers?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Anthropic's longer engagement model reduces some of the burnout drivers that affect FDE roles at faster-moving companies. The deeper customer relationships and slower context-switching pace make multi-year careers more viable. Engineers who succeed long-term at Anthropic typically rotate between customer-facing FDE work and internal projects (tooling, evaluation infrastructure, safety research engineering) to maintain variety without leaving the FDE function.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Can I move between Anthropic and OpenAI as an FDE?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes, and several engineers have. The skill set is highly transferable: prompt engineering, RAG architecture, evaluation framework design, and customer-facing engineering all map directly between the two companies. The cultural adjustment is real but manageable. Engineers who switch typically cite specific reasons (preference for engagement model, team size, or cultural fit) rather than compensation, since the comp difference is modest.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/fde-salary-benchmarks/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Salary Data</a></li>
+<li><a href="/career/forward-deployed-engineer-levels/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE Levels</a></li>
+<li><a href="/companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Companies Hiring FDEs</a></li>
+<li><a href="/jobs/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Browse FDE Jobs</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDE Compensation Inflation 2024-2026: What's | FDE Pulse</title>
+    <meta name="description" content="FDE comp grew 30-50% from 2024 to 2026. Breakdown of what's driving compensation inflation, which companies set the benchmark, and whether the trend continues.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/insights/forward-deployed-engineer-compensation-inflation-2024-2026/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/insights/forward-deployed-engineer-compensation-inflation-2024-2026/">
+    <meta property="og:title" content="FDE Compensation Inflation 2024-2026: What's | FDE Pulse">
+    <meta property="og:description" content="FDE comp grew 30-50% from 2024 to 2026. Breakdown of what's driving compensation inflation, which companies set the benchmark, and whether the trend continues.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FDE Compensation Inflation 2024-2026: What's | FDE Pulse">
+    <meta name="twitter:description" content="FDE comp grew 30-50% from 2024 to 2026. Breakdown of what's driving compensation inflation, which companies set the benchmark, and whether the trend continues.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does FDE compensation inflation compare to SWE compensation growth?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FDE compensation has inflated 2-3x faster than software engineering compensation at comparable seniority levels. SWE compensation grew approximately 8-15% from 2024 to 2026 at top companies. FDE compensation grew 30-50% over the same period. The premium gap that emerged is now embedded in the market and won't reverse quickly. Engineers comparing SWE versus FDE offers in 2026 should expect FDE offers to be 15-30% higher at comparable levels."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I negotiate aggressively given the inflation pace?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Compensation inflation means standing offers depreciate relative to market quickly. An offer accepted at the current top of market in early 2026 will be 10-20% below market by early 2027. Aggressive negotiation captures more of the inflation curve. Best practices: get to at least two competing offers, document specific competitive comp data from Levels.fyi and FDE Pulse, push hard on equity grant size and refresh terms, ask about retention bonus mechanisms."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do refresh grants keep pace with the inflation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Variable by company. AI labs typically refresh equity grants annually with substantial new grants that compound total compensation. Enterprise SaaS companies refresh less aggressively, often with smaller grants tied to performance ratings. Engineers should ask explicit questions about refresh policies before accepting offers, because the year-2-and-beyond compensation trajectory depends heavily on refresh practices that aren't visible in initial offer letters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will compensation inflation moderate if AI revenue growth slows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with a lag. Compensation patterns typically respond to revenue patterns over 6-12 months. If AI revenue growth slows meaningfully in 2026, compensation pressure should ease in late 2026 or 2027. Engineers concerned about correction risk should weight cash compensation more heavily than equity in offer negotiations. Engineers comfortable with valuation risk can capture the equity upside if growth continues."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I benchmark my current FDE comp against the market?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiple sources. Levels.fyi for individual company benchmarks. FDE Pulse's salary pages for category-level data. Direct conversations with FDE peers at competing companies (informally, with appropriate discretion). Recruiter conversations for current offer benchmarks. The benchmarking should happen quarterly given the inflation pace; annual benchmarking misses meaningful market movement. Engineers who haven't checked market comp in 12+ months are typically 10-20% behind without realizing it."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://fdepulse.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://fdepulse.com/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "FDE Compensation Inflation 2024-2026: What's Actually Driving It",
+      "item": "https://fdepulse.com/insights/forward-deployed-engineer-compensation-inflation-2024-2026/"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "FDE Compensation Inflation 2024-2026: What's Actually Driving It", "description": "FDE comp grew 30-50% from 2024 to 2026. Breakdown of what's driving compensation inflation, which companies set the benchmark, and whether the trend continues.", "url": "https://fdepulse.com/insights/forward-deployed-engineer-compensation-inflation-2024-2026/", "datePublished": "2026-05-14", "dateModified": "2026-05-14", "author": {"@type": "Person", "name": "Rome Thorndike", "url": "https://www.linkedin.com/in/romethorndike/"}, "publisher": {"@type": "Organization", "name": "FDE Pulse", "url": "https://fdepulse.com"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fdepulse.com/insights/forward-deployed-engineer-compensation-inflation-2024-2026/"}}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+    <section class="section" style="max-width: 900px; margin: 0 auto; padding-top: 8rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">FDE Compensation Inflation 2024-2026: What's Actually Driving It</h1>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">By <a href="https://www.linkedin.com/in/romethorndike/" target="_blank" rel="noopener" style="color: var(--amber); text-decoration: none;">Rome Thorndike</a></div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+            
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">The Numbers: 30-50% Comp Growth in 24 Months</h2>
+                <p style="margin-bottom: 1.25rem;">Forward Deployed Engineer compensation has grown faster than any other technical role between early 2024 and early 2026. The growth varies by level and company type, but consistent patterns emerge across the data. Mid-level FDE total comp at top AI labs grew from approximately $200K in early 2024 to $300K-$360K in early 2026, a 50-80% increase. Senior FDE total comp at top AI labs grew from approximately $300K to $430K-$580K, a 45-90% increase. Staff FDE total comp grew from approximately $450K to $600K-$800K, a 35-80% increase.</p>
+
+<p style="margin-bottom: 1.25rem;">Enterprise SaaS FDE compensation grew more slowly but still meaningfully. Mid-level FDE at companies like Salesforce, ServiceNow, and Rippling grew from approximately $190K total comp in 2024 to $230K-$280K in 2026, a 20-45% increase. Senior FDE in the same companies grew from approximately $260K to $290K-$370K, a 15-40% increase. The enterprise SaaS pattern shows the inflation cascading from AI labs into adjacent companies competing for similar talent.</p>
+
+<p style="margin-bottom: 1.25rem;">The compounding rates are unusual. Even high-growth technical roles in normal markets see 5-10% annual compensation inflation. FDE compensation growing 30-50% in 24 months reflects three specific structural drivers that this analysis breaks down. Understanding what's driving the trend helps engineers reason about whether the inflation continues or moderates over 2026-2028.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Driver 1: AI Lab Hiring Created a New Compensation Tier</h2>
+                <p style="margin-bottom: 1.25rem;">The most direct driver of FDE compensation inflation is the entry of AI labs into the FDE hiring market with compensation levels significantly above traditional enterprise SaaS benchmarks. OpenAI, Anthropic, Cohere, Scale AI, and Databricks all built FDE teams between 2022 and 2024. Each company set initial compensation at the level needed to attract senior engineers from competing tech roles, which was meaningfully above traditional FDE compensation at companies like Palantir or Salesforce.</p>
+
+<p style="margin-bottom: 1.25rem;">The compounding effect happened through equity refresh cycles. AI lab valuations grew substantially between 2022 and 2025 through funding rounds and tender events. Engineers with initial equity grants saw those grants appreciate dramatically. New hires got smaller grants in share counts but at higher current valuations, producing comparable dollar-denominated compensation. The result: AI lab FDE compensation became disconnected from traditional benchmarks and started setting the market rate for senior FDE talent.</p>
+
+<p style="margin-bottom: 1.25rem;">Traditional enterprise SaaS companies hiring FDEs faced a choice: compete on compensation or accept that their FDE candidate pool would narrow to engineers who specifically didn't want AI lab roles. Most chose to raise compensation. Salesforce, ServiceNow, and similar companies have all raised FDE compensation benchmarks since 2024, though typically not to AI lab levels. The compensation cascade explains why FDE comp at non-AI companies also grew, just at a more moderate rate.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Driver 2: FDE Talent Supply Is Structurally Constrained</h2>
+                <p style="margin-bottom: 1.25rem;">FDE work requires a specific combination of skills that's harder to find than the underlying demand suggests. Strong senior software engineering ability is common (millions of engineers globally). Strong customer-facing technical experience is also reasonably common (hundreds of thousands of engineers with consulting, solutions engineering, or technical account management backgrounds). The intersection of both at senior levels is much smaller.</p>
+
+<p style="margin-bottom: 1.25rem;">The constraint tightens further when AI/ML fluency is required. AI-company FDE roles typically expect both engineering depth and meaningful experience deploying LLM applications to production. The talent pool for engineers who combine all three (senior engineering, customer-engineering experience, AI deployment fluency) is in the tens of thousands globally and growing slowly. Demand from AI labs alone exceeds this supply, which pushes compensation up.</p>
+
+<p style="margin-bottom: 1.25rem;">The talent supply constraint is partially self-correcting. Engineers who see the compensation premium are intentionally building the required skill combinations. Engineers in adjacent roles (solutions engineers, technical consultants, ML engineers) are pivoting toward FDE careers. Companies are investing in training programs to develop FDE talent internally (Palantir's FDSE new-grad program, Salesforce's Agentforce training, internal mobility at AI labs). The supply will expand over 2026-2028, which should moderate compensation growth.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Driver 3: Revenue Attribution Justifies the Investment</h2>
+                <p style="margin-bottom: 1.25rem;">Companies hiring FDEs at premium compensation have done the ROI math and found the investment justified. The math works at AI labs because customer-specific deployments open multi-million-dollar enterprise contracts that wouldn't close without FDE involvement. A single FDE who helps close two $5M annual contracts produces revenue that pays the engineer's total compensation 30-50 times over.</p>
+
+<p style="margin-bottom: 1.25rem;">The math works at enterprise SaaS companies for different reasons. FDE work drives customer expansion, retention, and reference-customer development. Salesforce's FDE-equivalent work on Agentforce produces customer outcomes that drive both new logo wins and expansion in existing accounts. The compensation premium for FDEs at Salesforce is small compared to the revenue impact on Agentforce growth.</p>
+
+<p style="margin-bottom: 1.25rem;">As long as the revenue attribution holds, the compensation inflation has structural justification. If the AI revenue growth slows or if customer expansion rates decline, the math weakens and compensation pressure decreases. The current pattern suggests the revenue math will hold through 2026-2027 at least, which means compensation inflation pressure continues even as talent supply expands.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Where the Compensation Inflation Is Concentrated</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">By level:</strong> Senior FDE compensation has inflated fastest. The largest absolute compensation increases happened at the senior IC level where AI labs needed proven operators who could lead customer engagements independently. Mid-level compensation followed senior compensation up. Staff-level compensation has grown at a similar rate but on smaller absolute base growth because staff-level FDE talent is rarer and the supply constraint is more binding.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">By company type:</strong> AI labs have driven the inflation. Enterprise SaaS companies have followed at slower rates. Consulting firms (PwC, Deloitte, Accenture FDE-equivalent roles) have inflated least, with compensation premiums of 10-15% versus 2024 baselines rather than 30-50% at AI labs. The inflation magnitude correlates with the competitive pressure each company type faces from AI lab hiring.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">By geography:</strong> San Francisco and New York have led the inflation. Other US markets (Seattle, Austin, Boston) have followed. International markets have inflated more slowly in absolute dollar terms but at similar percentage rates locally. The geographic pattern reflects where AI lab hiring concentrated and how compensation cascades outward from primary markets.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">By component:</strong> Equity components grew faster than base salary or bonus components. Base salaries at AI labs grew 15-25% from 2024 to 2026. Equity grants grew 50-100% over the same period, driven both by larger initial grants and by valuation appreciation. The shift toward equity-heavy compensation packages is structural and reflects how AI labs prefer to align engineer outcomes with company outcomes.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Whether This Continues Through 2027</h2>
+                <p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Arguments for continued inflation:</strong> AI revenue growth keeps supporting premium FDE compensation. Talent supply expansion is slow relative to demand growth. AI labs continue to invest in FDE team expansion. New entrants (additional AI companies building FDE functions, enterprise companies starting FDE programs) add to demand. The structural drivers of compensation inflation remain intact.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Arguments for moderation:</strong> Talent supply is expanding as engineers respond to compensation signals. Some AI lab valuations may face correction in 2026-2027 if growth slows. Enterprise FDE compensation will catch up to AI lab benchmarks, which removes the AI lab premium driver. Macroeconomic factors (interest rates, broader tech spending) may slow the pace.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">Most likely scenario:</strong> Compensation inflation continues through 2026-2027 at a moderated pace (15-25% annual growth rather than the 30-50% over 24 months pattern). Senior and staff levels continue to inflate fastest. Geographic distribution remains concentrated in the same markets. Equity components remain the dominant driver of total compensation growth at AI labs. By 2028, the pace likely slows as talent supply catches up to demand.</p>
+
+<p style="margin-bottom: 1.25rem;"><strong style="color: var(--text-primary);">What this means for engineers:</strong> The compensation premium for FDE work is unlikely to fully close during 2026-2027. Engineers considering FDE careers have a real window to capture above-market compensation. Engineers already in FDE roles should monitor their compensation against market benchmarks every 6-9 months because the inflation rate makes static compensation lose ground fast. Compensation negotiations are increasingly important; the gap between accepting first offers and aggressively negotiating can exceed $100K in annual comp at senior levels.</p>
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 2.5rem 0 1rem;">Frequently Asked Questions</h2>
+            
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How does FDE compensation inflation compare to SWE compensation growth?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">FDE compensation has inflated 2-3x faster than software engineering compensation at comparable seniority levels. SWE compensation grew approximately 8-15% from 2024 to 2026 at top companies. FDE compensation grew 30-50% over the same period. The premium gap that emerged is now embedded in the market and won't reverse quickly. Engineers comparing SWE versus FDE offers in 2026 should expect FDE offers to be 15-30% higher at comparable levels.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Should I negotiate aggressively given the inflation pace?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes. Compensation inflation means standing offers depreciate relative to market quickly. An offer accepted at the current top of market in early 2026 will be 10-20% below market by early 2027. Aggressive negotiation captures more of the inflation curve. Best practices: get to at least two competing offers, document specific competitive comp data from Levels.fyi and FDE Pulse, push hard on equity grant size and refresh terms, ask about retention bonus mechanisms.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Do refresh grants keep pace with the inflation?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Variable by company. AI labs typically refresh equity grants annually with substantial new grants that compound total compensation. Enterprise SaaS companies refresh less aggressively, often with smaller grants tied to performance ratings. Engineers should ask explicit questions about refresh policies before accepting offers, because the year-2-and-beyond compensation trajectory depends heavily on refresh practices that aren't visible in initial offer letters.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Will compensation inflation moderate if AI revenue growth slows?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Yes, with a lag. Compensation patterns typically respond to revenue patterns over 6-12 months. If AI revenue growth slows meaningfully in 2026, compensation pressure should ease in late 2026 or 2027. Engineers concerned about correction risk should weight cash compensation more heavily than equity in offer negotiations. Engineers comfortable with valuation risk can capture the equity upside if growth continues.</p>
+                </div>
+                <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">How do I benchmark my current FDE comp against the market?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7;">Multiple sources. Levels.fyi for individual company benchmarks. FDE Pulse's salary pages for category-level data. Direct conversations with FDE peers at competing companies (informally, with appropriate discretion). Recruiter conversations for current offer benchmarks. The benchmarking should happen quarterly given the inflation pace; annual benchmarking misses meaningful market movement. Engineers who haven't checked market comp in 12+ months are typically 10-20% behind without realizing it.</p>
+                </div>
+        </div>
+        
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin: 2.5rem 0;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Related Pages</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <li><a href="/career/forward-deployed-ai-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">AI FDE Guide</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-solutions-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Solutions Engineer</a></li>
+<li><a href="/insights/forward-deployed-engineer-vs-software-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">FDE vs Software Engineer</a></li>
+<li><a href="/insights/top-fde-companies/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">Top Companies Hiring FDEs</a></li>
+<li><a href="/career/how-to-become-a-forward-deployed-engineer/" style="color: var(--amber-light); text-decoration: none; font-weight: 500; transition: opacity 0.15s ease;">How to Become an FDE</a></li>
+
+        </ul>
+    </div>
+
+        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+    </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
