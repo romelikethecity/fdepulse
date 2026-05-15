@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer, Mission Autonomy... | FDE Pulse</title>
+    <meta name="description" content="Forward Deployed Engineer, Mission Autonomy at Anduril. $113K - $155K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/anduril-forward-deployed-engineer-mission-autonomy-cfc9d6/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/anduril-forward-deployed-engineer-mission-autonomy-cfc9d6/">
+    <meta property="og:title" content="Forward Deployed Engineer, Mission Autonomy... | FDE Pulse">
+    <meta property="og:description" content="Forward Deployed Engineer, Mission Autonomy at Anduril. $113K - $155K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer, Mission Autonomy... | FDE Pulse">
+    <meta name="twitter:description" content="Forward Deployed Engineer, Mission Autonomy at Anduril. $113K - $155K. Remote. View role details, requirements, and apply. FDE jobs updated weekly on FDE Pulse.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Forward Deployed Engineer, Mission Autonomy", "description": "Anduril Industries is a defense technology company with a mission to transform U.S. and allied military capabilities with advanced technology. By bringing the expertise, technology, and business model of the 21st century's most innovative companies to the defense industry, Anduril is changing how military systems are designed, built and sold. Anduril's family of systems is powered by Lattice OS, an AI\\-powered operating system that turns thousands of data streams into a realtime, 3D command and ", "datePosted": "2026-05-11", "hiringOrganization": {"@type": "Organization", "name": "Anduril"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Costa Mesa", "addressRegion": "CA", "addressCountry": "US"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/anduril-forward-deployed-engineer-mission-autonomy-cfc9d6/", "jobLocationType": "TELECOMMUTE", "baseSalary": {"@type": "MonetaryAmount", "currency": "USD", "value": {"@type": "QuantitativeValue", "minValue": 113000, "maxValue": 155000, "unitText": "YEAR"}}}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Forward Deployed Engineer, Mission Autonomy at...", "item": "https://fdepulse.com/jobs/anduril-forward-deployed-engineer-mission-autonomy-cfc9d6/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Anduril?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Anduril are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Forward Deployed Engineer, Mission Autonomy role?", "acceptedAnswer": {"@type": "Answer", "text": "The Forward Deployed Engineer, Mission Autonomy role at Anduril typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Anduril remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Anduril FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Anduril</span>
+                </nav>
+                    
+                    <div class="job-header__company">Anduril</div>
+                    <h1 class="job-header__title">Forward Deployed Engineer, Mission Autonomy</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag job-header__tag--salary">$113K - $155K</span>
+                        <span class="job-header__tag job-header__tag--remote">Remote</span>
+                        <span class="job-header__tag job-header__tag--seniority">Mid</span>
+                        <span class="job-header__tag">Posted May 11, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://www.indeed.com/viewjob?jk=ea3a586cbf4ef589" target="_blank" rel="noopener" class="btn btn--primary">Apply on Indeed</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <p>Anduril Industries is a defense technology company with a mission to transform U.S. and allied military capabilities with advanced technology. By bringing the expertise, technology, and business model of the 21st century's most innovative companies to the defense industry, Anduril is changing how military systems are designed, built and sold. Anduril's family of systems is powered by Lattice OS, an AI-powered operating system that turns thousands of data streams into a realtime, 3D command and control center. As the world enters an era of strategic competition, Anduril is committed to bringing cutting-edge autonomy, AI, computer vision, sensor fusion, and networking technology to the military in months, not years.</p>
+<h4><strong>ABOUT THE ROLE</strong></h4>
+<p>Anduril's Deployment Operations group is seeking a Forward Deployed Engineer (internally known at Anduril as Technical Operations Engineer) to join our Mission Autonomy team. This is a Costa Mesa based role and not eligible for remote/hybrid work.</p>
+<p>As a member of Anduril's Technical Operations team, you will be responsible for deploying and supporting Anduril's products all over the world. You will go forward with products early on in their lifecycle and work with engineering teams to iteratively improve them over time. The challenges you will encounter are innumerable and unpredictable, but you will be expected to take ownership of delivering the technical solution.</p>
+<p>You must be both a teacher and a student, able to coach teammates on systems that you've gained intimate familiarity with and then transition into mastering the next system. You'll also guide users through product employment and troubleshooting, advise account managers on how to structure an operation to ensure technical success, and communicate specific recommendations for product refinement to engineering teams.</p>
+<p><strong>WHAT YOU'LL DO</strong> * Support military defense projects by executing technical operations, conducting field maintenance, providing customer field support and training * Provide end-to-end support for our Mission Autonomy systems, including hardware setup and software configuration. * Tackle complex issues related to hardware, software, and networking in unstructured situations, driving them to resolution * Communicate field issue status to internal and customer teams, keeping them informed. * Support the development and implementation of comprehensive operational and logistical plans for various events * Provide end-to-end support for our Mission Autonomy systems, including hardware setup and software configuration. * Pre-configure systems and ensure seamless integration with customer infrastructure. * Troubleshoot issues in real-time, applying analytical thinking and hands-on problem-solving skills. * Manage both low-voltage and high-voltage electrical components, ensuring reliability and safety. * Work with deployed systems such as Kubernetes and Docker, ensuring smooth operation and updates. * Administer and maintain Linux systems across all of our products, serving as a subject matter expert in systems administration. * Incident response root-cause analyses (RCAs) for defense systems in the field * Conduct post-incident reviews and implement preventive measures * Maintain up-to-date documentation <strong>REQUIRED QUALIFICATIONS</strong></p>
+<ul><li>3+ years of experience of strong problem solving in unstructured environments at the interface of hardware, software, and networking.</li><li>Experience with Linux system administration.</li><li>Proficient with containerized environments (Kubernetes, Docker).</li><li>Proficient in working with hands and tools to assemble, repair, and maintain technical hardware in the field.</li><li>Ability to travel to remote regions of the world for up to two months at a time (up to 75% of the year).</li><li>Ability to relocate, if not already local to be onsite in Costa Mesa, CA.</li><li>Ability to meet health and medical requirements in advance of deployments in accordance with DFARS 252.225-7040, DoDI 3020.41, and/or any additional requirements outlined by region or supporting force, as applicable.</li><li>Eligible to obtain and maintain a U.S. Top Secret/Secret clearance.</li></ul>
+<p><strong>PREFERRED QUALIFICATIONS</strong></p>
+<ul><li>B.S. in computer science, mechanical engineering, aerospace engineering, or related technical field</li><li>Working knowledge of IP networking fundamentals and Linux command line interfaces.</li><li>Collaborate effectively with cross-functional teams.</li><li>Prior military or overseas contracting experience.</li></ul>
+<p>The salary range for this role is an estimate based on a wide range of compensation factors, inclusive of base salary only. Actual salary offer may vary based on (but not limited to) work experience, education and/or training, critical skills, and/or business considerations. Highly competitive equity grants are included in the majority of full time offers; and are considered part of Anduril's total compensation package. Additionally, Anduril offers top-tier benefits for full-time employees, including:</p>
+<h4><strong>Benefits</strong></h4>
+<p>At Anduril, we invest in our people. Our comprehensive, competitive benefits package (available at little to no cost to employees) ensures you're supported in health, recovery, and whatever comes next. *For more information,* *Explore Our Benefits**.*</p>
+<h4><strong>Protecting Yourself from Recruitment Scams</strong></h4>
+<p>Anduril is committed to maintaining the integrity of our Talent acquisition process and the security of our candidates. We've observed a rise in sophisticated phishing and fraudulent schemes where individuals impersonate Anduril representatives, luring job seekers with false interviews or job offers. These scammers often attempt to extract payment or sensitive personal information.</p>
+<p>To ensure your safety and help you navigate your job search with confidence, please keep the following critical points in mind:</p>
+<p>* <strong>No Financial Requests:</strong> Anduril will never solicit payment or demand personal financial details (such as banking information, credit card numbers, or social security numbers) at any stage of our hiring process. Our legitimate recruitment is entirely free for candidates. * <strong>Please always verify communications:</strong> 	+ Direct from Anduril: If you receive an email from one of our recruiters, it will *only* come from an @anduril.com address. 	+ Via Agency Partner: If contacted by a recruiting agency for an Anduril role, their email will clearly identify their agency. If you suspect any suspicious activity, please verify the agency's authenticity by reaching out to contact@anduril.com. * <strong>Exercise Caution with Unsolicited Outreach:</strong> If you receive any communication that appears suspicious, contains grammatical errors, or makes unusual requests, do not engage. Always confirm the sender's email domain is @anduril.com before providing any personal information or clicking on links. * <strong>What to Do If You Suspect Fraud:</strong> Should you encounter any questionable or fraudulent outreach claiming to be from Anduril, please report it immediately to contact@anduril.com. Your proactive caution is invaluable in protecting your personal information and upholding the security and trustworthiness of our recruitment efforts.</p>
+<h4><strong>Data Privacy</strong></h4>
+<p>To view Anduril's candidate data privacy policy, please visit https://anduril.com/applicant-privacy-notice/.</p>
+<p>By submitting your application, you consent to Anduril Industries using a third-party service provider to conduct pre-employment risk, integrity, and due diligence screening and assessing potential risks as part of your application process. This third-party service provider provides risk-intelligence services that may include analysis of sanctions and watchlists, adverse media, public-record information, and other lawful open-source or commercial data sources. This third-party service provider does not act as a consumer reporting agency. Use of this provider helps to ensure compliance with applicable laws and protect technology, intellectual property, and organizational security.</p>
+                        </div>
+                    </div>
+                    
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/nexera-llc-forward-deployed-ai-consultant-6ed3f9/" class="similar-job">
+                    <div class="similar-job__company">NeXera LLC</div>
+                    <div class="similar-job__title">Forward Deployed AI Consultant</div>
+                    
+                </a>
+                <a href="/jobs/radar-forward-deployed-engineer-c5171a/" class="similar-job">
+                    <div class="similar-job__company">Radar</div>
+                    <div class="similar-job__title">Forward Deployed Engineer</div>
+                    <div class="similar-job__salary">$230K - $280K</div>
+                </a>
+                <a href="/jobs/forward-deployed-engineer-physics-ai-3356c6/" class="similar-job">
+                    <div class="similar-job__company"></div>
+                    <div class="similar-job__title">Forward Deployed Engineer, Physics &amp; AI</div>
+                    
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Anduril</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">Remote</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Level</span>
+                        <span class="sidebar-card__value">Mid</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Salary</span>
+                        <span class="sidebar-card__value"><span class="sidebar-card__value--salary">$113K - $155K</span></span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">May 11, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Indeed</span>
+                    </div>
+                    </div>
+                    <a href="https://www.indeed.com/viewjob?jk=ea3a586cbf4ef589" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Indeed
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
