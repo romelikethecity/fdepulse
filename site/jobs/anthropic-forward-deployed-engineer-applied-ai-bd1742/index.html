@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSEW9N2N0M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSEW9N2N0M');
+    </script>
+
+    <!-- GA4 Custom Events -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track newsletter CTA clicks
+            document.querySelectorAll('.cta-box .btn, .btn-subscribe').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'cta_click', {
+                        event_category: 'newsletter',
+                        event_label: el.textContent.trim()
+                    });
+                });
+            });
+
+            // Track job card clicks
+            document.querySelectorAll('.job-card').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var title = el.querySelector('.job-card__title');
+                    gtag('event', 'job_click', {
+                        event_category: 'jobs',
+                        event_label: title ? title.textContent.trim() : 'unknown'
+                    });
+                });
+            });
+
+            // Track outbound job application clicks
+            document.querySelectorAll('a[href*="linkedin.com"], a[href*="greenhouse.io"], a[href*="lever.co"], a[href*="workday.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'outbound_click', {
+                        event_category: 'job_apply',
+                        event_label: el.href
+                    });
+                });
+            });
+
+            // Page type classification
+            var path = window.location.pathname;
+            var pageType = 'other';
+            if (path === '/') pageType = 'homepage';
+            else if (path.startsWith('/jobs/')) pageType = 'jobs';
+            else if (path.startsWith('/salaries/')) pageType = 'salaries';
+            else if (path.startsWith('/companies/')) pageType = 'companies';
+            else if (path.startsWith('/insights/')) pageType = 'insights';
+            else if (path.startsWith('/about')) pageType = 'about';
+            gtag('set', 'user_properties', { page_type: pageType });
+
+            // Scroll depth tracking
+            var scrollMarks = {25: false, 50: false, 75: false, 100: false};
+            window.addEventListener('scroll', function() {
+                var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+                [25, 50, 75, 100].forEach(function(mark) {
+                    if (scrollPct >= mark && !scrollMarks[mark]) {
+                        scrollMarks[mark] = true;
+                        gtag('event', 'scroll_depth', {
+                            event_category: 'engagement',
+                            event_label: mark + '%',
+                            page_type: pageType
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forward Deployed Engineer, Applied AI at An... | FDE Pulse</title>
+    <meta name="description" content="Forward Deployed Engineer, Applied AI at Anthropic. Boston, MA; New York City, NY | Seattle, WA; San Francisco, CA | New York City, NY; Washington, DC. View.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fdepulse.com/jobs/anthropic-forward-deployed-engineer-applied-ai-bd1742/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdepulse.com/jobs/anthropic-forward-deployed-engineer-applied-ai-bd1742/">
+    <meta property="og:title" content="Forward Deployed Engineer, Applied AI at An... | FDE Pulse">
+    <meta property="og:description" content="Forward Deployed Engineer, Applied AI at Anthropic. Boston, MA; New York City, NY | Seattle, WA; San Francisco, CA | New York City, NY; Washington, DC. View.">
+    <meta property="og:site_name" content="FDE Pulse">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forward Deployed Engineer, Applied AI at An... | FDE Pulse">
+    <meta name="twitter:description" content="Forward Deployed Engineer, Applied AI at Anthropic. Boston, MA; New York City, NY | Seattle, WA; San Francisco, CA | New York City, NY; Washington, DC. View.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#0F1923">
+    <meta name="theme-color" content="#F59E0B">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+/* Job Detail Page */
+.job-detail { padding-top: 72px; }
+
+.job-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+}
+.job-header__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+.job-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+.job-header__breadcrumb a {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+.job-header__breadcrumb a:hover { color: var(--amber-light); }
+.job-header__breadcrumb span.sep { color: var(--text-muted); }
+
+.job-header__company {
+    font-size: 1rem;
+    color: var(--amber-light);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+}
+.job-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+.job-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+}
+.job-header__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.job-header__tag--salary {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-weight: 600;
+}
+.job-header__tag--remote {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+}
+.job-header__tag--seniority {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: var(--amber-light);
+}
+.job-header__actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stale-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    color: var(--amber-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Content layout */
+.job-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-2xl);
+}
+.job-main { min-width: 0; }
+.job-sidebar {
+    position: sticky;
+    top: calc(72px + var(--space-xl));
+    height: fit-content;
+}
+
+.job-section { margin-bottom: var(--space-2xl); }
+.job-section__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+.job-description {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+.job-description p { margin-bottom: var(--space-md); }
+.job-description ul, .job-description ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+.job-description li { margin-bottom: var(--space-xs); }
+.job-description strong { color: var(--text-primary); }
+.job-description h3, .job-description h4 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+.sidebar-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+.sidebar-card__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+}
+.sidebar-card__item:last-child { border-bottom: none; }
+.sidebar-card__label { color: var(--text-muted); flex-shrink: 0; }
+.sidebar-card__value { color: var(--text-primary); font-weight: 500; text-align: right; }
+.sidebar-card__value--salary { color: #4ade80; }
+
+/* Similar jobs */
+.similar-jobs {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--border);
+}
+.similar-jobs__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+.similar-job {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+.similar-job:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--amber);
+}
+.similar-job__company {
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+.similar-job__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.similar-job__salary {
+    font-size: 0.85rem;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+/* FDE About section */
+.fde-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-2xl);
+}
+.fde-about h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+.fde-about p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+.fde-about p:last-child { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+    .job-content { grid-template-columns: 1fr; }
+    .job-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+    .job-header__title { font-size: 1.6rem; }
+    .job-header__actions { flex-direction: column; }
+    .job-header__actions .btn { justify-content: center; }
+}
+</style>
+
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "JobPosting", "title": "Forward Deployed Engineer, Applied AI", "description": "<div class=\"content-intro\"><h2><strong>About Anthropic</strong></h2>\n<p>Anthropic\u2019s mission is to create reliable, interpretable, and steerable AI systems. We want AI to be safe and beneficial for our users and for society as a whole. Our team is a quickly growing group of committed researchers, engineers, policy experts, and business leaders working together to build beneficial AI systems.</p></div><h2><strong>About the role:</strong></h2>\n<p>As a member of the Applied AI team at Anthropic, you", "datePosted": "2026-05-14", "hiringOrganization": {"@type": "Organization", "name": "Anthropic"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Boston", "addressRegion": "MA; New York City", "addressCountry": "NY | Seattle"}}, "employmentType": "FULL_TIME", "url": "https://fdepulse.com/jobs/anthropic-forward-deployed-engineer-applied-ai-bd1742/"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://fdepulse.com/"}, {"@type": "ListItem", "position": 2, "name": "Jobs", "item": "https://fdepulse.com/jobs/"}, {"@type": "ListItem", "position": 3, "name": "Forward Deployed Engineer, Applied AI at Anthropic", "item": "https://fdepulse.com/jobs/anthropic-forward-deployed-engineer-applied-ai-bd1742/"}]}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does a Forward Deployed Engineer do at Anthropic?", "acceptedAnswer": {"@type": "Answer", "text": "Forward Deployed Engineers at Anthropic are embedded directly with enterprise customers to implement and customize the platform, build integrations, and solve technical problems in real-world client environments. They combine software engineering skills with direct customer interaction, writing production code while also serving as the primary technical point of contact."}}, {"@type": "Question", "name": "What skills are required for this Forward Deployed Engineer, Applied AI role?", "acceptedAnswer": {"@type": "Answer", "text": "The Forward Deployed Engineer, Applied AI role at Anthropic typically requires strong software engineering skills (Python, TypeScript, SQL), experience with APIs and system integration, comfort with cloud platforms, and the ability to communicate complex technical topics to non-technical stakeholders. Most FDE roles require 3-7 years of engineering experience."}}, {"@type": "Question", "name": "Is this Forward Deployed Engineer position at Anthropic remote?", "acceptedAnswer": {"@type": "Answer", "text": "Remote availability varies by Anthropic FDE role. Some positions are fully remote, others require travel to customer sites, and some are hybrid. Check the full job description above for the specific location requirements for this posting."}}]}</script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="logo">
+                <img src="/assets/images/logo-mark.svg" alt="FDE Pulse" class="logo__mark" width="36" height="36">
+                <span class="logo__text">FDE <span class="logo__text-sub">Pulse</span></span>
+            </a>
+            <nav class="nav">
+                <a href="/jobs/" class="nav__link">Jobs</a>
+                <a href="/salaries/" class="nav__link">Salaries</a>
+                <a href="/companies/" class="nav__link">Companies</a>
+                <a href="/career/" class="nav__link">Career</a>
+                <a href="/insights/" class="nav__link">Insights</a>
+                <a href="/voices/" class="nav__link">Top Voices</a>
+                <a href="/about/" class="nav__link">About</a>
+            </nav>
+            <a href="#subscribe" class="btn btn--primary btn--sm">Subscribe</a>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav__overlay"></div>
+    <nav class="mobile-nav">
+        <button class="mobile-nav__close" aria-label="Close">&times;</button>
+        <ul class="mobile-nav__links">
+                    <li><a href="/jobs/" class="mobile-nav__link">Jobs</a></li>
+                    <li><a href="/salaries/" class="mobile-nav__link">Salaries</a></li>
+                    <li><a href="/companies/" class="mobile-nav__link">Companies</a></li>
+                    <li><a href="/career/" class="mobile-nav__link">Career</a></li>
+                    <li><a href="/insights/" class="mobile-nav__link">Insights</a></li>
+                    <li><a href="/voices/" class="mobile-nav__link">Top Voices</a></li>
+                    <li><a href="/about/" class="mobile-nav__link">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="job-detail">
+            <div class="job-header">
+                <div class="job-header__inner">
+                    
+                <nav class="job-header__breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/jobs/">Jobs</a>
+                    <span class="sep">/</span>
+                    <span>Anthropic</span>
+                </nav>
+                    
+                    <div class="job-header__company">Anthropic</div>
+                    <h1 class="job-header__title">Forward Deployed Engineer, Applied AI</h1>
+                    <div class="job-header__meta">
+                        <span class="job-header__tag">Boston, MA; New York City, NY | Seattle, WA; San Francisco, CA | New York City, NY; Washington, DC</span>
+                        <span class="job-header__tag job-header__tag--seniority">Mid</span>
+                        <span class="job-header__tag">Posted May 14, 2026</span>
+                    </div>
+                    <div class="job-header__actions">
+                        <a href="https://job-boards.greenhouse.io/anthropic/jobs/4985877008" target="_blank" rel="noopener" class="btn btn--primary">Apply on Greenhouse</a>
+                        <a href="/jobs/" class="btn btn--secondary">All FDE Jobs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="job-content">
+                <div class="job-main">
+                    <div class="job-section">
+                        <h2 class="job-section__title">Role Description</h2>
+                        <div class="job-description">
+                            <p><div class="content-intro"><h2><strong>About Anthropic</strong></h2> <p>Anthropic’s mission is to create reliable, interpretable, and steerable AI systems. We want AI to be safe and beneficial for our users and for society as a whole. Our team is a quickly growing group of committed researchers, engineers, policy experts, and business leaders working together to build beneficial AI systems.</p></div><h2><strong>About the role:</strong></h2> <p>As a member of the Applied AI team at Anthropic, you will be a Forward Deployed Engineer (FDE) who embeds directly with our most strategic customers to drive transformational AI adoption. You will collaborate closely with customer teams to ship advanced AI applications that solve real world business problems. Our FDEs engage with customers to accelerate the adoption of existing products and create new applications built on our models.</p> <p>Working closely with our Post-Sales, Product, and Engineering teams, you'll combine engineering expertise, an understanding of frontier AI applications, and customer-facing skills to understand customer workflows and develop innovative solutions that address complex business challenges while maintaining our high standards for safety and reliability.</p> <p>You will sit at the frontier of enterprise AI deployments and serve as one of our founding FDEs who helps to shape our forward-deployed motion. We expect our FDEs to operate autonomously, thrive under ambiguity, and represent Anthropic at the highest level in customer environments. This is a significant responsibility: you’ll play a key role in championing our mission in the enterprise.</p> <h2><strong>Responsibilities:</strong></h2> <ul> <li>Work within customer systems to build production applications with Claude models, ensuring that these products meet customer requirements.</li> <li>Deliver technical artifacts for customers like MCP servers, sub-agents, and agent skills that will be used in production workflows.</li> <li>Provide white glove deployment support for Anthropic products in enterprise environments.</li> <li>Identify and codify repeatable deployment patterns and contribute insights back to our Product and Engineering teams.</li> <li>Maintain strong knowledge of the latest developments in LLM capabilities, implementation patterns, and AI product development stacks.</li> <li>Build long term relationships with customers and proactively identify new opportunities for AI deployment throughout the lifecycle of an engagement.</li> <li>Potential Travel (based on location) to customer sites to build in person with customers. - Estimated 25%&nbsp;</li> <li>Be a champion for Anthropic’s mission in the field.</li> </ul> <h2><strong>You May Be a Good Fit If You Have:</strong></h2> <ul> <li>3+ years of experience in a technical, customer facing role such as Forward Deployed Engineer, or as a Software Engineer with consulting experience. Former technical founders are also encouraged to apply.</li> <li>Production experience with LLMs including advanced prompt engineering, agent development, evaluation frameworks, and deployment at scale.</li> <li>Strong programming skills with proficiency in Python (and ideally in one or more additional languages like Typescript, Java, etc) and experience shipping production applications&nbsp;</li> <li>High agency with an ability to navigate ambiguity present in complex organizations.</li> <li>High cooperation mindset for cross-organizational collaboration, balancing competing priorities with integrity.</li> <li>Passion for advancing safe, beneficial AI systems through creative technical applications.</li> <li>Strong communication skills to conduct discovery with customers and to convey technical concepts to diverse stakeholders while maintaining a low ego and collaborative approach.</li> <li>A background in financial services, healthcare/life sciences, or another enterprise vertical is a plus.</li> <li>Experience with enterprise IT systems and/or AI deployment patterns is a plus.</li> <li>Experience working as an FDE or in a professional services context is a plus.</li> </ul><div class="content-pay-transparency"><div class="pay-input"><div class="description"><p>The annual compensation range for this role is listed below.&nbsp;</p> <p>For sales roles, the range provided is the role’s On Target Earnings ("OTE") range, meaning that the range includes both the sales commissions/sales bonuses target and annual base salary for the role.</p></div><div class="title">Annual Salary:</div><div class="pay-range"><span>$200,000</span><span class="divider">&mdash;</span><span>$300,000 USD</span></div></div></div><div class="content-conclusion"><h2><strong>Logistics</strong></h2> <p><strong>Minimum education: </strong>Bachelor’s degree or an equivalent combination of education, training, and/or experience</p> <p><strong>Required field of study:&nbsp;</strong>A field relevant to the role as demonstrated through coursework, training, or professional experience</p> <p><strong>Minimum years of experience: </strong>Years of experience required will correlate with the internal job level requirements for the position</p> <p><strong>Location-based hybrid policy:</strong> Currently, we expect all staff to be in one of our offices at least 25% of the time. However, some roles may require more time in our offices.</p> <p><strong data-stringify-type="bold">Visa sponsorship:</strong>&nbsp;We do sponsor visas! However, we aren't able to successfully sponsor visas for every role and every candidate. But if we make you an offer, we will make every reasonable effort to get you a visa, and we retain an immigration lawyer to help with this.</p> <p><strong>We encourage you to apply even if you do not believe you meet every single qualification.</strong> Not all strong candidates will meet every single qualification as listed.&nbsp; Research shows that people who identify as being from underrepresented groups are more prone to experiencing imposter syndrome and doubting the strength of their candidacy, so we urge you not to exclude yourself prematurely and to submit an application if you're interested in this work. We think AI systems like the ones we're building have enormous social and ethical implications. We think this makes representation even more important, and we strive to include a range of diverse perspectives on our team.<br><br><strong data-stringify-type="bold">Your safety matters to us.</strong> To protect yourself from potential scams, remember that Anthropic recruiters only contact you from&nbsp;@anthropic.com&nbsp;email addresses. In some cases, we may partner with vetted recruiting agencies who will identify themselves as working on behalf of Anthropic. Be cautious of emails from other domains. Legitimate Anthropic recruiters will never ask for money, fees, or banking information before your first day. If you're ever unsure about a communication, don't click any links—visit&nbsp;<u data-stringify-type="underline"><a class="c-link c-link--underline" href="http://anthropic.com/careers" target="_blank" data-stringify-link="http://anthropic.com/careers" data-sk="tooltip_parent" data-remove-tab-index="true">anthropic.com/careers</a></u>&nbsp;directly for confirmed position openings.</p> <h2><strong>How we're different</strong></h2> <p>We believe that the highest-impact AI research will be big science. At Anthropic we work as a single cohesive team on just a few large-scale research efforts. And we value impact — advancing our long-term goals of steerable, trustworthy AI — rather than work on smaller and more specific puzzles. We view AI research as an empirical science, which has as much in common with physics and biology as with traditional efforts in computer science. We're an extremely collaborative group, and we host frequent research discussions to ensure that we are pursuing the highest-impact work at any given time. As such, we greatly value communication skills.</p> <p>The easiest way to understand our research directions is to read our recent research. This research continues many of the directions our team worked on prior to Anthropic, including: GPT-3, Circuit-Based Interpretability, Multimodal Neurons, Scaling Laws, AI &amp; Compute, Concrete Problems in AI Safety, and Learning from Human Preferences.</p> <h2><strong>Come work with us!</strong></h2> <p>Anthropic is a public benefit corporation headquartered in San Francisco. We offer competitive compensation and benefits, optional equity donation matching, generous vacation and parental leave, flexible working hours, and a lovely office space in which to collaborate with colleagues. <strong data-stringify-type="bold">Guidance on Candidates' AI Usage:</strong>&nbsp;Learn about&nbsp;<a class="c-link" href="https://www.anthropic.com/candidate-ai-guidance" target="_blank" data-stringify-link="https://www.anthropic.com/candidate-ai-guidance" data-sk="tooltip_parent">our policy</a>&nbsp;for using AI in our application process</p></div></p>
+                        </div>
+                    </div>
+                    
+                    
+            <div class="similar-jobs">
+                <h2 class="similar-jobs__title">Similar Roles</h2>
+                
+                <a href="/jobs/anthropic-manager-forward-deployed-engineering-da4959/" class="similar-job">
+                    <div class="similar-job__company">Anthropic</div>
+                    <div class="similar-job__title">Manager, Forward Deployed Engineering</div>
+                    
+                </a>
+                <a href="/jobs/anthropic-forward-deployed-engineer-b49da9/" class="similar-job">
+                    <div class="similar-job__company">Anthropic</div>
+                    <div class="similar-job__title">Forward Deployed Engineer</div>
+                    
+                </a>
+                <a href="/jobs/sia-google-cloud-databricks-forward-deployed-engineer-in-wealth-and-asset-manage-57130d/" class="similar-job">
+                    <div class="similar-job__company">SIA</div>
+                    <div class="similar-job__title">Google Cloud / Databricks Forward Deployed Engineer in Wealth and Asset Management</div>
+                    <div class="similar-job__salary">$135K - $147K</div>
+                </a>
+            </div>
+                    <div style="margin-top: 2rem;">
+                        
+    <div class="cta-box" id="subscribe">
+        <h3>Get the FDE Pulse Brief</h3>
+        <p>Weekly market intelligence for Forward Deployed Engineers. Job trends, salary data, and who's hiring. Free.</p>
+        <form class="signup-form" onsubmit="handleSignup(event, this)">
+            <input type="email" name="email" placeholder="you@company.com" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="signup-msg"></div>
+        <div class="signup-trust">Free weekly email. Unsubscribe anytime.</div>
+    </div>
+
+                    </div>
+                </div>
+
+                <aside class="job-sidebar">
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card__title">Job Details</h3>
+                        
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Company</span>
+                        <span class="sidebar-card__value">Anthropic</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Location</span>
+                        <span class="sidebar-card__value">Boston, MA; New York City, NY | Seattle, WA; San Francisco, CA | New York City, NY; Washington, DC</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Level</span>
+                        <span class="sidebar-card__value">Mid</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Posted</span>
+                        <span class="sidebar-card__value">May 14, 2026</span>
+                    </div>
+                    <div class="sidebar-card__item">
+                        <span class="sidebar-card__label">Source</span>
+                        <span class="sidebar-card__value">Greenhouse</span>
+                    </div>
+                    </div>
+                    <a href="https://job-boards.greenhouse.io/anthropic/jobs/4985877008" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; justify-content: center; display: flex;">
+                        Apply on Greenhouse
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo">
+                    <img src="/assets/images/logo-mark.svg" alt="" class="footer__logo-mark" width="32" height="32">
+                    <span class="footer__logo-text">FDE <span class="footer__logo-text-sub">Pulse</span></span>
+                </div>
+                <p class="footer__desc">The leading job board and market intelligence platform for Forward Deployed Engineers.</p>
+            </div>
+
+            <div class="footer__col">
+                <h4 class="footer__col-title">Jobs</h4>
+                <ul class="footer__links">
+                    <li><a href="/jobs/" class="footer__link">All FDE Jobs</a></li>
+                    <li><a href="/jobs/remote/" class="footer__link">Remote FDE Jobs</a></li>
+                    <li><a href="/jobs/san-francisco/" class="footer__link">FDE Jobs in SF</a></li>
+                    <li><a href="/jobs/new-york/" class="footer__link">FDE Jobs in NYC</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Resources</h4>
+                <ul class="footer__links">
+                    <li><a href="/salaries/" class="footer__link">Salary Data</a></li>
+                    <li><a href="/companies/" class="footer__link">Companies Hiring</a></li>
+                    <li><a href="/insights/" class="footer__link">Market Insights</a></li>
+                    <li><a href="/voices/" class="footer__link">Top Voices</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Company</h4>
+                <ul class="footer__links">
+                    <li><a href="/about/" class="footer__link">About</a></li>
+                    <li><a href="#subscribe" class="footer__link">Newsletter</a></li>
+                    <li><a href="mailto:hello@fdepulse.com" class="footer__link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Related Sites</h4>
+                <ul class="footer__links">
+                    <li><a href="https://thegtmindex.com" class="footer__link" target="_blank" rel="noopener">The GTM Index</a></li>
+                    <li><a href="https://fractionalpulse.com" class="footer__link" target="_blank" rel="noopener">Fractional Pulse</a></li>
+                    <li><a href="https://thecroreport.com" class="footer__link" target="_blank" rel="noopener">CRO Report</a></li>
+                    <li><a href="https://therevopsreport.com" class="footer__link" target="_blank" rel="noopener">RevOps Report</a></li>
+                    <li><a href="https://theaimarketpulse.com" class="footer__link" target="_blank" rel="noopener">AI Market Pulse</a></li>
+                    <li><a href="https://gtmepulse.com" class="footer__link" target="_blank" rel="noopener">GTME Pulse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            © 2026 FDE Pulse. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.mobile-nav');
+        const overlay = document.querySelector('.mobile-nav__overlay');
+        const close = document.querySelector('.mobile-nav__close');
+        const links = document.querySelectorAll('.mobile-nav__link');
+        function open() { nav.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow='hidden'; }
+        function shut() { nav.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow=''; }
+        if(toggle) toggle.addEventListener('click', open);
+        if(close) close.addEventListener('click', shut);
+        if(overlay) overlay.addEventListener('click', shut);
+        links.forEach(l => l.addEventListener('click', shut));
+    })();
+    </script>
+
+<script>
+    function handleSignup(e, form) {
+        e.preventDefault();
+        var btn = form.querySelector('button');
+        var origText = btn.textContent;
+        var msg = form.parentElement.querySelector('.signup-msg');
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.className = 'signup-msg';
+        msg.textContent = '';
+        fetch('https://newsletter-subscribe.rome-workers.workers.dev/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email, list: 'fde-pulse'})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                msg.className = 'signup-msg success';
+                msg.textContent = "You're in. First FDE Pulse brief hits your inbox this week.";
+                form.querySelector('input[name="email"]').value = '';
+                if (typeof gtag === 'function') {
+                    gtag('event', 'newsletter_signup', {event_category: 'newsletter', event_label: 'inline_form'});
+                }
+            } else {
+                msg.className = 'signup-msg error';
+                msg.textContent = data.error || 'Something went wrong. Try again.';
+            }
+        })
+        .catch(function() {
+            msg.className = 'signup-msg error';
+            msg.textContent = 'Something went wrong. Try again.';
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.textContent = origText;
+        });
+    }
+    </script>
+</body>
+</html>
